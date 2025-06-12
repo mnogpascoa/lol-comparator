@@ -9,32 +9,43 @@
 </head>
 <body>
     <h1>Comparador de Times LoL</h1>
+
     <div>
         <label for="liga">Campeonato:</label>
-        <select id="liga" onchange="carregarTimes()">
-            <option value="">Selecione o campeonato</option>
-        </select>
+        <select id="liga" onchange="filtrarPorLiga()"></select>
     </div>
+
     <div>
         <label for="side">Lado:</label>
-        <select id="side" onchange="carregarTimes()">
-            <option value="">Selecione o lado</option>
-        </select>
+        <select id="side" onchange="filtrarPorSide()"></select>
     </div>
+
     <div>
         <label for="time1">Time 1:</label>
-        <select id="time1">
-            <option value="">Selecione o time</option>
-        </select>
+        <select id="time1"></select>
     </div>
+
     <div>
         <label for="time2">Time 2:</label>
-        <select id="time2">
-            <option value="">Selecione o time</option>
+        <select id="time2"></select>
+    </div>
+
+    <div>
+        <label for="jogosRecentes">Jogos Recentes:</label>
+        <select id="jogosRecentes">
+            <option value="">Todos</option>
+            <option value="10">Últimos 10</option>
+            <option value="20">Últimos 20</option>
+            <option value="30">Últimos 30</option>
+            <option value="40">Últimos 40</option>
+            <option value="50">Últimos 50</option>
         </select>
     </div>
+
     <button onclick="comparar()">Comparar</button>
+
     <div id="resultado"></div>
+
     <script src="static/script.js"></script>
 </body>
 </html>
