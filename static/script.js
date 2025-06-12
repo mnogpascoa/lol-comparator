@@ -6,12 +6,10 @@ window.onload = function () {
         download: true,
         header: true,
         complete: function (results) {
-            // Filtra apenas linhas que contêm '2025' na data
-            dados = results.data.filter(row =>
-                row.date && row.date.includes('2025')
-            );
+            // Manter apenas jogos do ano de 2025
+            dados = results.data.filter(row => row.date && row.date.includes('2025'));
 
-            // Extrai times únicos
+            // Gerar lista de times distintos com base nos dados de 2025
             times = [...new Set(dados.map(d => d.teamname).filter(Boolean))];
 
             preencherFiltros();
@@ -40,7 +38,7 @@ function adicionarOpcoes(select, valores) {
     });
 }
 
-function mostrarSugestoes(input, sugestaoId) {
+function mostrarSugestoes(input, sugestoesId) {
     const texto = input.value.toLowerCase();
     const container = document.getElementById(sugestoesId);
     container.innerHTML = '';
@@ -76,51 +74,69 @@ function comparar() {
         return;
     }
 
-    const resultados = dados.filter(item => {
-        const ligaOk = liga === 'Todos' || item.league === liga;
+    const filtro = (item, time) => {
         const ladoOk = lado === 'Todos' || item.lado === lado;
-        const confronto = (
-            (item.time1 === time1 && item.time2 === time2) ||
-            (item.time1 === time2 && item.time2 === time1)
-        );
-        return ligaOk && ladoOk && confronto;
-    });
+        const ligaOk = liga === 'Todos' || item.league === liga;
+        return item.teamname === time && ladoOk && ligaOk;
+    };
 
-    mostrarResultado(resultados);
+    const jogosTime1 = dados.filter(item => filtro(item, time1));
+    const jogosTime2 = dados.filter(item => filtro(item, time2));
+
+    mostrarEstatisticas(time1, jogosTime1, time2, jogosTime2);
 }
 
-function mostrarResultado(lista) {
+function calcularMedias(dados) {
+    const jogos = dados.length;
+    if (jogos === 0) {
+        return null;
+    }
+
+    const vitorias = dados.reduce((sum, row) => sum + (parseInt(row.result) || 0), 0);
+    const vitoriasPercent = (vitorias / jogos) * 100;
+    const torresPercent = dados.reduce((sum, row) => sum + (parseInt(row.firsttower) || 0), 0) / jogos * 100;
+    const dragoesPercent = dados.reduce((sum, row) => sum + (parseInt(row.firstdragon) || 0), 0) / jogos * 100;
+    const firstBloodPercent = dados.reduce((sum, row) => sum + (parseInt(row.firstblood) || 0), 0) / jogos * 100;
+
+    return {
+        'Jogos': jogos,
+        'Vitórias': vitorias,
+        'Vitórias (%)': vitoriasPercent.toFixed(2),
+        'Torres (%)': torresPercent.toFixed(2),
+        'Dragões (%)': dragoesPercent.toFixed(2),
+        'Primeiro Sangue (%)': firstBloodPercent.toFixed(2)
+    };
+}
+
+function mostrarEstatisticas(time1, jogos1, time2, jogos2) {
     const div = document.getElementById('resultado');
     div.innerHTML = '';
 
-    if (lista.length === 0) {
-        div.textContent = 'Nenhum confronto encontrado com os filtros.';
+    const stats1 = calcularMedias(jogos1);
+    const stats2 = calcularMedias(jogos2);
+
+    if (!stats1 && !stats2) {
+        div.textContent = 'Nenhum jogo encontrado para os times selecionados com os filtros aplicados.';
         return;
     }
 
-    const tabela = document.createElement('table');
-    const thead = document.createElement('thead');
-    const headerRow = document.createElement('tr');
+    const bloco = (nome, stats) => {
+        if (!stats) {
+            return `<h3>${nome}</h3><p>Nenhum jogo encontrado.</p>`;
+        }
 
-    Object.keys(lista[0]).forEach(col => {
-        const th = document.createElement('th');
-        th.textContent = col;
-        headerRow.appendChild(th);
-    });
-    thead.appendChild(headerRow);
-    tabela.appendChild(thead);
+        return `
+            <h3>${nome}</h3>
+            <ul>
+                <li>Jogos: ${stats['Jogos']}</li>
+                <li>Vitórias: ${stats['Vitórias']}</li>
+                <li>Vitórias (%): ${stats['Vitórias (%)']}%</li>
+                <li>Torres (%): ${stats['Torres (%)']}%</li>
+                <li>Dragões (%): ${stats['Dragões (%)']}%</li>
+                <li>Primeiro Sangue (%): ${stats['Primeiro Sangue (%)']}%</li>
+            </ul>
+        `;
+    };
 
-    const tbody = document.createElement('tbody');
-    lista.forEach(row => {
-        const tr = document.createElement('tr');
-        Object.values(row).forEach(cell => {
-            const td = document.createElement('td');
-            td.textContent = cell;
-            tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-    });
-    tabela.appendChild(tbody);
-
-    div.appendChild(tabela);
+    div.innerHTML = bloco(time1, stats1) + bloco(time2, stats2);
 }
