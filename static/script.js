@@ -1,7 +1,7 @@
 let df = null;
 let dfLiga = null;
 let dfSide = null;
-let dfResult = null; // Nova variável global para o filtro de resultado
+let dfResult = null;
 let allTeams = [];
 
 Papa.parse('static/BaseDeDados.csv', {
@@ -49,10 +49,11 @@ function carregarSides() {
 function carregarTimes() {
     const liga = document.getElementById('liga').value;
     const side = document.getElementById('side').value;
-    const resultFilter = document.getElementById('result-filter').value; // Novo filtro
+    const resultFilter = document.getElementById('result-filter').value;
     const recentGames = document.getElementById('recent-games').value;
     const killLine = document.getElementById('kill-line').value;
     const timeLine = document.getElementById('time-line').value;
+    const dragonLine = document.getElementById('dragon-line').value; // Novo filtro
     const time1Input = document.getElementById('time1');
     const time2Input = document.getElementById('time2');
     
@@ -88,10 +89,11 @@ function carregarTimes() {
 function comparar() {
     const liga = document.getElementById('liga').value;
     const side = document.getElementById('side').value;
-    const resultFilter = document.getElementById('result-filter').value; // Novo filtro
+    const resultFilter = document.getElementById('result-filter').value;
     const recentGames = document.getElementById('recent-games').value;
     const killLine = parseFloat(document.getElementById('kill-line').value);
     const timeLineValue = parseInt(document.getElementById('time-line').value);
+    const dragonLine = parseFloat(document.getElementById('dragon-line').value); // Novo filtro
     const timeLine = isNaN(timeLineValue) ? 31 * 60 : timeLineValue * 60;
     const time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
@@ -139,6 +141,16 @@ function comparar() {
         return { totalJogos, timeBelow, timeAbove, percentBelow, percentAbove };
     }
 
+    function calcularDragonStats(dados) {
+        const totalJogos = dados.length;
+        if (totalJogos === 0) return { totalJogos: 0, dragonsBelow: 0, dragonsAbove: 0, percentBelow: 0, percentAbove: 0 };
+        const dragonsBelow = dados.filter(row => parseInt(row.totalDragons) < dragonLine || parseInt(row.totalDragons) === 0).length;
+        const dragonsAbove = totalJogos - dragonsBelow;
+        const percentBelow = (dragonsBelow / totalJogos * 100).toFixed(2);
+        const percentAbove = (dragonsAbove / totalJogos * 100).toFixed(2);
+        return { totalJogos, dragonsBelow, dragonsAbove, percentBelow, percentAbove };
+    }
+
     function calcularMedias(dados) {
         const jogos = dados.length;
         const vitorias = dados.reduce((sum, row) => sum + (parseInt(row.result) || 0), 0);
@@ -159,6 +171,8 @@ function comparar() {
     const statsTime2 = calcularKillStats(dadosTime2);
     const timeStatsTime1 = calcularTimeStats(dadosTime1);
     const timeStatsTime2 = calcularTimeStats(dadosTime2);
+    const dragonStatsTime1 = calcularDragonStats(dadosTime1);
+    const dragonStatsTime2 = calcularDragonStats(dadosTime2);
     const mediasTime1 = calcularMedias(dadosTime1);
     const mediasTime2 = calcularMedias(dadosTime2);
 
@@ -178,6 +192,8 @@ function comparar() {
             <tr><td>Over ${killLine} Kill</td><td>${statsTime1.percentAbove}%</td><td>${statsTime2.percentAbove}%</td></tr>
             <tr><td>Under ${timeLineMin} min</td><td>${timeStatsTime1.percentBelow}%</td><td>${timeStatsTime2.percentBelow}%</td></tr>
             <tr><td>Over ${timeLineMin} min</td><td>${timeStatsTime1.percentAbove}%</td><td>${timeStatsTime2.percentAbove}%</td></tr>
+            <tr><td>Under ${dragonLine} Dragon</td><td>${dragonStatsTime1.percentBelow}%</td><td>${dragonStatsTime2.percentBelow}%</td></tr>
+            <tr><td>Over ${dragonLine} Dragon</td><td>${dragonStatsTime1.percentAbove}%</td><td>${dragonStatsTime2.percentAbove}%</td></tr>
         </table>
     `;
     console.log('Conteúdo da tabela:', tableContent);
