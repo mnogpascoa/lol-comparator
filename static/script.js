@@ -1,8 +1,85 @@
+let df = null;
+let dfLiga = null;
+let dfSide = null;
+let allTeams = [];
+
+Papa.parse('static/BaseDeDados.csv', {
+    download: true,
+    header: true,
+    complete: function(results) {
+        df = results.data.filter(row => row.position === 'team' && row.date && row.date.startsWith('2025'));
+        console.log('Dados filtrados:', df); // Debug
+        if (df.length === 0) {
+            alert('Nenhum dado válido encontrado!');
+            return;
+        }
+        carregarLigas();
+        carregarSides();
+        carregarTimes();
+    },
+    error: function(error) {
+        console.error('Erro ao carregar CSV:', error);
+    }
+});
+
+function carregarLigas() {
+    const ligas = [...new Set(df.map(row => row.league).filter(liga => liga))].sort();
+    const selectLiga = document.getElementById('liga');
+    selectLiga.innerHTML = '<option value="">Todos os campeonatos</option>';
+    ligas.forEach(liga => {
+        const option = document.createElement('option');
+        option.value = liga;
+        option.textContent = liga;
+        selectLiga.appendChild(option);
+    });
+}
+
+function carregarSides() {
+    const sides = [...new Set(df.map(row => row.side).filter(side => side))].sort();
+    const selectSide = document.getElementById('side');
+    selectSide.innerHTML = '<option value="">Todos os lados</option>';
+    sides.forEach(side => {
+        const option = document.createElement('option');
+        option.value = side;
+        option.textContent = side;
+        selectSide.appendChild(option);
+    });
+}
+
+function carregarTimes() {
+    const liga = document.getElementById('liga').value;
+    const side = document.getElementById('side').value;
+    const recentGames = document.getElementById('recent-games').value;
+    const killLine = document.getElementById('kill-line').value;
+    const time1Input = document.getElementById('time1');
+    const time2Input = document.getElementById('time2');
+    
+    const time1Selecionado = time1Input.value;
+    const time2Selecionado = time2Input.value;
+
+    dfLiga = liga ? df.filter(row => row.league === liga) : df;
+    dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
+
+    const times = [...new Set(dfSide.map(row => row.teamname).filter(time => time))].sort();
+    const datalist = document.getElementById('times-list');
+    datalist.innerHTML = ''; // Limpa o datalist antes de preencher
+    times.forEach(time => {
+        const option = document.createElement('option');
+        option.value = time;
+        datalist.appendChild(option);
+    });
+
+    if (time1Selecionado && times.includes(time1Selecionado)) time1Input.value = time1Selecionado;
+    else time1Input.value = '';
+    if (time2Selecionado && times.includes(time2Selecionado)) time2Input.value = time2Selecionado;
+    else time2Input.value = '';
+}
+
 function comparar() {
     const liga = document.getElementById('liga').value;
     const side = document.getElementById('side').value;
     const recentGames = document.getElementById('recent-games').value;
-    const killLine = parseFloat(document.getElementById('kill-line').value); // Valor da linha de kills
+    const killLine = parseFloat(document.getElementById('kill-line').value);
     const time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
 
@@ -14,7 +91,6 @@ function comparar() {
     let dadosTime1 = dfSide.filter(row => row.teamname === time1);
     let dadosTime2 = dfSide.filter(row => row.teamname === time2);
 
-    // Aplicar filtro de jogos recentes, se aplicável
     if (recentGames) {
         dadosTime1 = dadosTime1.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
         dadosTime2 = dadosTime2.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
@@ -25,7 +101,6 @@ function comparar() {
         return;
     }
 
-    // Função para calcular as estatísticas de kills
     function calcularKillStats(dados) {
         const totalJogos = dados.length;
         if (totalJogos === 0) return { totalJogos: 0, killsBelow: 0, killsAbove: 0, percentBelow: 0, percentAbove: 0 };
@@ -36,7 +111,6 @@ function comparar() {
         return { totalJogos, killsBelow, killsAbove, percentBelow, percentAbove };
     }
 
-    // Função para calcular as estatísticas básicas e adicionais
     function calcularMedias(dados) {
         const jogos = dados.length;
         const vitorias = dados.reduce((sum, row) => sum + (parseInt(row.result) || 0), 0);
@@ -58,7 +132,6 @@ function comparar() {
     const mediasTime1 = calcularMedias(dadosTime1);
     const mediasTime2 = calcularMedias(dadosTime2);
 
-    // Log do conteúdo da tabela antes de renderizar
     const tableContent = `
         <h2>Comparação: ${time1} vs ${time2} ${side ? '(' + side + ')' : ''} ${liga ? '(' + liga + ')' : ''} (2025) ${recentGames ? '(Últimos ' + recentGames + ' jogos)' : ''}</h2>
         <table>
@@ -73,7 +146,7 @@ function comparar() {
             <tr><td>Over ${killLine} Kill</td><td>${statsTime1.percentAbove}%</td><td>${statsTime2.percentAbove}%</td></tr>
         </table>
     `;
-    console.log('Conteúdo da tabela:', tableContent); // Log para debug
+    console.log('Conteúdo da tabela:', tableContent); // Debug
     const resultado = document.getElementById('resultado');
     resultado.innerHTML = tableContent;
 }
