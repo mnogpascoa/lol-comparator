@@ -14,7 +14,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     display: flex;
-    flex-direction: column; /* Restaura Flexbox para controlar a altura */
+    flex-direction: column; /* Controla a altura */
 }
 
 /* Centraliza o cabeçalho no topo */
@@ -24,7 +24,7 @@ body {
     padding: 20px 0;
     background-color: #333;
     color: white;
-    margin-bottom: 0; /* Remove margem para melhor alinhamento */
+    margin-bottom: 0; /* Remove margem para alinhamento */
     position: sticky;
     top: 0;
     z-index: 10; /* Prioridade alta */
@@ -53,19 +53,21 @@ table {
 /* Fixa o cabeçalho da tabela */
 thead {
     position: sticky;
-    top: 60px; /* Ajuste para ficar abaixo de #team-info */
+    top: 60px; /* Ajuste para ficar abaixo de #team-info (verifique a altura) */
     background-color: #333;
     z-index: 5; /* Acima do corpo, abaixo de #team-info */
 }
 
+/* Estilização das células do cabeçalho */
 thead th {
     color: white;
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
+    min-width: 80px; /* Largura mínima razoável */
 }
 
-/* Estilização das células da tabela */
+/* Estilização das células do corpo */
 td {
     border: 1px solid #ddd;
     padding: 8px;
@@ -83,6 +85,12 @@ tr:nth-child(even) td {
 /* Rolagem horizontal se necessário */
 #games-table {
     overflow-x: auto;
+}
+
+/* Ajuste para evitar sobreposição do corpo */
+tbody {
+    display: block; /* Separa o corpo para rolagem independente */
+    width: 100%; /* Garante largura total */
 }
 
 /* Responsividade */
