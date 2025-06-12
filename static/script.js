@@ -8,7 +8,7 @@ Papa.parse('static/BaseDadosDesseAno', {
     download: true,
     header: true,
     complete: function(results) {
-        df = results.data.filter(row => row.position === 'team' && row.date && row.date.startsWith('2025'));
+        df = results.data;
         if (df.length === 0) {
             alert('Nenhum dado válido encontrado!');
             return;
