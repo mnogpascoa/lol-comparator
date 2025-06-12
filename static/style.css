@@ -5,21 +5,33 @@ body {
     padding: 20px;
     background-color: #f4f4f4;
 }
+
 h1 {
     text-align: center;
     color: #333;
 }
+
 div {
     margin: 10px 0;
+    position: relative;
 }
+
 label {
     font-weight: bold;
     margin-right: 10px;
+    min-width: 100px;
+    display: inline-block;
 }
-select, button {
+
+input[type="text"], select, button {
     padding: 8px;
     font-size: 16px;
 }
+
+input[type="text"] {
+    width: 250px;
+}
+
 button {
     background-color: #4CAF50;
     color: white;
@@ -27,38 +39,44 @@ button {
     cursor: pointer;
     padding: 10px 20px;
 }
+
 button:hover {
     background-color: #45a049;
 }
+
 table {
     border-collapse: collapse;
     width: 100%;
     margin-top: 20px;
     background-color: white;
 }
+
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
 }
+
 th {
     background-color: #333;
     color: white;
 }
+
 tr:nth-child(even) {
     background-color: #f2f2f2;
 }
-#resultado {
-    margin-top: 20px;
-}
+
+/* Estilo para sugestões de autocomplete */
 .sugestoes {
     position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    max-height: 150px;
+    background: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    max-height: 180px;
     overflow-y: auto;
-    width: 300px;
-    z-index: 10;
+    width: 250px;
+    z-index: 1000;
+    display: none;
 }
 
 .sugestoes div {
@@ -68,4 +86,8 @@ tr:nth-child(even) {
 
 .sugestoes div:hover {
     background-color: #f0f0f0;
+}
+
+#resultado {
+    margin-top: 20px;
 }
