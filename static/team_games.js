@@ -5,7 +5,7 @@ function getTeamNameFromURL() {
 }
 
 // Carregar e processar o CSV
-Papa.parse('BaseDeDados.csv', {
+Papa.parse('BaseDadosDesseAno.csv', {
     download: true,
     header: true,
     complete: function(results) {
