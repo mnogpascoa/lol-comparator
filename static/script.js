@@ -6,14 +6,20 @@ window.onload = function () {
         download: true,
         header: true,
         complete: function (results) {
-            dados = results.data;
-            times = [...new Set(dados.map(item => item.teamname).filter(Boolean))];
-            preencherFiltrosIniciais();
+            // Filtra apenas linhas que contêm '2025' na data
+            dados = results.data.filter(row =>
+                row.date && row.date.includes('2025')
+            );
+
+            // Extrai times únicos
+            times = [...new Set(dados.map(d => d.teamname).filter(Boolean))];
+
+            preencherFiltros();
         }
     });
 };
 
-function preencherFiltrosIniciais() {
+function preencherFiltros() {
     const selectLado = document.getElementById('side');
     const selectLiga = document.getElementById('liga');
 
@@ -34,22 +40,28 @@ function adicionarOpcoes(select, valores) {
     });
 }
 
-function mostrarSugestoes(input, divId) {
+function mostrarSugestoes(input, sugestaoId) {
     const texto = input.value.toLowerCase();
-    const sugestoesDiv = document.getElementById(divId);
-    sugestoesDiv.innerHTML = '';
+    const container = document.getElementById(sugestoesId);
+    container.innerHTML = '';
+    container.style.display = 'block';
 
-    if (texto.length < 1) return;
+    if (!texto) {
+        container.style.display = 'none';
+        return;
+    }
 
-    const sugestoes = times.filter(t => t.toLowerCase().includes(texto));
-    sugestoes.forEach(sugestao => {
+    const filtrados = times.filter(t => t.toLowerCase().includes(texto));
+
+    filtrados.slice(0, 10).forEach(time => {
         const div = document.createElement('div');
-        div.textContent = sugestao;
+        div.textContent = time;
         div.onclick = () => {
-            input.value = sugestao;
-            sugestoesDiv.innerHTML = '';
+            input.value = time;
+            container.innerHTML = '';
+            container.style.display = 'none';
         };
-        sugestoesDiv.appendChild(div);
+        container.appendChild(div);
     });
 }
 
@@ -60,57 +72,55 @@ function comparar() {
     const liga = document.getElementById('liga').value;
 
     if (!time1 || !time2) {
-        alert('Por favor, preencha os dois times para comparar.');
+        alert('Preencha os dois times!');
         return;
     }
 
     const resultados = dados.filter(item => {
         const ligaOk = liga === 'Todos' || item.league === liga;
         const ladoOk = lado === 'Todos' || item.lado === lado;
-        const confrontoOk = (
+        const confronto = (
             (item.time1 === time1 && item.time2 === time2) ||
             (item.time1 === time2 && item.time2 === time1)
         );
-        return ligaOk && ladoOk && confrontoOk;
+        return ligaOk && ladoOk && confronto;
     });
 
     mostrarResultado(resultados);
 }
 
-function mostrarResultado(dadosFiltrados) {
-    const resultadoDiv = document.getElementById('resultado');
-    resultadoDiv.innerHTML = '';
+function mostrarResultado(lista) {
+    const div = document.getElementById('resultado');
+    div.innerHTML = '';
 
-    if (dadosFiltrados.length === 0) {
-        resultadoDiv.textContent = 'Nenhum confronto encontrado com os filtros aplicados.';
+    if (lista.length === 0) {
+        div.textContent = 'Nenhum confronto encontrado com os filtros.';
         return;
     }
 
     const tabela = document.createElement('table');
     const thead = document.createElement('thead');
-    const tbody = document.createElement('tbody');
+    const headerRow = document.createElement('tr');
 
-    const colunas = Object.keys(dadosFiltrados[0]);
-
-    const trHead = document.createElement('tr');
-    colunas.forEach(col => {
+    Object.keys(lista[0]).forEach(col => {
         const th = document.createElement('th');
         th.textContent = col;
-        trHead.appendChild(th);
+        headerRow.appendChild(th);
     });
-    thead.appendChild(trHead);
+    thead.appendChild(headerRow);
+    tabela.appendChild(thead);
 
-    dadosFiltrados.forEach(linha => {
+    const tbody = document.createElement('tbody');
+    lista.forEach(row => {
         const tr = document.createElement('tr');
-        colunas.forEach(col => {
+        Object.values(row).forEach(cell => {
             const td = document.createElement('td');
-            td.textContent = linha[col];
+            td.textContent = cell;
             tr.appendChild(td);
         });
         tbody.appendChild(tr);
     });
-
-    tabela.appendChild(thead);
     tabela.appendChild(tbody);
-    resultadoDiv.appendChild(tabela);
+
+    div.appendChild(tabela);
 }
