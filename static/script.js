@@ -5,13 +5,23 @@ Papa.parse("static/BaseDeDados.csv", {
     download: true,
     header: true,
     complete: function(results) {
+        // Filtrar apenas o ano de 2025
         dados = results.data.filter(item => item['Ano'] === '2025');
         carregarCampeonatos();
+        carregarLados();
+        carregarJogosRecentes();
     }
 });
 
 function carregarCampeonatos() {
     const selectLiga = document.getElementById("liga");
+    selectLiga.innerHTML = "";
+
+    const optionInicial = document.createElement("option");
+    optionInicial.value = "";
+    optionInicial.textContent = "Selecionar";
+    selectLiga.appendChild(optionInicial);
+
     const campeonatos = [...new Set(dados.map(item => item.Campeonato))].sort();
 
     campeonatos.forEach(campeonato => {
@@ -20,6 +30,34 @@ function carregarCampeonatos() {
         option.textContent = campeonato;
         selectLiga.appendChild(option);
     });
+
+    selectLiga.addEventListener("change", filtrarPorLiga);
+}
+
+function carregarLados() {
+    const selectLado = document.getElementById("side");
+    selectLado.innerHTML = "";
+
+    const lados = ["Todos", "Blue", "Red"];
+    lados.forEach(lado => {
+        const option = document.createElement("option");
+        option.value = lado;
+        option.textContent = lado;
+        selectLado.appendChild(option);
+    });
+}
+
+function carregarJogosRecentes() {
+    const selectJogos = document.getElementById("jogosRecentes");
+    selectJogos.innerHTML = "";
+
+    const opcoes = ["10", "20", "30", "40", "50"];
+    opcoes.forEach(num => {
+        const option = document.createElement("option");
+        option.value = num;
+        option.textContent = num;
+        selectJogos.appendChild(option);
+    });
 }
 
 function filtrarPorLiga() {
@@ -27,11 +65,10 @@ function filtrarPorLiga() {
     const selectTime1 = document.getElementById("time1");
     const selectTime2 = document.getElementById("time2");
 
-    // Limpa os selects
     selectTime1.innerHTML = "";
     selectTime2.innerHTML = "";
 
-    if (ligaSelecionada === "") return;
+    if (!ligaSelecionada) return;
 
     dadosFiltrados = dados.filter(item => item.Campeonato === ligaSelecionada);
 
