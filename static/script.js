@@ -164,6 +164,7 @@ function comparar() {
             <tr><td>Over ${timeLineMin} min</td><td>${timeStatsTime1.percentAbove}%</td><td>${timeStatsTime2.percentAbove}%</td></tr>
         </table>
     `;
+    console.log('Conteúdo da tabela:', tableContent); // Debug para verificar o HTML gerado
     const resultado = document.getElementById('resultado');
     resultado.innerHTML = tableContent;
 }
