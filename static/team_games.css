@@ -1,0 +1,51 @@
+/* Reset de margens e paddings para o body */
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-family: Arial, sans-serif; /* Mantém consistência com style.css */
+    background-color: #f4f4f4; /* Mantém o fundo consistente */
+}
+
+/* Estilização da tabela para ocupar 100% da largura */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+}
+
+/* Estilização das células da tabela */
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left; /* Alinha à esquerda por padrão */
+}
+
+/* Estilização do cabeçalho da tabela */
+th {
+    background-color: #333;
+    color: white;
+}
+
+/* Linhas alternadas */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Contêiner da tabela (#games-table) */
+#games-table {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contêiner do título (#team-info) */
+#team-info {
+    width: 100%;
+    margin: 0;
+    padding: 10px 0; /* Adiciona um pouco de padding superior/inferior */
+    text-align: center; /* Centraliza o título, se desejar */
+}
