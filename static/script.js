@@ -1,125 +1,126 @@
 let dados = [];
 let dadosFiltrados = [];
 
+// Carregar dados do CSV e filtrar apenas de 2025
 Papa.parse("static/BaseDeDados.csv", {
     download: true,
     header: true,
     complete: function(results) {
-        // Filtrar apenas o ano de 2025
-        dados = results.data.filter(item => item['Ano'] === '2025');
-        carregarCampeonatos();
-        carregarLados();
-        carregarJogosRecentes();
+        dados = results.data.filter(item => item.Ano === '2025');
+        preencherSelectsIniciais();
+    },
+    error: function(err) {
+        console.error("Erro ao carregar o CSV:", err);
     }
 });
 
-function carregarCampeonatos() {
+function preencherSelectsIniciais() {
+    preencherCampeonatos();
+    preencherLados();
+    preencherJogosRecentes();
+
+    document.getElementById('liga').addEventListener('change', filtrarPorLiga);
+    document.getElementById('side').addEventListener('change', preencherTimes);
+}
+
+function preencherCampeonatos() {
     const selectLiga = document.getElementById("liga");
-    selectLiga.innerHTML = "";
+    selectLiga.innerHTML = "<option value=''>Selecionar</option>";
 
-    const optionInicial = document.createElement("option");
-    optionInicial.value = "";
-    optionInicial.textContent = "Selecionar";
-    selectLiga.appendChild(optionInicial);
+    const campeonatos = [...new Set(dados.map(item => item.league))].sort();
 
-    const campeonatos = [...new Set(dados.map(item => item.Campeonato))].sort();
-
-    campeonatos.forEach(campeonato => {
-        const option = document.createElement("option");
-        option.value = campeonato;
-        option.textContent = campeonato;
-        selectLiga.appendChild(option);
-    });
-
-    selectLiga.addEventListener("change", filtrarPorLiga);
-}
-
-function carregarLados() {
-    const selectLado = document.getElementById("side");
-    selectLado.innerHTML = "";
-
-    const lados = ["Todos", "Blue", "Red"];
-    lados.forEach(lado => {
-        const option = document.createElement("option");
-        option.value = lado;
-        option.textContent = lado;
-        selectLado.appendChild(option);
+    campeonatos.forEach(league => {
+        const o = document.createElement("option");
+        o.value = league;
+        o.textContent = league;
+        selectLiga.appendChild(o);
     });
 }
 
-function carregarJogosRecentes() {
-    const selectJogos = document.getElementById("jogosRecentes");
-    selectJogos.innerHTML = "";
+function preencherLados() {
+    const selectSide = document.getElementById("side");
+    selectSide.innerHTML = "";
+    ["", "Blue", "Red"].forEach(lado => {
+        const o = document.createElement("option");
+        o.value = lado;
+        o.textContent = lado ? lado : "Todos";
+        selectSide.appendChild(o);
+    });
+}
 
-    const opcoes = ["10", "20", "30", "40", "50"];
-    opcoes.forEach(num => {
-        const option = document.createElement("option");
-        option.value = num;
-        option.textContent = num;
-        selectJogos.appendChild(option);
+function preencherJogosRecentes() {
+    const selectJR = document.getElementById("jogosRecentes");
+    selectJR.innerHTML = "";
+    ["", "10", "20", "30", "40", "50"].forEach(val => {
+        const o = document.createElement("option");
+        o.value = val;
+        o.textContent = val ? val : "Todos";
+        selectJR.appendChild(o);
     });
 }
 
 function filtrarPorLiga() {
-    const ligaSelecionada = document.getElementById("liga").value;
-    const selectTime1 = document.getElementById("time1");
-    const selectTime2 = document.getElementById("time2");
+    const liga = document.getElementById("liga").value;
+    dadosFiltrados = liga ? dados.filter(item => item.league === liga) : [];
+    preencherTimes();
+}
 
-    selectTime1.innerHTML = "";
-    selectTime2.innerHTML = "";
+function preencherTimes() {
+    const select1 = document.getElementById("time1");
+    const select2 = document.getElementById("time2");
+    select1.innerHTML = "";
+    select2.innerHTML = "";
 
-    if (!ligaSelecionada) return;
+    if (!dadosFiltrados.length) return;
 
-    dadosFiltrados = dados.filter(item => item.Campeonato === ligaSelecionada);
+    const side = document.getElementById("side").value;
+    let base = dadosFiltrados;
 
-    const timesUnicos = [...new Set(dadosFiltrados.map(item => item.Time))].sort();
+    if (side) base = base.filter(item => item.Side === side);
 
-    timesUnicos.forEach(time => {
-        const option1 = document.createElement("option");
-        option1.value = time;
-        option1.textContent = time;
-        selectTime1.appendChild(option1);
+    const times = [...new Set(base.map(item => item.Time))].sort();
 
-        const option2 = document.createElement("option");
-        option2.value = time;
-        option2.textContent = time;
-        selectTime2.appendChild(option2);
+    times.forEach(time => {
+        const o1 = document.createElement("option");
+        o1.value = time;
+        o1.textContent = time;
+        select1.appendChild(o1);
+
+        const o2 = o1.cloneNode(true);
+        select2.appendChild(o2);
     });
 }
 
 function comparar() {
-    const campeonato = document.getElementById("liga").value;
-    const lado = document.getElementById("side").value;
+    const liga = document.getElementById("liga").value;
+    const side = document.getElementById("side").value;
     const time1 = document.getElementById("time1").value;
     const time2 = document.getElementById("time2").value;
-    const jogosRecentes = document.getElementById("jogosRecentes").value;
+    const JR = parseInt(document.getElementById("jogosRecentes").value);
 
-    if (!campeonato || !time1 || !time2) {
-        alert("Preencha todos os campos obrigatórios.");
+    if (!liga || !time1 || !time2) {
+        alert("Selecione campeonato e os dois times.");
         return;
     }
 
-    const payload = {
-        campeonato,
-        lado,
-        time1,
-        time2,
-        jogosRecentes
-    };
+    let base = dados.filter(item => item.league === liga && (side ? item.Side === side : true));
 
-    fetch("/comparar", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById("resultado").innerHTML = data.resultado || "Resultado não disponível.";
-    })
-    .catch(err => {
-        console.error("Erro na comparação:", err);
-        document.getElementById("resultado").innerHTML = "Erro ao processar a comparação.";
-    });
+    let dados1 = base.filter(item => item.Time === time1);
+    let dados2 = base.filter(item => item.Time === time2);
+
+    if (JR) {
+        dados1 = dados1.slice(-JR);
+        dados2 = dados2.slice(-JR);
+    }
+
+    const total1 = dados1.length;
+    const wins1 = dados1.filter(item => item.Result === "Win").length;
+    const total2 = dados2.length;
+    const wins2 = dados2.filter(item => item.Result === "Win").length;
+
+    document.getElementById("resultado").innerHTML = `
+        <h3>Resultado:</h3>
+        <p><strong>${time1}</strong>: ${wins1} vitórias em ${total1} jogos</p>
+        <p><strong>${time2}</strong>: ${wins2} vitórias em ${total2} jogos</p>
+    `;
 }
