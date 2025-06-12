@@ -8,9 +8,10 @@ Papa.parse('static/BaseDeDados.csv', {
     header: true,
     complete: function(results) {
         df = results.data.filter(row => row.position === 'team' && row.date && row.date.startsWith('2025'));
-        console.log('Dados filtrados:', df); // Debug
+        console.log('Dados brutos do CSV:', results.data); // Debug dos dados crus
+        console.log('Dados filtrados:', df); // Debug dos dados filtrados
         if (df.length === 0) {
-            alert('Nenhum dado válido encontrado!');
+            alert('Nenhum dado válido encontrado! Verifique o CSV e o filtro de 2025.');
             return;
         }
         carregarLigas();
@@ -24,26 +25,36 @@ Papa.parse('static/BaseDeDados.csv', {
 
 function carregarLigas() {
     const ligas = [...new Set(df.map(row => row.league).filter(liga => liga))].sort();
+    console.log('Ligas encontradas:', ligas); // Debug
     const selectLiga = document.getElementById('liga');
     selectLiga.innerHTML = '<option value="">Todos os campeonatos</option>';
-    ligas.forEach(liga => {
-        const option = document.createElement('option');
-        option.value = liga;
-        option.textContent = liga;
-        selectLiga.appendChild(option);
-    });
+    if (ligas.length > 0) {
+        ligas.forEach(liga => {
+            const option = document.createElement('option');
+            option.value = liga;
+            option.textContent = liga;
+            selectLiga.appendChild(option);
+        });
+    } else {
+        console.warn('Nenhuma liga encontrada nos dados.');
+    }
 }
 
 function carregarSides() {
     const sides = [...new Set(df.map(row => row.side).filter(side => side))].sort();
+    console.log('Lados encontrados:', sides); // Debug
     const selectSide = document.getElementById('side');
     selectSide.innerHTML = '<option value="">Todos os lados</option>';
-    sides.forEach(side => {
-        const option = document.createElement('option');
-        option.value = side;
-        option.textContent = side;
-        selectSide.appendChild(option);
-    });
+    if (sides.length > 0) {
+        sides.forEach(side => {
+            const option = document.createElement('option');
+            option.value = side;
+            option.textContent = side;
+            selectSide.appendChild(option);
+        });
+    } else {
+        console.warn('Nenhum lado encontrado nos dados.');
+    }
 }
 
 function carregarTimes() {
@@ -146,7 +157,7 @@ function comparar() {
     const mediasTime1 = calcularMedias(dadosTime1);
     const mediasTime2 = calcularMedias(dadosTime2);
 
-    const timeLineMin = parseInt(document.getElementById('time-line').value); // Valor em minutos para exibição
+    const timeLineMin = parseInt(document.getElementById('time-line').value);
 
     const tableContent = `
         <h2>Comparação: ${time1} vs ${time2} ${side ? '(' + side + ')' : ''} ${liga ? '(' + liga + ')' : ''} (2025) ${recentGames ? '(Últimos ' + recentGames + ' jogos)' : ''}</h2>
