@@ -28,6 +28,7 @@ h1 {
     display: flex;
     gap: 20px;
     align-items: flex-start;
+    flex-wrap: wrap; /* Permite que os filtros quebrem para a próxima linha em telas menores */
 }
 
 .filter-group {
