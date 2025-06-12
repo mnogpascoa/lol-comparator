@@ -54,12 +54,16 @@ function carregarTimes() {
     if (!df) return;
     const liga = document.getElementById('liga').value;
     const side = document.getElementById('side').value;
+    const selectTime1 = document.getElementById('time1');
+    const selectTime2 = document.getElementById('time2');
+    
+    // Salvar os times selecionados atualmente
+    const time1Selecionado = selectTime1.value;
+    const time2Selecionado = selectTime2.value;
     
     if (!liga) {
         dfLiga = null;
         dfSide = null;
-        const selectTime1 = document.getElementById('time1');
-        const selectTime2 = document.getElementById('time2');
         selectTime1.innerHTML = selectTime2.innerHTML = '<option value="">Selecione o time</option>';
         return;
     }
@@ -79,13 +83,12 @@ function carregarTimes() {
     if (dfSide.length === 0) {
         console.error('Nenhum dado encontrado para o campeonato' + (side ? ' e lado' : '') + ' selecionado(s):', liga, side);
         alert('Nenhum dado encontrado para a combinação selecionada!');
+        selectTime1.innerHTML = selectTime2.innerHTML = '<option value="">Selecione o time</option>';
         return;
     }
 
     // Carregar times do campeonato (e side, se aplicável)
     const times = [...new Set(dfSide.map(row => row.teamname).filter(time => time))].sort();
-    const selectTime1 = document.getElementById('time1');
-    const selectTime2 = document.getElementById('time2');
     selectTime1.innerHTML = selectTime2.innerHTML = '<option value="">Selecione o time</option>';
     times.forEach(time => {
         const option1 = document.createElement('option');
@@ -95,6 +98,14 @@ function carregarTimes() {
         selectTime1.appendChild(option1);
         selectTime2.appendChild(option2);
     });
+
+    // Restaurar times selecionados, se ainda forem válidos
+    if (time1Selecionado && times.includes(time1Selecionado)) {
+        selectTime1.value = time1Selecionado;
+    }
+    if (time2Selecionado && times.includes(time2Selecionado)) {
+        selectTime2.value = time2Selecionado;
+    }
 }
 
 function comparar() {
