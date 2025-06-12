@@ -28,7 +28,7 @@ h1 {
     display: flex;
     gap: 20px;
     align-items: flex-start;
-    flex-wrap: wrap; /* Permite que os filtros quebrem para a próxima linha em telas menores */
+    flex-wrap: wrap;
 }
 
 .filter-group {
@@ -76,17 +76,23 @@ table {
     width: 100%;
     margin-top: 20px;
     background-color: white;
+    border: 1px solid #ddd; /* Garante borda visível */
 }
 
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
+    visibility: visible; /* Garante que as células sejam visíveis */
 }
 
 th {
     background-color: #333;
     color: white;
+}
+
+tr {
+    display: table-row; /* Garante que todas as linhas sejam renderizadas */
 }
 
 tr:nth-child(even) {
@@ -95,4 +101,5 @@ tr:nth-child(even) {
 
 #resultado {
     margin-top: 20px;
+    overflow: auto; /* Evita que a tabela suma em caso de overflow */
 }
