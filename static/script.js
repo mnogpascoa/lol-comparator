@@ -53,7 +53,10 @@ function carregarTimes() {
     const recentGames = document.getElementById('recent-games').value;
     const killLine = document.getElementById('kill-line').value;
     const timeLine = document.getElementById('time-line').value;
-    const dragonLine = document.getElementById('dragon-line').value; // Novo filtro
+    const dragonLine = document.getElementById('dragon-line').value;
+    const baronLine = document.getElementById('baron-line').value; // Novo filtro
+    const towerLine = document.getElementById('tower-line').value; // Novo filtro
+    const inhibitorLine = document.getElementById('inhibitor-line').value; // Novo filtro
     const time1Input = document.getElementById('time1');
     const time2Input = document.getElementById('time2');
     
@@ -93,7 +96,10 @@ function comparar() {
     const recentGames = document.getElementById('recent-games').value;
     const killLine = parseFloat(document.getElementById('kill-line').value);
     const timeLineValue = parseInt(document.getElementById('time-line').value);
-    const dragonLine = parseFloat(document.getElementById('dragon-line').value); // Novo filtro
+    const dragonLine = parseFloat(document.getElementById('dragon-line').value);
+    const baronLine = parseFloat(document.getElementById('baron-line').value); // Novo filtro
+    const towerLine = parseFloat(document.getElementById('tower-line').value); // Novo filtro
+    const inhibitorLine = parseFloat(document.getElementById('inhibitor-line').value); // Novo filtro
     const timeLine = isNaN(timeLineValue) ? 31 * 60 : timeLineValue * 60;
     const time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
@@ -151,6 +157,36 @@ function comparar() {
         return { totalJogos, dragonsBelow, dragonsAbove, percentBelow, percentAbove };
     }
 
+    function calcularBaronStats(dados) {
+        const totalJogos = dados.length;
+        if (totalJogos === 0) return { totalJogos: 0, baronsBelow: 0, baronsAbove: 0, percentBelow: 0, percentAbove: 0 };
+        const baronsBelow = dados.filter(row => parseInt(row.totalBarons) < baronLine || parseInt(row.totalBarons) === 0).length;
+        const baronsAbove = totalJogos - baronsBelow;
+        const percentBelow = (baronsBelow / totalJogos * 100).toFixed(2);
+        const percentAbove = (baronsAbove / totalJogos * 100).toFixed(2);
+        return { totalJogos, baronsBelow, baronsAbove, percentBelow, percentAbove };
+    }
+
+    function calcularTowerStats(dados) {
+        const totalJogos = dados.length;
+        if (totalJogos === 0) return { totalJogos: 0, towersBelow: 0, towersAbove: 0, percentBelow: 0, percentAbove: 0 };
+        const towersBelow = dados.filter(row => parseInt(row.totalTowers) < towerLine || parseInt(row.totalTowers) === 0).length;
+        const towersAbove = totalJogos - towersBelow;
+        const percentBelow = (towersBelow / totalJogos * 100).toFixed(2);
+        const percentAbove = (towersAbove / totalJogos * 100).toFixed(2);
+        return { totalJogos, towersBelow, towersAbove, percentBelow, percentAbove };
+    }
+
+    function calcularInhibitorStats(dados) {
+        const totalJogos = dados.length;
+        if (totalJogos === 0) return { totalJogos: 0, inhibitorsBelow: 0, inhibitorsAbove: 0, percentBelow: 0, percentAbove: 0 };
+        const inhibitorsBelow = dados.filter(row => parseInt(row.totalInhibitors) < inhibitorLine || parseInt(row.totalInhibitors) === 0).length;
+        const inhibitorsAbove = totalJogos - inhibitorsBelow;
+        const percentBelow = (inhibitorsBelow / totalJogos * 100).toFixed(2);
+        const percentAbove = (inhibitorsAbove / totalJogos * 100).toFixed(2);
+        return { totalJogos, inhibitorsBelow, inhibitorsAbove, percentBelow, percentAbove };
+    }
+
     function calcularMedias(dados) {
         const jogos = dados.length;
         const vitorias = dados.reduce((sum, row) => sum + (parseInt(row.result) || 0), 0);
@@ -173,6 +209,12 @@ function comparar() {
     const timeStatsTime2 = calcularTimeStats(dadosTime2);
     const dragonStatsTime1 = calcularDragonStats(dadosTime1);
     const dragonStatsTime2 = calcularDragonStats(dadosTime2);
+    const baronStatsTime1 = calcularBaronStats(dadosTime1);
+    const baronStatsTime2 = calcularBaronStats(dadosTime2);
+    const towerStatsTime1 = calcularTowerStats(dadosTime1);
+    const towerStatsTime2 = calcularTowerStats(dadosTime2);
+    const inhibitorStatsTime1 = calcularInhibitorStats(dadosTime1);
+    const inhibitorStatsTime2 = calcularInhibitorStats(dadosTime2);
     const mediasTime1 = calcularMedias(dadosTime1);
     const mediasTime2 = calcularMedias(dadosTime2);
 
@@ -194,6 +236,12 @@ function comparar() {
             <tr><td>Over ${timeLineMin} min</td><td>${timeStatsTime1.percentAbove}%</td><td>${timeStatsTime2.percentAbove}%</td></tr>
             <tr><td>Under ${dragonLine} Dragon</td><td>${dragonStatsTime1.percentBelow}%</td><td>${dragonStatsTime2.percentBelow}%</td></tr>
             <tr><td>Over ${dragonLine} Dragon</td><td>${dragonStatsTime1.percentAbove}%</td><td>${dragonStatsTime2.percentAbove}%</td></tr>
+            <tr><td>Under ${baronLine} Baron</td><td>${baronStatsTime1.percentBelow}%</td><td>${baronStatsTime2.percentBelow}%</td></tr>
+            <tr><td>Over ${baronLine} Baron</td><td>${baronStatsTime1.percentAbove}%</td><td>${baronStatsTime2.percentAbove}%</td></tr>
+            <tr><td>Under ${towerLine} Tower</td><td>${towerStatsTime1.percentBelow}%</td><td>${towerStatsTime2.percentBelow}%</td></tr>
+            <tr><td>Over ${towerLine} Tower</td><td>${towerStatsTime1.percentAbove}%</td><td>${towerStatsTime2.percentAbove}%</td></tr>
+            <tr><td>Under ${inhibitorLine} Inhibitor</td><td>${inhibitorStatsTime1.percentBelow}%</td><td>${inhibitorStatsTime2.percentBelow}%</td></tr>
+            <tr><td>Over ${inhibitorLine} Inhibitor</td><td>${inhibitorStatsTime1.percentAbove}%</td><td>${inhibitorStatsTime2.percentAbove}%</td></tr>
         </table>
     `;
     console.log('Conteúdo da tabela:', tableContent);
