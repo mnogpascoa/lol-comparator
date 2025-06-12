@@ -101,27 +101,33 @@ function comparar() {
     // Função para calcular as estatísticas de kills
     function calcularKillStats(dados) {
         const totalJogos = dados.length;
-        const killsBelow = dados.filter(row => parseInt(row.totalKills) < killLine).length;
+        if (totalJogos === 0) return { totalJogos: 0, killsBelow: 0, killsAbove: 0, percentBelow: 0, percentAbove: 0 };
+        const killsBelow = dados.filter(row => parseInt(row.totalKills) < killLine || parseInt(row.totalKills) === 0).length;
         const killsAbove = totalJogos - killsBelow;
         const percentBelow = (killsBelow / totalJogos * 100).toFixed(2);
         const percentAbove = (killsAbove / totalJogos * 100).toFixed(2);
         return { totalJogos, killsBelow, killsAbove, percentBelow, percentAbove };
     }
 
-    const statsTime1 = calcularKillStats(dadosTime1);
-    const statsTime2 = calcularKillStats(dadosTime2);
-
-    // Calcular médias básicas (exemplo simplificado)
+    // Função para calcular as estatísticas básicas e adicionais
     function calcularMedias(dados) {
         const jogos = dados.length;
         const vitorias = dados.reduce((sum, row) => sum + (parseInt(row.result) || 0), 0);
+        const torres = dados.reduce((sum, row) => sum + (parseInt(row.firsttower) || 0), 0);
+        const dragoes = dados.reduce((sum, row) => sum + (parseInt(row.firstdragon) || 0), 0);
+        const firstBlood = dados.reduce((sum, row) => sum + (parseInt(row.firstblood) || 0), 0);
         return {
             'Jogos': jogos,
             'Vitórias': vitorias,
-            'Vitórias (%)': (vitorias / jogos * 100).toFixed(2)
+            'Vitórias (%)': (vitorias / jogos * 100 || 0).toFixed(2),
+            'Primeira Torre (%)': (torres / jogos * 100 || 0).toFixed(2),
+            'Primeiro Dragão (%)': (dragoes / jogos * 100 || 0).toFixed(2),
+            'Primeiro Sangue (%)': (firstBlood / jogos * 100 || 0).toFixed(2)
         };
     }
 
+    const statsTime1 = calcularKillStats(dadosTime1);
+    const statsTime2 = calcularKillStats(dadosTime2);
     const mediasTime1 = calcularMedias(dadosTime1);
     const mediasTime2 = calcularMedias(dadosTime2);
 
@@ -133,6 +139,9 @@ function comparar() {
             <tr><td>Jogos Disputados</td><td>${mediasTime1.Jogos}</td><td>${mediasTime2.Jogos}</td></tr>
             <tr><td>Vitórias</td><td>${mediasTime1.Vitórias}</td><td>${mediasTime2.Vitórias}</td></tr>
             <tr><td>Vitórias (%)</td><td>${mediasTime1['Vitórias (%)']}</td><td>${mediasTime2['Vitórias (%)']}</td></tr>
+            <tr><td>Primeira Torre (%)</td><td>${mediasTime1['Primeira Torre (%)']}</td><td>${mediasTime2['Primeira Torre (%)']}</td></tr>
+            <tr><td>Primeiro Dragão (%)</td><td>${mediasTime1['Primeiro Dragão (%)']}</td><td>${mediasTime2['Primeiro Dragão (%)']}</td></tr>
+            <tr><td>Primeiro Sangue (%)</td><td>${mediasTime1['Primeiro Sangue (%)']}</td><td>${mediasTime2['Primeiro Sangue (%)']}</td></tr>
             <tr><td>Under ${killLine} Kill</td><td>${statsTime1.percentBelow}%</td><td>${statsTime2.percentBelow}%</td></tr>
             <tr><td>Over ${killLine} Kill</td><td>${statsTime1.percentAbove}%</td><td>${statsTime2.percentAbove}%</td></tr>
         </table>
