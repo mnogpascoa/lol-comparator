@@ -221,7 +221,6 @@ function comparar() {
     const timeLineMin = parseInt(document.getElementById('time-line').value);
 
     const tableContent = `
-        <h2>Comparação: <a href="team_games.html?teamname=${encodeURIComponent(time1)}" target="_blank">${time1}</a> vs <a href="team_games.html?teamname=${encodeURIComponent(time2)}" target="_blank">${time2}</a> ${side ? '(' + side + ')' : ''} ${liga ? '(' + liga + ')' : ''} ${resultFilter !== '' ? '(' + (resultFilter === '1' ? 'Vitórias' : 'Derrotas') + ')' : ''} (2025) ${recentGames ? '(Últimos ' + recentGames + ' jogos)' : ''}</h2>
         <table>
             <tr><th>Estatística</th><th>${time1}</th><th>${time2}</th></tr>
             <tr><td>Jogos Disputados</td><td>${mediasTime1.Jogos}</td><td>${mediasTime2.Jogos}</td></tr>
@@ -244,7 +243,36 @@ function comparar() {
             <tr><td>Over ${inhibitorLine} Inhibitor</td><td>${inhibitorStatsTime1.percentAbove}%</td><td>${inhibitorStatsTime2.percentAbove}%</td></tr>
         </table>
     `;
-    console.log('Conteúdo da tabela:', tableContent);
+    console.log('Conteúdo da tabela (sem título):', tableContent);
+
+    // Criar o título dinamicamente
     const resultado = document.getElementById('resultado');
-    resultado.innerHTML = tableContent;
+    resultado.innerHTML = ''; // Limpar conteúdo anterior
+    const h2 = document.createElement('h2');
+    h2.textContent = 'Comparação: ';
+    
+    const link1 = document.createElement('a');
+    link1.href = `static/team_games.html?teamname=${encodeURIComponent(time1)}`;
+    link1.target = '_blank';
+    link1.textContent = time1;
+    h2.appendChild(link1);
+    
+    h2.appendChild(document.createTextNode(' vs '));
+    
+    const link2 = document.createElement('a');
+    link2.href = `static/team_games.html?teamname=${encodeURIComponent(time2)}`;
+    link2.target = '_blank';
+    link2.textContent = time2;
+    h2.appendChild(link2);
+    
+    if (side) h2.appendChild(document.createTextNode(` (${side})`));
+    if (liga) h2.appendChild(document.createTextNode(` (${liga})`));
+    if (resultFilter !== '') h2.appendChild(document.createTextNode(` (${resultFilter === '1' ? 'Vitórias' : 'Derrotas'})`));
+    h2.appendChild(document.createTextNode(' (2025)'));
+    if (recentGames) h2.appendChild(document.createTextNode(` (Últimos ${recentGames} jogos)`));
+    
+    resultado.appendChild(h2);
+    resultado.insertAdjacentHTML('beforeend', tableContent);
+    
+    console.log('Título renderizado:', h2.outerHTML);
 }
