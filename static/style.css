@@ -1,3 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     max-width: 800px;
@@ -22,6 +28,7 @@ h1 {
     display: flex;
     gap: 20px;
     align-items: flex-start;
+    flex-wrap: wrap;
 }
 
 .filter-group {
@@ -52,8 +59,8 @@ input[list] {
 button {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #00FF00; /* Verde como na imagem */
-    color: #000000; /* Texto preto para contraste */
+    background-color: #00FF00;
+    color: #000000;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -62,7 +69,7 @@ button {
 }
 
 button:hover {
-    background-color: #00CC00; /* Tom mais escuro ao passar o mouse */
+    background-color: #00CC00;
 }
 
 #resultado table {
@@ -72,8 +79,8 @@ button:hover {
 }
 
 #resultado th {
-    background-color: #000000; /* Fundo preto */
-    color: #FFFFFF; /* Texto branco */
+    background-color: #000000;
+    color: #FFFFFF;
     padding: 10px;
     text-align: left;
 }
@@ -86,7 +93,7 @@ button:hover {
 }
 
 #resultado tr:nth-child(even) {
-    background-color: #f9f9f9; /* Linhas alternadas com fundo claro */
+    background-color: #f9f9f9;
 }
 
 #resultado h2 {
