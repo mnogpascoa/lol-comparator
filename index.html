@@ -90,6 +90,16 @@
                 </select>
             </div>
         </div>
+        <div class="time-row">
+            <div class="filter-group">
+                <label for="result-filter">Vitórias/Derrotas:</label>
+                <select id="result-filter" onchange="carregarTimes()">
+                    <option value="">Todos os Resultados</option>
+                    <option value="1">Vitórias</option>
+                    <option value="0">Derrotas</option>
+                </select>
+            </div>
+        </div>
     </div>
     <datalist id="times-list"></datalist>
     <button onclick="comparar()">Comparar</button>
