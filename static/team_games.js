@@ -9,15 +9,15 @@ Papa.parse('static/BaseDadosDesseAno.csv', {
     download: true,
     header: true,
     complete: function(results) {
+        console.log('Tentando carregar CSV, dados recebidos:', results.data.slice(0, 5)); // Depuração
         const teamName = getTeamNameFromURL();
         if (!teamName) {
             document.getElementById('team-info').innerHTML = '<p>Nenhum time selecionado!</p>';
             return;
         }
 
-        // Filtrar dados para o time escolhido e para 2025
-        const teamData = results.data.filter(row => 
-            row.teamname === teamName);
+        // Filtrar dados para o time escolhido
+        const teamData = results.data.filter(row => row.teamname === teamName);
 
         if (teamData.length === 0) {
             document.getElementById('team-info').innerHTML = `<p>Nenhuma partida encontrada para o time ${teamName}!</p>`;
@@ -47,7 +47,6 @@ Papa.parse('static/BaseDadosDesseAno.csv', {
                     <th>Total Barons</th>
                     <th>Total Torres</th>
                     <th>Total Inibidores</th>
-                    
                 </tr>
         `;
 
@@ -61,12 +60,12 @@ Papa.parse('static/BaseDadosDesseAno.csv', {
                     <td>${row.date || '-'}</td>
                     <td>${row.league || '-'}</td>
                     <td>${row.side || '-'}</td>
-                    <td>${row.result ||'-'}</td>
-                    <td>${row.adversa_team ||'-'}</td>
-                    <td>${(row.gamelength / 60 || 0).toFixed(2) || '-'}</td>
-                    <td>${row.kills ||'-'}</td>
-                    <td>${row.deaths ||'-'}</td>
-                    <td>${row.assists ||'-'}</td>
+                    <td>${row.result || '-'}</td>
+                    <td>${row.adversa_team || '-'}</td>
+                    <td>${row.gamelength || '-'}</td>
+                    <td>${row.kills || '-'}</td>
+                    <td>${row.deaths || '-'}</td>
+                    <td>${row.assists || '-'}</td>
                     <td>${row.firsttower || '-'}</td>
                     <td>${row.firstdragon || '-'}</td>
                     <td>${row.firstblood || '-'}</td>
@@ -74,7 +73,6 @@ Papa.parse('static/BaseDadosDesseAno.csv', {
                     <td>${row.totalBarons || '-'}</td>
                     <td>${row.totalTowers || '-'}</td>
                     <td>${row.totalInhibitors || '-'}</td>
-                    
                 </tr>
             `;
         });
@@ -84,6 +82,6 @@ Papa.parse('static/BaseDadosDesseAno.csv', {
     },
     error: function(error) {
         console.error('Erro ao carregar CSV:', error);
-        document.getElementById('team-info').innerHTML = '<p>Erro ao carregar os dados!</p>';
+        document.getElementById('team-info').innerHTML = '<p>Erro ao carregar os dados! Verifique se o arquivo static/BaseDadosDesseAno.csv está disponível.</p>';
     }
 });
