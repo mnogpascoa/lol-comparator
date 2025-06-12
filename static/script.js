@@ -8,8 +8,8 @@ Papa.parse('static/BaseDeDados.csv', {
     header: true,
     complete: function(results) {
         df = results.data.filter(row => row.position === 'team' && row.date && row.date.startsWith('2025'));
-        console.log('Dados brutos do CSV:', results.data); // Debug dos dados crus
-        console.log('Dados filtrados:', df); // Debug dos dados filtrados
+        console.log('Dados brutos do CSV:', results.data); // Debug
+        console.log('Dados filtrados:', df); // Debug
         if (df.length === 0) {
             alert('Nenhum dado válido encontrado! Verifique o CSV e o filtro de 2025.');
             return;
