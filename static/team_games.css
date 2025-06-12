@@ -53,7 +53,7 @@ table {
 /* Fixa o cabeçalho da tabela */
 thead {
     position: sticky;
-    top: 60px; /* Ajuste para ficar abaixo de #team-info (verifique a altura) */
+    top: 20px; /* Ajusta para 1 cm (40px) acima da posição original (60px - 40px = 20px) */
     background-color: #333;
     z-index: 5; /* Acima do corpo, abaixo de #team-info */
 }
@@ -82,15 +82,16 @@ tr:nth-child(even) td {
     background-color: #f2f2f2;
 }
 
-/* Rolagem horizontal se necessário */
-#games-table {
-    overflow-x: auto;
-}
-
-/* Ajuste para evitar sobreposição do corpo */
+/* Ajuste do corpo da tabela */
 tbody {
     display: block; /* Separa o corpo para rolagem independente */
     width: 100%; /* Garante largura total */
+    margin-top: 60px; /* Desloca o corpo para abaixo do cabeçalho fixo */
+}
+
+/* Rolagem horizontal se necessário */
+#games-table {
+    overflow-x: auto;
 }
 
 /* Responsividade */
