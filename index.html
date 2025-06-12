@@ -3,43 +3,46 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Comparador de Times LoL</title>
-    <link rel="stylesheet" href="static/style.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <title>Comparar Times</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-    <h1>Comparador de Times LoL</h1>
+    <h1>Comparar Times - Ano 2025</h1>
 
     <div>
-        <label for="side">Lado:</label>
-        <select id="side" onchange="limparTimes();">
-            <option value="Todos">Todos</option>
-        </select>
+        <label>Ano:</label>
+        <span>2025</span>
     </div>
 
     <div>
         <label for="time1">Time 1:</label>
         <input type="text" id="time1" autocomplete="off" oninput="mostrarSugestoes(this, 'sugestoesTime1')" />
-        <div id="sugestoesTime1" class="sugestoes-container"></div>
+        <div id="sugestoesTime1" class="sugestoes"></div>
     </div>
 
     <div>
         <label for="time2">Time 2:</label>
         <input type="text" id="time2" autocomplete="off" oninput="mostrarSugestoes(this, 'sugestoesTime2')" />
-        <div id="sugestoesTime2" class="sugestoes-container"></div>
+        <div id="sugestoesTime2" class="sugestoes"></div>
+    </div>
+
+    <div>
+        <label for="side">Lado:</label>
+        <select id="side"></select>
     </div>
 
     <div>
         <label for="liga">Campeonato:</label>
-        <select id="liga">
-            <option value="Todos">Todos</option>
-        </select>
+        <select id="liga"></select>
     </div>
 
-    <button onclick="comparar()">Comparar</button>
+    <div>
+        <button onclick="comparar()">Comparar</button>
+    </div>
 
     <div id="resultado"></div>
 
-    <script src="static/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
