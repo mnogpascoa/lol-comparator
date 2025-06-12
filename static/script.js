@@ -1,6 +1,7 @@
 let df = null; // Dados filtrados do CSV (position == 'team' e year == 2025)
 let dfLiga = null; // Dados filtrados pelo campeonato selecionado
 let dfSide = null; // Dados filtrados por side
+let allTeams = []; // Lista de todos os times disponíveis
 
 Papa.parse('static/BaseDeDados.csv', {
     download: true,
@@ -17,6 +18,7 @@ Papa.parse('static/BaseDeDados.csv', {
         console.log('Dados filtrados (position == team, ano == 2025):', df.length, 'linhas');
         carregarLigas();
         carregarSides();
+        carregarTimes();
     },
     error: function(error) {
         console.error('Erro ao carregar CSV:', error);
@@ -28,7 +30,7 @@ function carregarLigas() {
     if (!df) return;
     const ligas = [...new Set(df.map(row => row.league).filter(liga => liga))].sort();
     const selectLiga = document.getElementById('liga');
-    selectLiga.innerHTML = '<option value="">Selecione o campeonato</option>';
+    selectLiga.innerHTML = '<option value="">Todos os campeonatos</option>';
     ligas.forEach(liga => {
         const option = document.createElement('option');
         option.value = liga;
@@ -41,7 +43,7 @@ function carregarSides() {
     if (!df) return;
     const sides = [...new Set(df.map(row => row.side).filter(side => side))].sort();
     const selectSide = document.getElementById('side');
-    selectSide.innerHTML = '<option value="">Selecione o lado</option>';
+    selectSide.innerHTML = '<option value="">Todos os lados</option>';
     sides.forEach(side => {
         const option = document.createElement('option');
         option.value = side;
@@ -54,57 +56,58 @@ function carregarTimes() {
     if (!df) return;
     const liga = document.getElementById('liga').value;
     const side = document.getElementById('side').value;
-    const selectTime1 = document.getElementById('time1');
-    const selectTime2 = document.getElementById('time2');
+    const time1Input = document.getElementById('time1');
+    const time2Input = document.getElementById('time2');
     
     // Salvar os times selecionados atualmente
-    const time1Selecionado = selectTime1.value;
-    const time2Selecionado = selectTime2.value;
-    
-    if (!liga) {
-        dfLiga = null;
-        dfSide = null;
-        selectTime1.innerHTML = selectTime2.innerHTML = '<option value="">Selecione o time</option>';
-        return;
-    }
+    const time1Selecionado = time1Input.value;
+    const time2Selecionado = time2Input.value;
 
-    // Filtrar dados pelo campeonato selecionado
-    dfLiga = df.filter(row => row.league === liga);
+    // Filtrar dados pelo campeonato, se selecionado
+    dfLiga = liga ? df.filter(row => row.league === liga) : df;
     
     // Aplicar filtro de side, se selecionado
     dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
     
-    console.log('=== Dados Filtrados (position == team, league == ' + liga + (side ? ', side == ' + side : '') + ', ano == 2025) ===');
+    console.log('=== Dados Filtrados (position == team, league == ' + (liga || 'todos') + (side ? ', side == ' + side : ', todos os lados') + ', ano == 2025) ===');
     console.log('Colunas:', Object.keys(dfSide[0] || {}));
     console.log('Total de linhas filtradas:', dfSide.length);
     console.table(dfSide.slice(0, 10));
     console.log('Dados completos (dfSide):', dfSide);
     
     if (dfSide.length === 0) {
-        console.error('Nenhum dado encontrado para o campeonato' + (side ? ' e lado' : '') + ' selecionado(s):', liga, side);
+        console.error('Nenhum dado encontrado para a combinação selecionada:', liga, side);
         alert('Nenhum dado encontrado para a combinação selecionada!');
-        selectTime1.innerHTML = selectTime2.innerHTML = '<option value="">Selecione o time</option>';
+        document.getElementById('times-list').innerHTML = '';
+        time1Input.value = time2Input.value = '';
         return;
     }
 
-    // Carregar times do campeonato (e side, se aplicável)
+    // Carregar times disponíveis
     const times = [...new Set(dfSide.map(row => row.teamname).filter(time => time))].sort();
-    selectTime1.innerHTML = selectTime2.innerHTML = '<option value="">Selecione o time</option>';
+    const datalist = document.getElementById('times-list');
+    datalist.innerHTML = '';
     times.forEach(time => {
-        const option1 = document.createElement('option');
-        const option2 = document.createElement('option');
-        option1.value = option1.textContent = time;
-        option2.value = option2.textContent = time;
-        selectTime1.appendChild(option1);
-        selectTime2.appendChild(option2);
+        const option = document.createElement('option');
+        option.value = time;
+        datalist.appendChild(option);
     });
 
     // Restaurar times selecionados, se ainda forem válidos
     if (time1Selecionado && times.includes(time1Selecionado)) {
-        selectTime1.value = time1Selecionado;
+        time1Input.value = time1Selecionado;
+    } else {
+        time1Input.value = '';
     }
     if (time2Selecionado && times.includes(time2Selecionado)) {
-        selectTime2.value = time2Selecionado;
+        time2Input.value = time2Selecionado;
+    } else {
+        time2Input.value = '';
+    }
+
+    // Armazenar todos os times para validação no comparar
+    if (!liga && !side) {
+        allTeams = times;
     }
 }
 
@@ -115,8 +118,8 @@ function comparar() {
     const time2 = document.getElementById('time2').value;
 
     // Validações
-    if (!liga || !time1 || !time2) {
-        alert('Selecione o campeonato e os dois times!');
+    if (!time1 || !time2) {
+        alert('Selecione os dois times!');
         return;
     }
     if (time1 === time2) {
@@ -125,6 +128,13 @@ function comparar() {
     }
     if (!dfSide) {
         alert('Nenhum dado disponível para a combinação selecionada!');
+        return;
+    }
+
+    // Validar se os times existem nos dados filtrados
+    const timesDisponiveis = [...new Set(dfSide.map(row => row.teamname).filter(time => time))];
+    if (!timesDisponiveis.includes(time1) || !timesDisponiveis.includes(time2)) {
+        alert('Um ou ambos os times não são válidos para a combinação selecionada!');
         return;
     }
 
@@ -163,7 +173,7 @@ function comparar() {
 
     const resultado = document.getElementById('resultado');
     resultado.innerHTML = `
-        <h2>Comparação: ${time1} vs ${time2} ${side ? '(' + side + ')' : ''} (2025)</h2>
+        <h2>Comparação: ${time1} vs ${time2} ${side ? '(' + side + ')' : ''} ${liga ? '(' + liga + ')' : ''} (2025)</h2>
         <table>
             <tr>
                 <th>Estatística</th>
