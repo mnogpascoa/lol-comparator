@@ -1,4 +1,5 @@
 let dados = [];
+let times = [];
 
 window.onload = function () {
     Papa.parse('static/BaseDeDados.csv', {
@@ -6,8 +7,8 @@ window.onload = function () {
         header: true,
         complete: function (results) {
             dados = results.data;
+            times = [...new Set(dados.map(item => item.teamname).filter(Boolean))];
             preencherFiltrosIniciais();
-            preencherListaDeTimes();
         }
     });
 };
@@ -33,14 +34,22 @@ function adicionarOpcoes(select, valores) {
     });
 }
 
-function preencherListaDeTimes() {
-    const lista = document.getElementById('listaTimes');
-    const timesUnicos = [...new Set(dados.map(item => item.teamname).filter(Boolean))];
-    lista.innerHTML = '';
-    timesUnicos.forEach(time => {
-        const option = document.createElement('option');
-        option.value = time;
-        lista.appendChild(option);
+function mostrarSugestoes(input, divId) {
+    const texto = input.value.toLowerCase();
+    const sugestoesDiv = document.getElementById(divId);
+    sugestoesDiv.innerHTML = '';
+
+    if (texto.length < 1) return;
+
+    const sugestoes = times.filter(t => t.toLowerCase().includes(texto));
+    sugestoes.forEach(sugestao => {
+        const div = document.createElement('div');
+        div.textContent = sugestao;
+        div.onclick = () => {
+            input.value = sugestao;
+            sugestoesDiv.innerHTML = '';
+        };
+        sugestoesDiv.appendChild(div);
     });
 }
 
