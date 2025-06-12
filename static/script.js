@@ -143,6 +143,41 @@ function comparar() {
     }
 
     // Funções existentes (calcularKillStats, calcularTimeStats, calcularMedias) permanecem iguais
+    function calcularKillStats(dados) {
+    const totalJogos = dados.length;
+    if (totalJogos === 0) return { totalJogos: 0, killsBelow: 0, killsAbove: 0, percentBelow: 0, percentAbove: 0 };
+    const killsBelow = dados.filter(row => parseInt(row.totalKills) < killLine || parseInt(row.totalKills) === 0).length;
+    const killsAbove = totalJogos - killsBelow;
+    const percentBelow = (killsBelow / totalJogos * 100).toFixed(2);
+    const percentAbove = (killsAbove / totalJogos * 100).toFixed(2);
+    return { totalJogos, killsBelow, killsAbove, percentBelow, percentAbove };
+}
+
+function calcularTimeStats(dados) {
+    const totalJogos = dados.length;
+    if (totalJogos === 0) return { totalJogos: 0, timeBelow: 0, timeAbove: 0, percentBelow: 0, percentAbove: 0 };
+    const timeBelow = dados.filter(row => parseInt(row.gamelength) < timeLine || parseInt(row.gamelength) === 0).length;
+    const timeAbove = totalJogos - timeBelow;
+    const percentBelow = (timeBelow / totalJogos * 100).toFixed(2);
+    const percentAbove = (timeAbove / totalJogos * 100).toFixed(2);
+    return { totalJogos, timeBelow, timeAbove, percentBelow, percentAbove };
+}
+
+function calcularMedias(dados) {
+    const jogos = dados.length;
+    const vitorias = dados.reduce((sum, row) => sum + (parseInt(row.result) || 0), 0);
+    const torres = dados.reduce((sum, row) => sum + (parseInt(row.firsttower) || 0), 0);
+    const dragoes = dados.reduce((sum, row) => sum + (parseInt(row.firstdragon) || 0), 0);
+    const firstBlood = dados.reduce((sum, row) => sum + (parseInt(row.firstblood) || 0), 0);
+    return {
+        'Jogos': jogos,
+        'Vitórias': vitorias,
+        'Vitórias (%)': (vitorias / jogos * 100 || 0).toFixed(2),
+        'Primeira Torre (%)': (torres / jogos * 100 || 0).toFixed(2),
+        'Primeiro Dragão (%)': (dragoes / jogos * 100 || 0).toFixed(2),
+        'Primeiro Sangue (%)': (firstBlood / jogos * 100 || 0).toFixed(2)
+    };
+}
 
     const statsTime1 = calcularKillStats(dadosTime1);
     const statsTime2 = calcularKillStats(dadosTime2);
