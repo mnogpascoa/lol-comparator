@@ -8,9 +8,9 @@
 body {
     margin: 0;
     padding: 0;
-    width: 100%; /* Garante largura total */
+    width: 100%;
     min-width: 100%; /* Evita contração */
-    height: 100vh; /* Mantém altura total */
+    height: 100vh; /* Altura total da janela */
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     display: flex;
@@ -29,7 +29,7 @@ body {
 
 /* Contêiner da tabela ocupa a largura total */
 #games-table {
-    width: 100%; /* Garante largura total */
+    width: 100%;
     flex: 1; /* Ocupa o espaço restante da altura */
     overflow: auto; /* Rolagem se necessário */
     margin: 0;
@@ -54,7 +54,7 @@ th, td {
     text-align: left;
     word-wrap: break-word; /* Quebra texto longo */
     white-space: normal; /* Permite que o texto ocupe várias linhas */
-    min-width: 0; /* Evita largura mínima rígida */
+    min-width: 80px; /* Largura mínima razoável */
 }
 
 /* Cabeçalho da tabela */
@@ -68,7 +68,20 @@ tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-/* Opcional: Ajuste de colunas para evitar compressão */
+/* Opcional: Ajuste de colunas para evitar compressão excessiva */
 th, td {
-    min-width: 80px; /* Define uma largura mínima razoável */
+    min-width: 80px; /* Define uma largura mínima */
+}
+
+/* Opcional: Rolagem horizontal se necessário */
+#games-table {
+    overflow-x: auto; /* Adiciona rolagem horizontal se a tabela for muito larga */
+}
+
+/* Opcional: Responsividade */
+@media (max-width: 600px) {
+    th, td {
+        padding: 4px;
+        font-size: 12px;
+    }
 }
