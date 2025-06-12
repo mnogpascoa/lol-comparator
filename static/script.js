@@ -1,127 +1,88 @@
-let dados = []; // aqui vai seu CSV ou dados já carregados
-let campeonatosFiltrados = [];
-let timesPorCampeonato = {};
+let dados = [];
+let dadosFiltrados = [];
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Exemplo de carregar CSV (ajuste conforme seu fluxo)
-    Papa.parse("static/BaseDeDados.csv", {
-        download: true,
-        header: true,
-        complete: function(results) {
-            dados = results.data;
-            filtrarCampeonatos2025();
-            preencherSelectLiga();
-            preencherSelectSide();
-            // times só serão carregados após escolher campeonato
-        }
-    });
+Papa.parse("static/BaseDeDados.csv", {
+    download: true,
+    header: true,
+    complete: function(results) {
+        dados = results.data.filter(item => item['Ano'] === '2025');
+        carregarCampeonatos();
+    }
 });
 
-function filtrarCampeonatos2025() {
-    campeonatosFiltrados = [...new Set(dados
-        .filter(row => row.Ano === "2025")
-        .map(row => row.Campeonato)
-        .filter(c => c))];
-}
+function carregarCampeonatos() {
+    const selectLiga = document.getElementById("liga");
+    const campeonatos = [...new Set(dados.map(item => item.Campeonato))].sort();
 
-function preencherSelectLiga() {
-    const liga = document.getElementById("liga");
-    liga.innerHTML = ""; // limpa opções
-
-    campeonatosFiltrados.forEach(camp => {
+    campeonatos.forEach(campeonato => {
         const option = document.createElement("option");
-        option.value = camp;
-        option.textContent = camp;
-        liga.appendChild(option);
-    });
-}
-
-function preencherSelectSide() {
-    const side = document.getElementById("side");
-    side.innerHTML = "";
-
-    const lados = ["Blue", "Red"]; // exemplo, ajuste conforme sua base
-    lados.forEach(l => {
-        const option = document.createElement("option");
-        option.value = l;
-        option.textContent = l;
-        side.appendChild(option);
+        option.value = campeonato;
+        option.textContent = campeonato;
+        selectLiga.appendChild(option);
     });
 }
 
 function filtrarPorLiga() {
-    const liga = document.getElementById("liga").value;
+    const ligaSelecionada = document.getElementById("liga").value;
+    const selectTime1 = document.getElementById("time1");
+    const selectTime2 = document.getElementById("time2");
 
-    if (!liga) {
-        limparTimes();
-        return;
-    }
+    // Limpa os selects
+    selectTime1.innerHTML = "";
+    selectTime2.innerHTML = "";
 
-    // filtrar times desse campeonato e ano 2025
-    const timesFiltrados = [...new Set(dados
-        .filter(row => row.Ano === "2025" && row.Campeonato === liga)
-        .flatMap(row => [row.Time1, row.Time2])
-        .filter(t => t))];
+    if (ligaSelecionada === "") return;
 
-    preencherTimes(timesFiltrados);
-}
+    dadosFiltrados = dados.filter(item => item.Campeonato === ligaSelecionada);
 
-function preencherTimes(times) {
-    const time1 = document.getElementById("time1");
-    const time2 = document.getElementById("time2");
+    const timesUnicos = [...new Set(dadosFiltrados.map(item => item.Time))].sort();
 
-    time1.innerHTML = "";
-    time2.innerHTML = "";
-
-    times.forEach(t => {
+    timesUnicos.forEach(time => {
         const option1 = document.createElement("option");
-        option1.value = t;
-        option1.textContent = t;
-        time1.appendChild(option1);
+        option1.value = time;
+        option1.textContent = time;
+        selectTime1.appendChild(option1);
 
         const option2 = document.createElement("option");
-        option2.value = t;
-        option2.textContent = t;
-        time2.appendChild(option2);
+        option2.value = time;
+        option2.textContent = time;
+        selectTime2.appendChild(option2);
     });
 }
 
-function limparTimes() {
-    document.getElementById("time1").innerHTML = "";
-    document.getElementById("time2").innerHTML = "";
-}
-
-function filtrarPorSide() {
-    // Aqui você pode implementar filtro se necessário, ex. filtrar times por lado
-    // Por enquanto não altera os times, apenas serve como filtro para sua lógica de comparação
-}
-
 function comparar() {
-    const liga = document.getElementById("liga").value;
-    const side = document.getElementById("side").value;
+    const campeonato = document.getElementById("liga").value;
+    const lado = document.getElementById("side").value;
     const time1 = document.getElementById("time1").value;
     const time2 = document.getElementById("time2").value;
     const jogosRecentes = document.getElementById("jogosRecentes").value;
 
-    if (!liga || !time1 || !time2) {
-        alert("Escolha campeonato e os dois times antes de comparar.");
+    if (!campeonato || !time1 || !time2) {
+        alert("Preencha todos os campos obrigatórios.");
         return;
     }
 
-    // Aqui você pode aplicar o filtro de jogos recentes na sua base, por exemplo:
-    // filtrar dados para os últimos N jogos de cada time antes de calcular médias e vitórias
+    const payload = {
+        campeonato,
+        lado,
+        time1,
+        time2,
+        jogosRecentes
+    };
 
-    // Exemplo simples (ajuste conforme seus dados)
-    const jogosTime1 = dados
-        .filter(row => row.Ano === "2025" && row.Campeonato === liga && (row.Time1 === time1 || row.Time2 === time1));
-    const jogosTime2 = dados
-        .filter(row => row.Ano === "2025" && row.Campeonato === liga && (row.Time1 === time2 || row.Time2 === time2));
-
-    const n = parseInt(jogosRecentes);
-    const jogosRecentesTime1 = n ? jogosTime1.slice(-n) : jogosTime1;
-    const jogosRecentesTime2 = n ? jogosTime2.slice(-n) : jogosTime2;
-
-    // Calcule suas médias e vitórias aqui usando jogosRecentesTime1 e jogosRecentesTime2
-
-    document.getElementById("resultado").textContent = `Comparando ${time1} vs ${time2} no campeonato ${liga} (últimos ${jogosRecentes || "todos"} jogos).`;
+    fetch("/comparar", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("resultado").innerHTML = data.resultado || "Resultado não disponível.";
+    })
+    .catch(err => {
+        console.error("Erro na comparação:", err);
+        document.getElementById("resultado").innerHTML = "Erro ao processar a comparação.";
+    });
 }
