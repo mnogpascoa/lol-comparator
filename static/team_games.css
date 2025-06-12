@@ -1,51 +1,70 @@
-/* Reset de margens e paddings para o body */
+/* Reset e estilos globais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
     width: 100%;
-    font-family: Arial, sans-serif; /* Mantém consistência com style.css */
-    background-color: #f4f4f4; /* Mantém o fundo consistente */
+    height: 100vh; /* Define a altura total da janela */
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column; /* Empilha os elementos verticalmente */
 }
 
-/* Estilização da tabela para ocupar 100% da largura */
-table {
+/* Centraliza o cabeçalho no topo */
+#team-info {
     width: 100%;
-    border-collapse: collapse;
+    text-align: center;
+    padding: 20px 0; /* Aumenta o padding para destaque */
+    background-color: #333; /* Opcional: fundo escuro para contraste */
+    color: white; /* Opcional: texto branco para legibilidade */
+    margin-bottom: 10px; /* Espaço abaixo do cabeçalho */
+}
+
+/* Contêiner da tabela ocupa o restante da página */
+#games-table {
+    width: 100%;
+    flex: 1; /* Ocupa o espaço restante da altura */
+    overflow: auto; /* Adiciona rolagem se o conteúdo exceder */
     margin: 0;
     padding: 0;
-    background-color: white;
-    border: 1px solid #ddd;
 }
 
-/* Estilização das células da tabela */
+/* Estilização da tabela */
+table {
+    width: 100%;
+    height: 100%; /* Ocupa toda a altura disponível no contêiner */
+    border-collapse: collapse;
+    background-color: white;
+    border: 1px solid #ddd;
+    table-layout: fixed; /* Garante distribuição uniforme das colunas */
+}
+
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
-    text-align: left; /* Alinha à esquerda por padrão */
+    text-align: left;
+    word-wrap: break-word; /* Quebra texto longo */
 }
 
-/* Estilização do cabeçalho da tabela */
 th {
     background-color: #333;
     color: white;
 }
 
-/* Linhas alternadas */
 tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-/* Contêiner da tabela (#games-table) */
-#games-table {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-/* Contêiner do título (#team-info) */
-#team-info {
-    width: 100%;
-    margin: 0;
-    padding: 10px 0; /* Adiciona um pouco de padding superior/inferior */
-    text-align: center; /* Centraliza o título, se desejar */
-}
+/* Opcional: Ajuste de largura das colunas */
+th:nth-child(1), td:nth-child(1) { width: 10%; } /* Data */
+th:nth-child(2), td:nth-child(2) { width: 10%; } /* Liga */
+th:nth-child(3), td:nth-child(3) { width: 8%; }  /* Lado */
+th:nth-child(4), td:nth-child(4) { width: 8%; }  /* Vitória */
+th:nth-child(5), td:nth-child(5) { width: 10%; } /* Adversário */
+/* Ajuste os demais conforme necessário */
