@@ -8,13 +8,13 @@
 body {
     margin: 0;
     padding: 0;
-    width: 100%;
+    width: 100vw; /* Usa a largura total da janela */
     min-width: 100%; /* Evita contração */
     height: 100vh; /* Altura total da janela */
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    display: flex;
-    flex-direction: column; /* Empilha verticalmente */
+    display: block; /* Remove Flexbox temporariamente para teste */
+    /* Ou, se preferir manter Flexbox, use: display: flex; flex-direction: column; com ajustes */
 }
 
 /* Centraliza o cabeçalho no topo */
@@ -29,12 +29,12 @@ body {
 
 /* Contêiner da tabela ocupa a largura total */
 #games-table {
-    width: 100%;
-    flex: 1; /* Ocupa o espaço restante da altura */
+    width: 100vw; /* Força a largura total da janela */
+    min-width: 100%; /* Garante que não contraia */
+    height: 100%; /* Ocupa o espaço restante da altura */
     overflow: auto; /* Rolagem se necessário */
     margin: 0;
     padding: 0;
-    min-width: 100%; /* Evita contração */
 }
 
 /* Estilização da tabela */
@@ -44,7 +44,7 @@ table {
     border-collapse: collapse;
     background-color: white;
     border: 1px solid #ddd;
-    table-layout: auto; /* Permite expansão natural com base no conteúdo */
+    table-layout: auto; /* Permite expansão natural */
 }
 
 /* Estilização das células da tabela */
@@ -66,11 +66,6 @@ th {
 /* Linhas alternadas */
 tr:nth-child(even) {
     background-color: #f2f2f2;
-}
-
-/* Opcional: Ajuste de colunas para evitar compressão excessiva */
-th, td {
-    min-width: 80px; /* Define uma largura mínima */
 }
 
 /* Opcional: Rolagem horizontal se necessário */
