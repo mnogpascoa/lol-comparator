@@ -67,7 +67,7 @@ Papa.parse('BaseDeDados.csv', {
                     <td>${row.side || '-'}</td>
                     <td>${row.result ||'-'}</td>
                     <td>${row.adversa_team ||'-'}</td>
-                    <td>${row.gamelength || '-'}</td>
+                    <td>${(row.gamelength / 60 || 0).toFixed(2) || '-'}</td>
                     <td>${row.kills ||'-'}</td>
                     <td>${row.deaths ||'-'}</td>
                     <td>${row.assists ||'-'}</td>
