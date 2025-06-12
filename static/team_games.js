@@ -95,6 +95,7 @@ function displayTeamData() {
             </tbody>
         </table>
     `;
+    console.log('Tabela gerada:', tableContent); // Depuração
     document.getElementById('games-table').innerHTML = tableContent;
 }
 
