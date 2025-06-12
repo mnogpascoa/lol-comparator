@@ -1,66 +1,86 @@
 let dados = [];
 let times = [];
+let lados = [];
 
-window.onload = function () {
+function inicializar() {
     Papa.parse('static/BaseDeDados.csv', {
         download: true,
         header: true,
-        complete: function (results) {
-            // Manter apenas jogos do ano de 2025
-            dados = results.data.filter(row => row.date && row.date.includes('2025'));
+        complete: function(results) {
+            // Filtra só jogos do ano 2025
+            dados = results.data.filter(row => row.date && row.date.startsWith('2025'));
 
-            // Gerar lista de times distintos com base nos dados de 2025
-            times = [...new Set(dados.map(d => d.teamname).filter(Boolean))];
+            // Extrai times únicos que jogaram em 2025
+            times = [...new Set(dados.map(row => row.teamname))].sort();
 
-            preencherFiltros();
+            // Extrai lados únicos da coluna 'side' + adiciona "Todos" no começo
+            lados = [...new Set(dados.map(row => row.side))].filter(s => s).sort();
+            lados.unshift("Todos");
+
+            // Popula filtro lado
+            const selectSide = document.getElementById('side');
+            selectSide.innerHTML = '';
+            lados.forEach(lado => {
+                const option = document.createElement('option');
+                option.value = lado;
+                option.textContent = lado;
+                selectSide.appendChild(option);
+            });
+
+            // Popula filtro campeonato (liga)
+            const selectLiga = document.getElementById('liga');
+            // Extrai ligas únicas em 2025
+            const ligas = [...new Set(dados.map(row => row.league))].filter(l => l).sort();
+            selectLiga.innerHTML = '<option value="Todos">Todos</option>';
+            ligas.forEach(liga => {
+                const option = document.createElement('option');
+                option.value = liga;
+                option.textContent = liga;
+                selectLiga.appendChild(option);
+            });
         }
     });
-};
-
-function preencherFiltros() {
-    const selectLado = document.getElementById('side');
-    const selectLiga = document.getElementById('liga');
-
-    const lados = [...new Set(dados.map(item => item.lado).filter(Boolean))];
-    const ligas = [...new Set(dados.map(item => item.league).filter(Boolean))];
-
-    adicionarOpcoes(selectLado, ['Todos', ...lados]);
-    adicionarOpcoes(selectLiga, ['Todos', ...ligas]);
 }
 
-function adicionarOpcoes(select, valores) {
-    select.innerHTML = '';
-    valores.forEach(valor => {
-        const option = document.createElement('option');
-        option.value = valor;
-        option.textContent = valor;
-        select.appendChild(option);
-    });
-}
+// Função para mostrar sugestões abaixo do input
+function mostrarSugestoes(input, containerId) {
+    const container = document.getElementById(containerId);
+    const valor = input.value.toLowerCase();
 
-function mostrarSugestoes(input, sugestoesId) {
-    const texto = input.value.toLowerCase();
-    const container = document.getElementById(sugestoesId);
-    container.innerHTML = '';
-    container.style.display = 'block';
-
-    if (!texto) {
+    if (!valor) {
         container.style.display = 'none';
+        container.innerHTML = '';
         return;
     }
 
-    const filtrados = times.filter(t => t.toLowerCase().includes(texto));
+    const sugeridos = times.filter(t => t.toLowerCase().includes(valor)).slice(0, 10);
 
-    filtrados.slice(0, 10).forEach(time => {
+    if (sugeridos.length === 0) {
+        container.style.display = 'none';
+        container.innerHTML = '';
+        return;
+    }
+
+    container.innerHTML = '';
+    sugeridos.forEach(time => {
         const div = document.createElement('div');
         div.textContent = time;
         div.onclick = () => {
             input.value = time;
-            container.innerHTML = '';
             container.style.display = 'none';
+            container.innerHTML = '';
         };
         container.appendChild(div);
     });
+    container.style.display = 'block';
+}
+
+// Limpa os inputs de time e sugestões ao mudar lado ou liga
+function limparTimes() {
+    document.getElementById('time1').value = '';
+    document.getElementById('time2').value = '';
+    document.getElementById('sugestoesTime1').style.display = 'none';
+    document.getElementById('sugestoesTime2').style.display = 'none';
 }
 
 function comparar() {
@@ -70,33 +90,40 @@ function comparar() {
     const liga = document.getElementById('liga').value;
 
     if (!time1 || !time2) {
-        alert('Preencha os dois times!');
+        alert('Por favor, selecione ou digite os dois times.');
         return;
     }
 
-    const filtro = (item, time) => {
-        const ladoOk = lado === 'Todos' || item.lado === lado;
-        const ligaOk = liga === 'Todos' || item.league === liga;
-        return item.teamname === time && ladoOk && ligaOk;
-    };
+    // Filtra os dados para time1
+    let dadosTime1 = dados.filter(row => row.teamname === time1);
+    // Filtra lado se não for "Todos"
+    if (lado !== "Todos") dadosTime1 = dadosTime1.filter(row => row.side === lado);
+    // Filtra liga se não for "Todos"
+    if (liga !== "Todos") dadosTime1 = dadosTime1.filter(row => row.league === liga);
 
-    const jogosTime1 = dados.filter(item => filtro(item, time1));
-    const jogosTime2 = dados.filter(item => filtro(item, time2));
+    // Filtra os dados para time2
+    let dadosTime2 = dados.filter(row => row.teamname === time2);
+    if (lado !== "Todos") dadosTime2 = dadosTime2.filter(row => row.side === lado);
+    if (liga !== "Todos") dadosTime2 = dadosTime2.filter(row => row.league === liga);
 
-    mostrarEstatisticas(time1, jogosTime1, time2, jogosTime2);
+    if (dadosTime1.length === 0 && dadosTime2.length === 0) {
+        document.getElementById('resultado').innerHTML = '<p>Nenhum dado encontrado para os times selecionados e filtros aplicados.</p>';
+        return;
+    }
+
+    const mediasTime1 = calcularMedias(dadosTime1);
+    const mediasTime2 = calcularMedias(dadosTime2);
+
+    mostrarResultado(time1, mediasTime1, time2, mediasTime2);
 }
 
 function calcularMedias(dados) {
     const jogos = dados.length;
-    if (jogos === 0) {
-        return null;
-    }
-
     const vitorias = dados.reduce((sum, row) => sum + (parseInt(row.result) || 0), 0);
-    const vitoriasPercent = (vitorias / jogos) * 100;
-    const torresPercent = dados.reduce((sum, row) => sum + (parseInt(row.firsttower) || 0), 0) / jogos * 100;
-    const dragoesPercent = dados.reduce((sum, row) => sum + (parseInt(row.firstdragon) || 0), 0) / jogos * 100;
-    const firstBloodPercent = dados.reduce((sum, row) => sum + (parseInt(row.firstblood) || 0), 0) / jogos * 100;
+    const vitoriasPercent = jogos ? (vitorias / jogos) * 100 : 0;
+    const torresPercent = jogos ? dados.reduce((sum, row) => sum + (parseInt(row.firsttower) || 0), 0) / jogos * 100 : 0;
+    const dragoesPercent = jogos ? dados.reduce((sum, row) => sum + (parseInt(row.firstdragon) || 0), 0) / jogos * 100 : 0;
+    const firstBloodPercent = jogos ? dados.reduce((sum, row) => sum + (parseInt(row.firstblood) || 0), 0) / jogos * 100 : 0;
 
     return {
         'Jogos': jogos,
@@ -108,35 +135,29 @@ function calcularMedias(dados) {
     };
 }
 
-function mostrarEstatisticas(time1, jogos1, time2, jogos2) {
-    const div = document.getElementById('resultado');
-    div.innerHTML = '';
-
-    const stats1 = calcularMedias(jogos1);
-    const stats2 = calcularMedias(jogos2);
-
-    if (!stats1 && !stats2) {
-        div.textContent = 'Nenhum jogo encontrado para os times selecionados com os filtros aplicados.';
-        return;
-    }
-
-    const bloco = (nome, stats) => {
-        if (!stats) {
-            return `<h3>${nome}</h3><p>Nenhum jogo encontrado.</p>`;
-        }
-
-        return `
-            <h3>${nome}</h3>
-            <ul>
-                <li>Jogos: ${stats['Jogos']}</li>
-                <li>Vitórias: ${stats['Vitórias']}</li>
-                <li>Vitórias (%): ${stats['Vitórias (%)']}%</li>
-                <li>Torres (%): ${stats['Torres (%)']}%</li>
-                <li>Dragões (%): ${stats['Dragões (%)']}%</li>
-                <li>Primeiro Sangue (%): ${stats['Primeiro Sangue (%)']}%</li>
-            </ul>
-        `;
-    };
-
-    div.innerHTML = bloco(time1, stats1) + bloco(time2, stats2);
+function mostrarResultado(time1, medias1, time2, medias2) {
+    const tabela = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Estatística</th>
+                    <th>${time1}</th>
+                    <th>${time2}</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${Object.keys(medias1).map(chave => `
+                    <tr>
+                        <td>${chave}</td>
+                        <td>${medias1[chave]}</td>
+                        <td>${medias2[chave]}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+    document.getElementById('resultado').innerHTML = tabela;
 }
+
+// Inicializa ao carregar a página
+window.onload = inicializar;
