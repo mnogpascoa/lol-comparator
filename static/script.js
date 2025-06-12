@@ -1,110 +1,127 @@
+let dados = []; // aqui vai seu CSV ou dados já carregados
+let campeonatosFiltrados = [];
+let timesPorCampeonato = {};
 
-    let df = [];
-    let dfSide = [];
-
+document.addEventListener("DOMContentLoaded", () => {
+    // Exemplo de carregar CSV (ajuste conforme seu fluxo)
     Papa.parse("static/BaseDeDados.csv", {
         download: true,
         header: true,
         complete: function(results) {
-            df = results.data.filter(row => row.date && row.date.startsWith("2025")); // Apenas ano 2025
-            carregarLigas();
-            carregarSides();
-            carregarTimes();
+            dados = results.data;
+            filtrarCampeonatos2025();
+            preencherSelectLiga();
+            preencherSelectSide();
+            // times só serão carregados após escolher campeonato
         }
     });
+});
 
-    function carregarLigas() {
-        const ligas = [...new Set(df.map(row => row.league).filter(liga => liga))].sort();
-        const selectLiga = document.getElementById('liga');
-        selectLiga.innerHTML = '';
-        ligas.forEach(liga => {
-            const option = document.createElement('option');
-            option.value = liga;
-            option.textContent = liga;
-            selectLiga.appendChild(option);
-        });
+function filtrarCampeonatos2025() {
+    campeonatosFiltrados = [...new Set(dados
+        .filter(row => row.Ano === "2025")
+        .map(row => row.Campeonato)
+        .filter(c => c))];
+}
+
+function preencherSelectLiga() {
+    const liga = document.getElementById("liga");
+    liga.innerHTML = ""; // limpa opções
+
+    campeonatosFiltrados.forEach(camp => {
+        const option = document.createElement("option");
+        option.value = camp;
+        option.textContent = camp;
+        liga.appendChild(option);
+    });
+}
+
+function preencherSelectSide() {
+    const side = document.getElementById("side");
+    side.innerHTML = "";
+
+    const lados = ["Blue", "Red"]; // exemplo, ajuste conforme sua base
+    lados.forEach(l => {
+        const option = document.createElement("option");
+        option.value = l;
+        option.textContent = l;
+        side.appendChild(option);
+    });
+}
+
+function filtrarPorLiga() {
+    const liga = document.getElementById("liga").value;
+
+    if (!liga) {
+        limparTimes();
+        return;
     }
 
-    function carregarSides() {
-        const sides = [...new Set(df.map(row => row.side).filter(side => side))].sort();
-        const selectSide = document.getElementById('side');
-        selectSide.innerHTML = '';
-        sides.forEach(side => {
-            const option = document.createElement('option');
-            option.value = side;
-            option.textContent = side;
-            selectSide.appendChild(option);
-        });
+    // filtrar times desse campeonato e ano 2025
+    const timesFiltrados = [...new Set(dados
+        .filter(row => row.Ano === "2025" && row.Campeonato === liga)
+        .flatMap(row => [row.Time1, row.Time2])
+        .filter(t => t))];
+
+    preencherTimes(timesFiltrados);
+}
+
+function preencherTimes(times) {
+    const time1 = document.getElementById("time1");
+    const time2 = document.getElementById("time2");
+
+    time1.innerHTML = "";
+    time2.innerHTML = "";
+
+    times.forEach(t => {
+        const option1 = document.createElement("option");
+        option1.value = t;
+        option1.textContent = t;
+        time1.appendChild(option1);
+
+        const option2 = document.createElement("option");
+        option2.value = t;
+        option2.textContent = t;
+        time2.appendChild(option2);
+    });
+}
+
+function limparTimes() {
+    document.getElementById("time1").innerHTML = "";
+    document.getElementById("time2").innerHTML = "";
+}
+
+function filtrarPorSide() {
+    // Aqui você pode implementar filtro se necessário, ex. filtrar times por lado
+    // Por enquanto não altera os times, apenas serve como filtro para sua lógica de comparação
+}
+
+function comparar() {
+    const liga = document.getElementById("liga").value;
+    const side = document.getElementById("side").value;
+    const time1 = document.getElementById("time1").value;
+    const time2 = document.getElementById("time2").value;
+    const jogosRecentes = document.getElementById("jogosRecentes").value;
+
+    if (!liga || !time1 || !time2) {
+        alert("Escolha campeonato e os dois times antes de comparar.");
+        return;
     }
 
-    function carregarTimes() {
-        const selectTime1 = document.getElementById('time1');
-        const selectTime2 = document.getElementById('time2');
-        selectTime1.innerHTML = '';
-        selectTime2.innerHTML = '';
+    // Aqui você pode aplicar o filtro de jogos recentes na sua base, por exemplo:
+    // filtrar dados para os últimos N jogos de cada time antes de calcular médias e vitórias
 
-        const base = dfSide.length > 0 ? dfSide : df;
-        const times = [...new Set(base.map(row => row.teamname).filter(t => t))].sort();
+    // Exemplo simples (ajuste conforme seus dados)
+    const jogosTime1 = dados
+        .filter(row => row.Ano === "2025" && row.Campeonato === liga && (row.Time1 === time1 || row.Time2 === time1));
+    const jogosTime2 = dados
+        .filter(row => row.Ano === "2025" && row.Campeonato === liga && (row.Time1 === time2 || row.Time2 === time2));
 
-        times.forEach(time => {
-            const option1 = document.createElement('option');
-            option1.value = time;
-            option1.textContent = time;
-            selectTime1.appendChild(option1);
+    const n = parseInt(jogosRecentes);
+    const jogosRecentesTime1 = n ? jogosTime1.slice(-n) : jogosTime1;
+    const jogosRecentesTime2 = n ? jogosTime2.slice(-n) : jogosTime2;
 
-            const option2 = document.createElement('option');
-            option2.value = time;
-            option2.textContent = time;
-            selectTime2.appendChild(option2);
-        });
-    }
+    // Calcule suas médias e vitórias aqui usando jogosRecentesTime1 e jogosRecentesTime2
 
-    function filtrarPorLiga() {
-        const ligaSelecionada = document.getElementById('liga').value;
-        dfSide = df.filter(row => row.league === ligaSelecionada);
-        carregarTimes();
-    }
-
-    function filtrarPorSide() {
-        const sideSelecionado = document.getElementById('side').value;
-        dfSide = df.filter(row => row.side === sideSelecionado);
-        carregarTimes();
-    }
-
-    function comparar() {
-        const time1 = document.getElementById('time1').value;
-        const time2 = document.getElementById('time2').value;
-        const jogosRecentes = parseInt(document.getElementById('jogosRecentes').value);
-
-        if (!time1 || !time2) {
-            document.getElementById('resultado').innerHTML = 'Por favor, selecione os dois times.';
-            return;
-        }
-
-        let dados = dfSide.length > 0 ? dfSide : df;
-
-        let dadosTime1 = dados.filter(row => row.teamname === time1);
-        let dadosTime2 = dados.filter(row => row.teamname === time2);
-
-        if (jogosRecentes) {
-            dadosTime1 = dadosTime1.slice(-jogosRecentes);
-            dadosTime2 = dadosTime2.slice(-jogosRecentes);
-        }
-
-        const vitorias1 = dadosTime1.filter(row => row.result === "Win").length;
-        const total1 = dadosTime1.length;
-        const mediaKills1 = dadosTime1.reduce((soma, row) => soma + parseFloat(row.kills || 0), 0) / total1 || 0;
-
-        const vitorias2 = dadosTime2.filter(row => row.result === "Win").length;
-        const total2 = dadosTime2.length;
-        const mediaKills2 = dadosTime2.reduce((soma, row) => soma + parseFloat(row.kills || 0), 0) / total2 || 0;
-
-        const resultadoHTML = `
-            <h3>Resultados:</h3>
-            <p><strong>${time1}</strong> - Vitórias: ${vitorias1}, Jogos: ${total1}, Média de Kills: ${mediaKills1.toFixed(2)}</p>
-            <p><strong>${time2}</strong> - Vitórias: ${vitorias2}, Jogos: ${total2}, Média de Kills: ${mediaKills2.toFixed(2)}</p>
-        `;
-
-        document.getElementById('resultado').innerHTML = resultadoHTML;
-    }
-
+    document.getElementById("resultado").textContent = `Comparando ${time1} vs ${time2} no campeonato ${liga} (últimos ${jogosRecentes || "todos"} jogos).`;
+}
