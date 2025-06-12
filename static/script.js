@@ -56,6 +56,7 @@ function carregarTimes() {
     if (!df) return;
     const liga = document.getElementById('liga').value;
     const side = document.getElementById('side').value;
+    const recentGames = document.getElementById('recent-games').value;
     const time1Input = document.getElementById('time1');
     const time2Input = document.getElementById('time2');
     
@@ -114,6 +115,7 @@ function carregarTimes() {
 function comparar() {
     const liga = document.getElementById('liga').value;
     const side = document.getElementById('side').value;
+    const recentGames = document.getElementById('recent-games').value;
     const time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
 
@@ -138,14 +140,21 @@ function comparar() {
         return;
     }
 
-    // Filtrar dados por time
-    const dadosTime1 = dfSide.filter(row => row.teamname === time1);
-    const dadosTime2 = dfSide.filter(row => row.teamname === time2);
+    // Filtrar dados por time e limitar aos jogos recentes, se aplicável
+    let dadosTime1 = dfSide.filter(row => row.teamname === time1);
+    let dadosTime2 = dfSide.filter(row => row.teamname === time2);
+
+    // Ordenar por data (mais recente primeiro) e limitar aos últimos X jogos
+    if (recentGames) {
+        dadosTime1 = dadosTime1.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
+        dadosTime2 = dadosTime2.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
+    }
+
     console.log(`Dados para ${time1}:`, dadosTime1.slice(0, 3));
     console.log(`Dados para ${time2}:`, dadosTime2.slice(0, 3));
 
     if (dadosTime1.length === 0 || dadosTime2.length === 0) {
-        alert('Time inválido para a combinação selecionada!');
+        alert('Time inválido para a combinação selecionada ou sem dados nos últimos jogos!');
         return;
     }
 
@@ -173,7 +182,7 @@ function comparar() {
 
     const resultado = document.getElementById('resultado');
     resultado.innerHTML = `
-        <h2>Comparação: ${time1} vs ${time2} ${side ? '(' + side + ')' : ''} ${liga ? '(' + liga + ')' : ''} (2025)</h2>
+        <h2>Comparação: ${time1} vs ${time2} ${side ? '(' + side + ')' : ''} ${liga ? '(' + liga + ')' : ''} (2025) ${recentGames ? '(Últimos ' + recentGames + ' jogos)' : ''}</h2>
         <table>
             <tr>
                 <th>Estatística</th>
