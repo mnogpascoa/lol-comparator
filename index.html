@@ -12,12 +12,15 @@
 
     <div>
         <label for="time1">Time 1:</label>
-        <input type="text" id="time1" list="listaTimes" placeholder="Digite o time 1">
+        <input type="text" id="time1" oninput="mostrarSugestoes(this, 'sugestoes1')" autocomplete="off">
+        <div class="sugestoes" id="sugestoes1"></div>
     </div>
     <div>
         <label for="time2">Time 2:</label>
-        <input type="text" id="time2" list="listaTimes" placeholder="Digite o time 2">
+        <input type="text" id="time2" oninput="mostrarSugestoes(this, 'sugestoes2')" autocomplete="off">
+        <div class="sugestoes" id="sugestoes2"></div>
     </div>
+
     <div>
         <label for="side">Lado:</label>
         <select id="side">
@@ -30,8 +33,6 @@
             <option value="Todos">Todos</option>
         </select>
     </div>
-
-    <datalist id="listaTimes"></datalist>
 
     <button onclick="comparar()">Comparar</button>
     <div id="resultado"></div>
