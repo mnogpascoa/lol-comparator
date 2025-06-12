@@ -1,6 +1,7 @@
 let df = null;
 let dfLiga = null;
 let dfSide = null;
+let dfResult = null; // Nova variável global para o filtro de resultado
 let allTeams = [];
 
 Papa.parse('static/BaseDeDados.csv', {
@@ -48,6 +49,7 @@ function carregarSides() {
 function carregarTimes() {
     const liga = document.getElementById('liga').value;
     const side = document.getElementById('side').value;
+    const resultFilter = document.getElementById('result-filter').value; // Novo filtro
     const recentGames = document.getElementById('recent-games').value;
     const killLine = document.getElementById('kill-line').value;
     const timeLine = document.getElementById('time-line').value;
@@ -57,10 +59,17 @@ function carregarTimes() {
     const time1Selecionado = time1Input.value;
     const time2Selecionado = time2Input.value;
 
+    // Filtro por liga
     dfLiga = liga ? df.filter(row => row.league === liga) : df;
+
+    // Filtro por lado
     dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
 
-    const times = [...new Set(dfSide.map(row => row.teamname).filter(time => time))].sort();
+    // Filtro por resultado (Vitórias/Derrotas)
+    dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
+
+    // Extrair times disponíveis após todos os filtros
+    const times = [...new Set(dfResult.map(row => row.teamname).filter(time => time))].sort();
     const datalist = document.getElementById('times-list');
     datalist.innerHTML = '';
     times.forEach(time => {
@@ -69,6 +78,7 @@ function carregarTimes() {
         datalist.appendChild(option);
     });
 
+    // Manter seleções válidas nos inputs de time
     if (time1Selecionado && times.includes(time1Selecionado)) time1Input.value = time1Selecionado;
     else time1Input.value = '';
     if (time2Selecionado && times.includes(time2Selecionado)) time2Input.value = time2Selecionado;
@@ -78,10 +88,11 @@ function carregarTimes() {
 function comparar() {
     const liga = document.getElementById('liga').value;
     const side = document.getElementById('side').value;
+    const resultFilter = document.getElementById('result-filter').value; // Novo filtro
     const recentGames = document.getElementById('recent-games').value;
     const killLine = parseFloat(document.getElementById('kill-line').value);
-    const timeLineValue = parseInt(document.getElementById('time-line').value); // Garantir conversão para inteiro
-    const timeLine = isNaN(timeLineValue) ? 31 * 60 : timeLineValue * 60; // Valor padrão 31 minutos se inválido
+    const timeLineValue = parseInt(document.getElementById('time-line').value);
+    const timeLine = isNaN(timeLineValue) ? 31 * 60 : timeLineValue * 60;
     const time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
 
@@ -90,8 +101,13 @@ function comparar() {
         return;
     }
 
-    let dadosTime1 = dfSide.filter(row => row.teamname === time1);
-    let dadosTime2 = dfSide.filter(row => row.teamname === time2);
+    // Aplicar filtros para obter dfResult
+    let dfLiga = liga ? df.filter(row => row.league === liga) : df;
+    let dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
+    let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
+
+    let dadosTime1 = dfResult.filter(row => row.teamname === time1);
+    let dadosTime2 = dfResult.filter(row => row.teamname === time2);
 
     if (recentGames) {
         dadosTime1 = dadosTime1.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
@@ -149,7 +165,7 @@ function comparar() {
     const timeLineMin = parseInt(document.getElementById('time-line').value);
 
     const tableContent = `
-        <h2>Comparação: ${time1} vs ${time2} ${side ? '(' + side + ')' : ''} ${liga ? '(' + liga + ')' : ''} (2025) ${recentGames ? '(Últimos ' + recentGames + ' jogos)' : ''}</h2>
+        <h2>Comparação: ${time1} vs ${time2} ${side ? '(' + side + ')' : ''} ${liga ? '(' + liga + ')' : ''} ${resultFilter !== '' ? '(' + (resultFilter === '1' ? 'Vitórias' : 'Derrotas') + ')' : ''} (2025) ${recentGames ? '(Últimos ' + recentGames + ' jogos)' : ''}</h2>
         <table>
             <tr><th>Estatística</th><th>${time1}</th><th>${time2}</th></tr>
             <tr><td>Jogos Disputados</td><td>${mediasTime1.Jogos}</td><td>${mediasTime2.Jogos}</td></tr>
@@ -164,7 +180,7 @@ function comparar() {
             <tr><td>Over ${timeLineMin} min</td><td>${timeStatsTime1.percentAbove}%</td><td>${timeStatsTime2.percentAbove}%</td></tr>
         </table>
     `;
-    console.log('Conteúdo da tabela:', tableContent); // Debug para verificar o HTML gerado
+    console.log('Conteúdo da tabela:', tableContent);
     const resultado = document.getElementById('resultado');
     resultado.innerHTML = tableContent;
 }
