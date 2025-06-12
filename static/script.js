@@ -17,7 +17,7 @@ function carregarDados() {
 function carregarCampeonatos() {
     const selectLiga = document.getElementById("liga");
     const campeonatos = [...new Set(dados.map(row => row.league))].sort();
-    selectLiga.innerHTML = '<option value="">Selecione o campeonato</option>';
+    selectLiga.innerHTML = '<option value="">Todos</option>';
     campeonatos.forEach(campeonato => {
         const option = document.createElement("option");
         option.value = campeonato;
@@ -29,7 +29,7 @@ function carregarCampeonatos() {
 function carregarLados() {
     const selectSide = document.getElementById("side");
     const lados = [...new Set(dados.map(row => row.side))].sort();
-    selectSide.innerHTML = '<option value="">Selecione o lado</option>';
+    selectSide.innerHTML = '<option value="">Todos</option>';
     lados.forEach(lado => {
         const option = document.createElement("option");
         option.value = lado;
