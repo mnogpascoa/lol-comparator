@@ -1,3 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     max-width: 800px;
@@ -5,49 +11,87 @@ body {
     padding: 20px;
     background-color: #f4f4f4;
 }
+
 h1 {
     text-align: center;
     color: #333;
 }
-div {
-    margin: 10px 0;
+
+.filter-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
 }
+
+.time-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    margin: 10px 0; /* Ajustado para corresponder ao div original */
+}
+
 label {
     font-weight: bold;
     margin-right: 10px;
 }
-select, button {
+
+select, input {
     padding: 8px;
     font-size: 16px;
+    width: 200px;
+    border: 1px solid #ddd; /* Ajustado para consistência com a tabela */
+    border-radius: 4px;
+    background-color: #ffffff;
 }
+
+input[list] {
+    width: 200px;
+}
+
 button {
     background-color: #4CAF50;
     color: white;
     border: none;
-    cursor: pointer;
     padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: auto;
 }
+
 button:hover {
     background-color: #45a049;
 }
+
 table {
     border-collapse: collapse;
     width: 100%;
     margin-top: 20px;
     background-color: white;
 }
+
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
 }
+
 th {
     background-color: #333;
     color: white;
 }
+
 tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+
 #resultado {
     margin-top: 20px;
 }
