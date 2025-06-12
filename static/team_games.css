@@ -8,13 +8,12 @@
 body {
     margin: 0;
     padding: 0;
-    width: 100vw; /* Usa a largura total da janela */
+    width: 100vw; /* Largura total da janela */
     min-width: 100%; /* Evita contração */
     height: 100vh; /* Altura total da janela */
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    display: block; /* Remove Flexbox temporariamente para teste */
-    /* Ou, se preferir manter Flexbox, use: display: flex; flex-direction: column; com ajustes */
+    display: block; /* Remove Flexbox temporariamente */
 }
 
 /* Centraliza o cabeçalho no topo */
@@ -25,6 +24,9 @@ body {
     background-color: #333;
     color: white;
     margin-bottom: 10px;
+    position: sticky; /* Fixa o cabeçalho da página */
+    top: 0; /* Fixa no topo da janela */
+    z-index: 1; /* Garante que fique acima da tabela */
 }
 
 /* Contêiner da tabela ocupa a largura total */
@@ -47,6 +49,14 @@ table {
     table-layout: auto; /* Permite expansão natural */
 }
 
+/* Fixa o cabeçalho da tabela */
+thead th {
+    position: sticky; /* Fixa o cabeçalho da tabela */
+    top: 60px; /* Posiciona logo abaixo do #team-info */
+    background-color: #333; /* Mantém o fundo para legibilidade */
+    z-index: 2; /* Garante que fique acima do corpo da tabela */
+}
+
 /* Estilização das células da tabela */
 th, td {
     border: 1px solid #ddd;
@@ -57,14 +67,13 @@ th, td {
     min-width: 80px; /* Largura mínima razoável */
 }
 
-/* Cabeçalho da tabela */
-th {
-    background-color: #333;
-    color: white;
+/* Corpo da tabela */
+td {
+    background-color: white; /* Garante contraste */
 }
 
 /* Linhas alternadas */
-tr:nth-child(even) {
+tr:nth-child(even) td {
     background-color: #f2f2f2;
 }
 
