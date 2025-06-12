@@ -9,7 +9,7 @@ function getTeamNameFromURL() {
 
 // Função para carregar o CSV
 function loadCSV() {
-    Papa.parse('static/BaseDadosDesseAno.csv', {
+    Papa.parse('/lol-comparator/static/BaseDadosDesseAno.csv', {
         download: true,
         header: true,
         complete: function(results) {
