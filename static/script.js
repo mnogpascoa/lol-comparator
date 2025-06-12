@@ -97,9 +97,9 @@ function comparar() {
     const killLine = parseFloat(document.getElementById('kill-line').value);
     const timeLineValue = parseInt(document.getElementById('time-line').value);
     const dragonLine = parseFloat(document.getElementById('dragon-line').value);
-    const baronLine = parseFloat(document.getElementById('baron-line').value); // Novo filtro
-    const towerLine = parseFloat(document.getElementById('tower-line').value); // Novo filtro
-    const inhibitorLine = parseFloat(document.getElementById('inhibitor-line').value); // Novo filtro
+    const baronLine = parseFloat(document.getElementById('baron-line').value);
+    const towerLine = parseFloat(document.getElementById('tower-line').value);
+    const inhibitorLine = parseFloat(document.getElementById('inhibitor-line').value);
     const timeLine = isNaN(timeLineValue) ? 31 * 60 : timeLineValue * 60;
     const time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
@@ -221,7 +221,7 @@ function comparar() {
     const timeLineMin = parseInt(document.getElementById('time-line').value);
 
     const tableContent = `
-        <h2>Comparação: ${time1} vs ${time2} ${side ? '(' + side + ')' : ''} ${liga ? '(' + liga + ')' : ''} ${resultFilter !== '' ? '(' + (resultFilter === '1' ? 'Vitórias' : 'Derrotas') + ')' : ''} (2025) ${recentGames ? '(Últimos ' + recentGames + ' jogos)' : ''}</h2>
+        <h2>Comparação: <a href="team_games.html?teamname=${encodeURIComponent(time1)}" target="_blank">${time1}</a> vs <a href="team_games.html?teamname=${encodeURIComponent(time2)}" target="_blank">${time2}</a> ${side ? '(' + side + ')' : ''} ${liga ? '(' + liga + ')' : ''} ${resultFilter !== '' ? '(' + (resultFilter === '1' ? 'Vitórias' : 'Derrotas') + ')' : ''} (2025) ${recentGames ? '(Últimos ' + recentGames + ' jogos)' : ''}</h2>
         <table>
             <tr><th>Estatística</th><th>${time1}</th><th>${time2}</th></tr>
             <tr><td>Jogos Disputados</td><td>${mediasTime1.Jogos}</td><td>${mediasTime2.Jogos}</td></tr>
