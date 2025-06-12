@@ -10,6 +10,14 @@
 <body>
     <h1>Comparador de Times LoL</h1>
     <div>
+        <label for="time1">Time 1:</label>
+        <input id="time1" list="times-list" placeholder="Digite o nome do time">
+    </div>
+    <div>
+        <label for="time2">Time 2:</label>
+        <input id="time2" list="times-list" placeholder="Digite o nome do time">
+    </div>
+    <div>
         <label for="liga">Campeonato:</label>
         <select id="liga" onchange="carregarTimes()">
             <option value="">Todos os campeonatos</option>
@@ -21,14 +29,7 @@
             <option value="">Todos os lados</option>
         </select>
     </div>
-    <div>
-        <label for="time1">Time 1:</label>
-        <input id="time1" list="times-list" placeholder="Digite o nome do time">
-    </div>
-    <div>
-        <label for="time2">Time 2:</label>
-        <input id="time2" list="times-list" placeholder="Digite o nome do time">
-    </div>
+    
     <datalist id="times-list"></datalist>
     <button onclick="comparar()">Comparar</button>
     <div id="resultado"></div>
