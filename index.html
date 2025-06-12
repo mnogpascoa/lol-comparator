@@ -84,6 +84,13 @@
                     <option value="">Todos os lados</option>
                 </select>
             </div>
+            <div class="filter-group">
+                <label for="baron-line">Linha Barons:</label>
+                <select id="baron-line" onchange="carregarTimes()">
+                    <option value="1.5" selected>1.5</option>
+                    <option value="2.5">2.5</option>
+                </select>
+            </div>
         </div>
         <div class="time-row">
             <div class="filter-group">
@@ -97,6 +104,16 @@
                     <option value="50">Últimos 50 jogos</option>
                 </select>
             </div>
+            <div class="filter-group">
+                <label for="tower-line">Linha Towers:</label>
+                <select id="tower-line" onchange="carregarTimes()">
+                    <option value="10.5">10.5</option>
+                    <option value="11.5">11.5</option>
+                    <option value="12.5" selected>12.5</option>
+                    <option value="13.5">13.5</option>
+                    <option value="14.5">14.5</option>
+                </select>
+            </div>
         </div>
         <div class="time-row">
             <div class="filter-group">
@@ -105,6 +122,13 @@
                     <option value="">Todos os Resultados</option>
                     <option value="1">Vitórias</option>
                     <option value="0">Derrotas</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="inhibitor-line">Linha Inibidor:</label>
+                <select id="inhibitor-line" onchange="carregarTimes()">
+                    <option value="1.5" selected>1.5</option>
+                    <option value="2.5">2.5</option>
                 </select>
             </div>
         </div>
