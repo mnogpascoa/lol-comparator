@@ -38,16 +38,20 @@ Papa.parse('BaseDeDados.csv', {
                     <th>Data</th>
                     <th>Liga</th>
                     <th>Lado</th>
-                    <th>Resultado</th>
-                    <th>Duração (seg)</th>
-                    <th>Total Kills</th>
+                    <th>Vitória</th>
+                    <th>Adversário</th>
+                    <th>Duração (min)</th>
+                    <th>Kills</th>
+                    <th>Deaths</th>
+                    <th>Assists</th>
+                    <th>Primeira Torre</th>
+                    <th>Primeiro Dragão</th>
+                    <th>Primeiro Sangue</th>
                     <th>Total Dragões</th>
                     <th>Total Barons</th>
                     <th>Total Torres</th>
                     <th>Total Inibidores</th>
-                    <th>Primeira Torre</th>
-                    <th>Primeiro Dragão</th>
-                    <th>Primeiro Sangue</th>
+                    
                 </tr>
         `;
 
@@ -61,16 +65,20 @@ Papa.parse('BaseDeDados.csv', {
                     <td>${row.date || '-'}</td>
                     <td>${row.league || '-'}</td>
                     <td>${row.side || '-'}</td>
-                    <td>${row.result === '1' ? 'Vitória' : row.result === '0' ? 'Derrota' : '-'}</td>
+                    <td>${row.result ||'-'}</td>
+                    <td>${row.adversa_team ||'-'}</td>
                     <td>${row.gamelength || '-'}</td>
-                    <td>${row.totalKills || '-'}</td>
+                    <td>${row.kills ||'-'}</td>
+                    <td>${row.deaths ||'-'}</td>
+                    <td>${row.assists ||'-'}</td>
+                    <td>${row.firsttower || '-'}</td>
+                    <td>${row.firstdragon || '-'}</td>
+                    <td>${row.firstblood || '-'}</td>
                     <td>${row.totalDragons || '-'}</td>
                     <td>${row.totalBarons || '-'}</td>
                     <td>${row.totalTowers || '-'}</td>
                     <td>${row.totalInhibitors || '-'}</td>
-                    <td>${row.firsttower === '1' ? 'Sim' : row.firsttower === '0' ? 'Não' : '-'}</td>
-                    <td>${row.firstdragon === '1' ? 'Sim' : row.firstdragon === '0' ? 'Não' : '-'}</td>
-                    <td>${row.firstblood === '1' ? 'Sim' : row.firstblood === '0' ? 'Não' : '-'}</td>
+                    
                 </tr>
             `;
         });
