@@ -17,11 +17,7 @@ Papa.parse('BaseDadosDesseAno.csv', {
 
         // Filtrar dados para o time escolhido e para 2025
         const teamData = results.data.filter(row => 
-            row.teamname === teamName && 
-            row.position === 'team' && 
-            row.date && 
-            row.date.startsWith('2025')
-        );
+            row.teamname === teamName);
 
         if (teamData.length === 0) {
             document.getElementById('team-info').innerHTML = `<p>Nenhuma partida encontrada para o time ${teamName}!</p>`;
