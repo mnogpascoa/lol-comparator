@@ -51,6 +51,7 @@ function carregarTimes() {
     const side = document.getElementById('side').value;
     const recentGames = document.getElementById('recent-games').value;
     const killLine = document.getElementById('kill-line').value;
+    const timeLine = document.getElementById('time-line').value;
     const time1Input = document.getElementById('time1');
     const time2Input = document.getElementById('time2');
     
@@ -62,7 +63,7 @@ function carregarTimes() {
 
     const times = [...new Set(dfSide.map(row => row.teamname).filter(time => time))].sort();
     const datalist = document.getElementById('times-list');
-    datalist.innerHTML = ''; // Limpa o datalist antes de preencher
+    datalist.innerHTML = '';
     times.forEach(time => {
         const option = document.createElement('option');
         option.value = time;
@@ -80,6 +81,7 @@ function comparar() {
     const side = document.getElementById('side').value;
     const recentGames = document.getElementById('recent-games').value;
     const killLine = parseFloat(document.getElementById('kill-line').value);
+    const timeLine = parseInt(document.getElementById('time-line').value) * 60; // Converter para segundos
     const time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
 
@@ -111,6 +113,16 @@ function comparar() {
         return { totalJogos, killsBelow, killsAbove, percentBelow, percentAbove };
     }
 
+    function calcularTimeStats(dados) {
+        const totalJogos = dados.length;
+        if (totalJogos === 0) return { totalJogos: 0, timeBelow: 0, timeAbove: 0, percentBelow: 0, percentAbove: 0 };
+        const timeBelow = dados.filter(row => parseInt(row.gamelength) < timeLine || parseInt(row.gamelength) === 0).length;
+        const timeAbove = totalJogos - timeBelow;
+        const percentBelow = (timeBelow / totalJogos * 100).toFixed(2);
+        const percentAbove = (timeAbove / totalJogos * 100).toFixed(2);
+        return { totalJogos, timeBelow, timeAbove, percentBelow, percentAbove };
+    }
+
     function calcularMedias(dados) {
         const jogos = dados.length;
         const vitorias = dados.reduce((sum, row) => sum + (parseInt(row.result) || 0), 0);
@@ -129,8 +141,12 @@ function comparar() {
 
     const statsTime1 = calcularKillStats(dadosTime1);
     const statsTime2 = calcularKillStats(dadosTime2);
+    const timeStatsTime1 = calcularTimeStats(dadosTime1);
+    const timeStatsTime2 = calcularTimeStats(dadosTime2);
     const mediasTime1 = calcularMedias(dadosTime1);
     const mediasTime2 = calcularMedias(dadosTime2);
+
+    const timeLineMin = parseInt(document.getElementById('time-line').value); // Valor em minutos para exibição
 
     const tableContent = `
         <h2>Comparação: ${time1} vs ${time2} ${side ? '(' + side + ')' : ''} ${liga ? '(' + liga + ')' : ''} (2025) ${recentGames ? '(Últimos ' + recentGames + ' jogos)' : ''}</h2>
@@ -144,6 +160,8 @@ function comparar() {
             <tr><td>Primeiro Sangue (%)</td><td>${mediasTime1['Primeiro Sangue (%)']}</td><td>${mediasTime2['Primeiro Sangue (%)']}</td></tr>
             <tr><td>Under ${killLine} Kill</td><td>${statsTime1.percentBelow}%</td><td>${statsTime2.percentBelow}%</td></tr>
             <tr><td>Over ${killLine} Kill</td><td>${statsTime1.percentAbove}%</td><td>${statsTime2.percentAbove}%</td></tr>
+            <tr><td>Under ${timeLineMin} min</td><td>${timeStatsTime1.percentBelow}%</td><td>${timeStatsTime2.percentBelow}%</td></tr>
+            <tr><td>Over ${timeLineMin} min</td><td>${timeStatsTime1.percentAbove}%</td><td>${timeStatsTime2.percentAbove}%</td></tr>
         </table>
     `;
     console.log('Conteúdo da tabela:', tableContent); // Debug
