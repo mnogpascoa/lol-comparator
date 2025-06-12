@@ -1,42 +1,45 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comparador de Times LoL</title>
-    <link rel="stylesheet" href="static/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Comparador de Times LoL</title>
+  <link rel="stylesheet" href="static/style.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
-    <h1>Comparador de Times LoL</h1>
+  <h1>Comparador de Times LoL - 2025</h1>
 
-    <div>
-        <label for="time1">Time 1:</label>
-        <input type="text" id="time1" oninput="mostrarSugestoes(this, 'sugestoes1')" autocomplete="off">
-        <div class="sugestoes" id="sugestoes1"></div>
-    </div>
-    <div>
-        <label for="time2">Time 2:</label>
-        <input type="text" id="time2" oninput="mostrarSugestoes(this, 'sugestoes2')" autocomplete="off">
-        <div class="sugestoes" id="sugestoes2"></div>
-    </div>
+  <div>
+    <label for="time1">Time 1:</label>
+    <input type="text" id="time1" autocomplete="off" oninput="mostrarSugestoes(this, 'sugestoes1')"/>
+    <div class="sugestoes" id="sugestoes1"></div>
+  </div>
 
-    <div>
-        <label for="side">Lado:</label>
-        <select id="side">
-            <option value="Todos">Todos</option>
-        </select>
-    </div>
-    <div>
-        <label for="liga">Campeonato:</label>
-        <select id="liga">
-            <option value="Todos">Todos</option>
-        </select>
-    </div>
+  <div>
+    <label for="time2">Time 2:</label>
+    <input type="text" id="time2" autocomplete="off" oninput="mostrarSugestoes(this, 'sugestoes2')"/>
+    <div class="sugestoes" id="sugestoes2"></div>
+  </div>
 
-    <button onclick="comparar()">Comparar</button>
-    <div id="resultado"></div>
+  <div>
+    <label for="side">Lado:</label>
+    <select id="side">
+      <option value="Todos">Todos</option>
+    </select>
+  </div>
 
-    <script src="static/script.js"></script>
+  <div>
+    <label for="liga">Campeonato:</label>
+    <select id="liga">
+      <option value="Todos">Todos</option>
+    </select>
+  </div>
+
+  <button onclick="comparar()">Comparar</button>
+
+  <div id="resultado"></div>
+
+  <script src="static/script.js"></script>
 </body>
 </html>
