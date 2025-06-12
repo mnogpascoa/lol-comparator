@@ -5,7 +5,7 @@ function getTeamNameFromURL() {
 }
 
 // Carregar e processar o CSV
-Papa.parse('BaseDadosDesseAno.csv', {
+Papa.parse('/lol-comparator/static/BaseDadosDesseAno.csv', {
     download: true,
     header: true,
     complete: function(results) {
@@ -81,7 +81,7 @@ Papa.parse('BaseDadosDesseAno.csv', {
         document.getElementById('games-table').innerHTML = tableContent;
     },
     error: function(error) {
-        console.error('Erro ao carregar CSV:', error);
-        document.getElementById('team-info').innerHTML = '<p>Erro ao carregar os dados! Verifique se o arquivo static/BaseDadosDesseAno.csv está disponível.</p>';
+        console.error('Erro ao carregar CSV. URL tentada:', 'https://mnogpascoa.github.io/lol-comparator/static/BaseDadosDesseAno.csv', error);
+        document.getElementById('team-info').innerHTML = '<p>Erro ao carregar os dados! Verifique se o arquivo está disponível no servidor.</p>';
     }
 });
