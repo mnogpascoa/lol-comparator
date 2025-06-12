@@ -33,7 +33,7 @@ h1 {
 .filter-group {
     display: flex;
     align-items: center;
-    margin: 10px 0; /* Ajustado para corresponder ao div original */
+    margin: 10px 0;
 }
 
 label {
@@ -45,7 +45,7 @@ select, input {
     padding: 8px;
     font-size: 16px;
     width: 200px;
-    border: 1px solid #ddd; /* Ajustado para consistência com a tabela */
+    border: 1px solid #ddd;
     border-radius: 4px;
     background-color: #ffffff;
 }
