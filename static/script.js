@@ -4,7 +4,7 @@ let dfSide = null;
 let dfResult = null;
 let allTeams = [];
 
-Papa.parse('static/BaseDeDados.csv', {
+Papa.parse('static/BaseDadosDesseAno', {
     download: true,
     header: true,
     complete: function(results) {
@@ -100,7 +100,7 @@ function comparar() {
     const baronLine = parseFloat(document.getElementById('baron-line').value);
     const towerLine = parseFloat(document.getElementById('tower-line').value);
     const inhibitorLine = parseFloat(document.getElementById('inhibitor-line').value);
-    const timeLine = isNaN(timeLineValue) ? 31 * 60 : timeLineValue * 60;
+    const timeLine = isNaN(timeLineValue) ? 31 : timeLineValue;
     const time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
 
