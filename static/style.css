@@ -51,3 +51,21 @@ tr:nth-child(even) {
 #resultado {
     margin-top: 20px;
 }
+.sugestoes {
+    position: relative;
+    z-index: 10;
+    background-color: white;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.sugestoes div {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.sugestoes div:hover {
+    background-color: #f0f0f0;
+}
