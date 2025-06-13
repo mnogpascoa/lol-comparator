@@ -42,25 +42,29 @@ function displayTeamData() {
     document.getElementById('team-info').innerHTML = `<h2>Partidas de ${teamName} (2025)</h2>`;
 
     let tableContent = `
-        <table>
-            <tr>
-                <th>Data</th>
-                <th>Liga</th>
-                <th>Lado</th>
-                <th>Vitória</th>
-                <th>Adversário</th>
-                <th>Duração (min)</th>
-                <th>Kills</th>
-                <th>Deaths</th>
-                <th>Assists</th>
-                <th>Primeira Torre</th>
-                <th>Primeiro Dragão</th>
-                <th>Primeiro Sangue</th>
-                <th>Total Dragões</th>
-                <th>Total Barons</th>
-                <th>Total Torres</th>
-                <th>Total Inibidores</th>
-            </tr>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Liga</th>
+                        <th>Lado</th>
+                        <th>Vitória</th>
+                        <th>Adversário</th>
+                        <th>Duração (min)</th>
+                        <th>Kills</th>
+                        <th>Deaths</th>
+                        <th>Assists</th>
+                        <th>Primeira Torre</th>
+                        <th>Primeiro Dragão</th>
+                        <th>Primeiro Sangue</th>
+                        <th>Total Dragões</th>
+                        <th>Total Barons</th>
+                        <th>Total Torres</th>
+                        <th>Total Inibidores</th>
+                    </tr>
+                </thead>
+                <tbody>
     `;
 
     teamData.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -88,7 +92,11 @@ function displayTeamData() {
         `;
     });
 
-    tableContent += `</table>`;
+    tableContent += `
+                </tbody>
+            </table>
+        </div>
+    `;
     document.getElementById('games-table').innerHTML = tableContent;
 }
 
