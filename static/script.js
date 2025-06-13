@@ -5,7 +5,7 @@ let dfSide = null;
 let dfResult = null;
 let allTeams = [];
 
-Papa.parse('static/BaseDadosDesseAno.csv', {
+Papa.parse('/lol-comparator/static/BaseDadosDesseAno.csv', {
     download: true,
     header: true,
     complete: function(results) {
