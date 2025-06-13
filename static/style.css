@@ -69,7 +69,7 @@ input[list] {
 }
 
 button {
-    background-color: #000000; /* Verde original para destaque */
+    background-color: #4CAF50; /* Verde original para destaque */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -82,7 +82,7 @@ button {
 }
 
 button:hover {
-    background-color: #383838; /* Verde mais escuro no hover */
+    background-color: #45a049; /* Verde mais escuro no hover */
 }
 
 table {
@@ -128,14 +128,15 @@ tr:nth-child(even) {
 /* Estilização dos links dos times */
 a {
     color: #f0f0f0; /* Branco fosco (cinza claro) */
-    text-decoration: none; /* Remove sublinhado padrão */
+    text-decoration: underline; /* Restaura sublinhado por padrão */
 }
 
 a:hover {
     color: #ffffff; /* Branco puro no hover para destaque */
-    text-decoration: underline; /* Sublinhado no hover */
+    text-decoration: underline; /* Mantém sublinhado no hover */
 }
 
 a:visited {
     color: #f0f0f0; /* Mantém branco fosco após clicar */
+    text-decoration: underline; /* Mantém sublinhado após clique */
 }
