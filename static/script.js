@@ -90,6 +90,164 @@ function carregarTimes() {
     else time2Input.value = '';
 }
 
+function calcularKillStats(dados) {
+    const totalJogos = dados.length;
+    if (totalJogos === 0) return { totalJogos: 0, killsBelow: 0, killsAbove: 0, percentBelow: 0, percentAbove: 0 };
+    const killsBelow = dados.filter(row => parseInt(row.totalKills) < killLine || parseInt(row.totalKills) === 0).length;
+    const killsAbove = totalJogos - killsBelow;
+    const percentBelow = (killsBelow / totalJogos * 100).toFixed(2);
+    const percentAbove = (killsAbove / totalJogos * 100).toFixed(2);
+    return { totalJogos, killsBelow, killsAbove, percentBelow, percentAbove };
+}
+
+function calcularTimeStats(dados) {
+    const totalJogos = dados.length;
+    if (totalJogos === 0) return { totalJogos: 0, timeBelow: 0, timeAbove: 0, percentBelow: 0, percentAbove: 0 };
+    const timeBelow = dados.filter(row => parseInt(row.gamelength) < timeLine || parseInt(row.gamelength) === 0).length;
+    const timeAbove = totalJogos - timeBelow;
+    const percentBelow = (timeBelow / totalJogos * 100).toFixed(2);
+    const percentAbove = (timeAbove / totalJogos * 100).toFixed(2);
+    return { totalJogos, timeBelow, timeAbove, percentBelow, percentAbove };
+}
+
+function calcularDragonStats(dados) {
+    const totalJogos = dados.length;
+    if (totalJogos === 0) return { totalJogos: 0, dragonsBelow: 0, dragonsAbove: 0, percentBelow: 0, percentAbove: 0 };
+    const dragonsBelow = dados.filter(row => parseInt(row.totalDragons) < dragonLine || parseInt(row.totalDragons) === 0).length;
+    const dragonsAbove = totalJogos - dragonsBelow;
+    const percentBelow = (dragonsBelow / totalJogos * 100).toFixed(2);
+    const percentAbove = (dragonsAbove / totalJogos * 100).toFixed(2);
+    return { totalJogos, dragonsBelow, dragonsAbove, percentBelow, percentAbove };
+}
+
+function calcularBaronStats(dados) {
+    const totalJogos = dados.length;
+    if (totalJogos === 0) return { totalJogos: 0, baronsBelow: 0, baronsAbove: 0, percentBelow: 0, percentAbove: 0 };
+    const baronsBelow = dados.filter(row => parseInt(row.totalBarons) < baronLine || parseInt(row.totalBarons) === 0).length;
+    const baronsAbove = totalJogos - baronsBelow;
+    const percentBelow = (baronsBelow / totalJogos * 100).toFixed(2);
+    const percentAbove = (baronsAbove / totalJogos * 100).toFixed(2);
+    return { totalJogos, baronsBelow, baronsAbove, percentBelow, percentAbove };
+}
+
+function calcularTowerStats(dados) {
+    const totalJogos = dados.length;
+    if (totalJogos === 0) return { totalJogos: 0, towersBelow: 0, towersAbove: 0, percentBelow: 0, percentAbove: 0 };
+    const towersBelow = dados.filter(row => parseInt(row.totalTowers) < towerLine || parseInt(row.totalTowers) === 0).length;
+    const towersAbove = totalJogos - towersBelow;
+    const percentBelow = (towersBelow / totalJogos * 100).toFixed(2);
+    const percentAbove = (towersAbove / totalJogos * 100).toFixed(2);
+    return { totalJogos, towersBelow, towersAbove, percentBelow, percentAbove };
+}
+
+function calcularInhibitorStats(dados) {
+    const totalJogos = dados.length;
+    if (totalJogos === 0) return { totalJogos: 0, inhibitorsBelow: 0, inhibitorsAbove: 0, percentBelow: 0, percentAbove: 0 };
+    const inhibitorsBelow = dados.filter(row => parseInt(row.totalInhibitors) < inhibitorLine || parseInt(row.totalInhibitors) === 0).length;
+    const inhibitorsAbove = totalJogos - inhibitorsBelow;
+    const percentBelow = (inhibitorsBelow / totalJogos * 100).toFixed(2);
+    const percentAbove = (inhibitorsAbove / totalJogos * 100).toFixed(2);
+    return { totalJogos, inhibitorsBelow, inhibitorsAbove, percentBelow, percentAbove };
+}
+
+function calcularMedias(dados) {
+    const jogos = dados.length;
+    const vitorias = dados.reduce((sum, row) => sum + (parseInt(row.result) || 0), 0);
+    const torres = dados.reduce((sum, row) => sum + (parseInt(row.firsttower) || 0), 0);
+    const dragoes = dados.reduce((sum, row) => sum + (parseInt(row.firstdragon) || 0), 0);
+    const firstBlood = dados.reduce((sum, row) => sum + (parseInt(row.firstblood) || 0), 0);
+    return {
+        'Jogos': jogos,
+        'Vitórias': vitorias,
+        'Vitórias (%)': (vitorias / jogos * 100 || 0).toFixed(2),
+        'Primeira Torre (%)': (torres / jogos * 100 || 0).toFixed(2),
+        'Primeiro Dragão (%)': (dragoes / jogos * 100 || 0).toFixed(2),
+        'Primeiro Sangue (%)': (firstBlood / jogos * 100 || 0).toFixed(2)
+    };
+}
+
+function gerarTabela(statsTime1, statsTime2, mediasTime1, mediasTime2, time1, time2, killLine, timeLineMin, dragonLine, baronLine, towerLine, inhibitorLine) {
+    let tableContent = '';
+    if (!time2 || time1 === time2) {
+        tableContent = `
+            <table>
+                <tr><th>Estatística</th><th>${time1}</th></tr>
+                <tr><td>Jogos Disputados</td><td>${mediasTime1.Jogos}</td></tr>
+                <tr><td>Vitórias</td><td>${mediasTime1.Vitórias}</td></tr>
+                <tr><td>Vitórias (%)</td><td>${mediasTime1['Vitórias (%)']}</td></tr>
+                <tr><td>Primeira Torre (%)</td><td>${mediasTime1['Primeira Torre (%)']}</td></tr>
+                <tr><td>Primeiro Dragão (%)</td><td>${mediasTime1['Primeiro Dragão (%)']}</td></tr>
+                <tr><td>Primeiro Sangue (%)</td><td>${mediasTime1['Primeiro Sangue (%)']}</td></tr>
+                <tr><td>Under ${killLine} Kill</td><td>${statsTime1.percentBelow}%</td></tr>
+                <tr><td>Over ${killLine} Kill</td><td>${statsTime1.percentAbove}%</td></tr>
+                <tr><td>Under ${timeLineMin} min</td><td>${statsTime1.timeStats.percentBelow}%</td></tr>
+                <tr><td>Over ${timeLineMin} min</td><td>${statsTime1.timeStats.percentAbove}%</td></tr>
+                <tr><td>Under ${dragonLine} Dragon</td><td>${statsTime1.dragonStats.percentBelow}%</td></tr>
+                <tr><td>Over ${dragonLine} Dragon</td><td>${statsTime1.dragonStats.percentAbove}%</td></tr>
+                <tr><td>Under ${baronLine} Baron</td><td>${statsTime1.baronStats.percentBelow}%</td></tr>
+                <tr><td>Over ${baronLine} Baron</td><td>${statsTime1.baronStats.percentAbove}%</td></tr>
+                <tr><td>Under ${towerLine} Tower</td><td>${statsTime1.towerStats.percentBelow}%</td></tr>
+                <tr><td>Over ${towerLine} Tower</td><td>${statsTime1.towerStats.percentAbove}%</td></tr>
+                <tr><td>Under ${inhibitorLine} Inhibitor</td><td>${statsTime1.inhibitorStats.percentBelow}%</td></tr>
+                <tr><td>Over ${inhibitorLine} Inhibitor</td><td>${statsTime1.inhibitorStats.percentAbove}%</td></tr>
+            </table>
+        `;
+    } else {
+        tableContent = `
+            <table>
+                <tr><th>Estatística</th><th>${time1}</th><th>${time2}</th></tr>
+                <tr><td>Jogos Disputados</td><td>${mediasTime1.Jogos}</td><td>${mediasTime2.Jogos}</td></tr>
+                <tr><td>Vitórias</td><td>${mediasTime1.Vitórias}</td><td>${mediasTime2.Vitórias}</td></tr>
+                <tr><td>Vitórias (%)</td><td>${mediasTime1['Vitórias (%)']}</td><td>${mediasTime2['Vitórias (%)']}</td></tr>
+                <tr><td>Primeira Torre (%)</td><td>${mediasTime1['Primeira Torre (%)']}</td><td>${mediasTime2['Primeira Torre (%)']}</td></tr>
+                <tr><td>Primeiro Dragão (%)</td><td>${mediasTime1['Primeiro Dragão (%)']}</td><td>${mediasTime2['Primeiro Dragão (%)']}</td></tr>
+                <tr><td>Primeiro Sangue (%)</td><td>${mediasTime1['Primeiro Sangue (%)']}</td><td>${mediasTime2['Primeiro Sangue (%)']}</td></tr>
+                <tr><td>Under ${killLine} Kill</td><td>${statsTime1.percentBelow}%</td><td>${statsTime2.percentBelow}%</td></tr>
+                <tr><td>Over ${killLine} Kill</td><td>${statsTime1.percentAbove}%</td><td>${statsTime2.percentAbove}%</td></tr>
+                <tr><td>Under ${timeLineMin} min</td><td>${statsTime1.timeStats.percentBelow}%</td><td>${statsTime2.timeStats.percentBelow}%</td></tr>
+                <tr><td>Over ${timeLineMin} min</td><td>${statsTime1.timeStats.percentAbove}%</td><td>${statsTime2.timeStats.percentAbove}%</td></tr>
+                <tr><td>Under ${dragonLine} Dragon</td><td>${statsTime1.dragonStats.percentBelow}%</td><td>${statsTime2.dragonStats.percentBelow}%</td></tr>
+                <tr><td>Over ${dragonLine} Dragon</td><td>${statsTime1.dragonStats.percentAbove}%</td><td>${statsTime2.dragonStats.percentAbove}%</td></tr>
+                <tr><td>Under ${baronLine} Baron</td><td>${statsTime1.baronStats.percentBelow}%</td><td>${statsTime2.baronStats.percentBelow}%</td></tr>
+                <tr><td>Over ${baronLine} Baron</td><td>${statsTime1.baronStats.percentAbove}%</td><td>${statsTime2.baronStats.percentAbove}%</td></tr>
+                <tr><td>Under ${towerLine} Tower</td><td>${statsTime1.towerStats.percentBelow}%</td><td>${statsTime2.towerStats.percentAbove}%</td></tr>
+                <tr><td>Over ${towerLine} Tower</td><td>${statsTime1.towerStats.percentAbove}%</td><td>${statsTime2.towerStats.percentAbove}%</td></tr>
+                <tr><td>Under ${inhibitorLine} Inhibitor</td><td>${statsTime1.inhibitorStats.percentBelow}%</td><td>${statsTime2.inhibitorStats.percentBelow}%</td></tr>
+                <tr><td>Over ${inhibitorLine} Inhibitor</td><td>${statsTime1.inhibitorStats.percentAbove}%</td><td>${statsTime2.inhibitorStats.percentAbove}%</td></tr>
+            </table>
+        `;
+    }
+    return tableContent;
+}
+
+function gerarTitulo(time1, time2, side, liga, resultFilter, recentGames, separator) {
+    const h2 = document.createElement('h2');
+    
+    if (time1) {
+        const link1 = document.createElement('a');
+        link1.href = `static/team_games.html?teamname=${encodeURIComponent(time1)}`;
+        link1.target = '_blank';
+        link1.textContent = time1;
+        h2.appendChild(link1);
+    }
+    
+    if (time2 && time1 !== time2) {
+        h2.appendChild(document.createTextNode(` ${separator} `));
+        const link2 = document.createElement('a');
+        link2.href = `static/team_games.html?teamname=${encodeURIComponent(time2)}`;
+        link2.target = '_blank';
+        link2.textContent = time2;
+        h2.appendChild(link2);
+    }
+    
+    if (side) h2.appendChild(document.createTextNode(` (${side})`));
+    if (liga) h2.appendChild(document.createTextNode(` (${liga})`));
+    if (resultFilter !== '') h2.appendChild(document.createTextNode(` (${resultFilter === '1' ? 'Vitórias' : 'Derrotas'})`));
+    if (recentGames) h2.appendChild(document.createTextNode(` (Últimos ${recentGames} jogos)`));
+    
+    return h2;
+}
+
 function comparar() {
     const liga = document.getElementById('liga').value;
     const side = document.getElementById('side').value;
@@ -104,6 +262,11 @@ function comparar() {
     const timeLine = isNaN(timeLineValue) ? 31 : timeLineValue;
     const time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
+
+    if (!time1) {
+        alert('Selecione pelo menos o Time 1!');
+        return;
+    }
 
     // Aplicar filtros para obter dfResult
     let dfLiga = liga ? df.filter(row => row.league === liga) : df;
@@ -123,183 +286,130 @@ function comparar() {
         return;
     }
 
-    function calcularKillStats(dados) {
-        const totalJogos = dados.length;
-        if (totalJogos === 0) return { totalJogos: 0, killsBelow: 0, killsAbove: 0, percentBelow: 0, percentAbove: 0 };
-        const killsBelow = dados.filter(row => parseInt(row.totalKills) < killLine || parseInt(row.totalKills) === 0).length;
-        const killsAbove = totalJogos - killsBelow;
-        const percentBelow = (killsBelow / totalJogos * 100).toFixed(2);
-        const percentAbove = (killsAbove / totalJogos * 100).toFixed(2);
-        return { totalJogos, killsBelow, killsAbove, percentBelow, percentAbove };
-    }
+    const statsTime1 = {
+        percentBelow: calcularKillStats(dadosTime1).percentBelow,
+        percentAbove: calcularKillStats(dadosTime1).percentAbove,
+        timeStats: calcularTimeStats(dadosTime1),
+        dragonStats: calcularDragonStats(dadosTime1),
+        baronStats: calcularBaronStats(dadosTime1),
+        towerStats: calcularTowerStats(dadosTime1),
+        inhibitorStats: calcularInhibitorStats(dadosTime1)
+    };
 
-    function calcularTimeStats(dados) {
-        const totalJogos = dados.length;
-        if (totalJogos === 0) return { totalJogos: 0, timeBelow: 0, timeAbove: 0, percentBelow: 0, percentAbove: 0 };
-        const timeBelow = dados.filter(row => parseInt(row.gamelength) < timeLine || parseInt(row.gamelength) === 0).length;
-        const timeAbove = totalJogos - timeBelow;
-        const percentBelow = (timeBelow / totalJogos * 100).toFixed(2);
-        const percentAbove = (timeAbove / totalJogos * 100).toFixed(2);
-        return { totalJogos, timeBelow, timeAbove, percentBelow, percentAbove };
-    }
+    const statsTime2 = time2 ? {
+        percentBelow: calcularKillStats(dadosTime2).percentBelow,
+        percentAbove: calcularKillStats(dadosTime2).percentAbove,
+        timeStats: calcularTimeStats(dadosTime2),
+        dragonStats: calcularDragonStats(dadosTime2),
+        baronStats: calcularBaronStats(dadosTime2),
+        towerStats: calcularTowerStats(dadosTime2),
+        inhibitorStats: calcularInhibitorStats(dadosTime2)
+    } : {
+        percentBelow: 0,
+        percentAbove: 0,
+        timeStats: { percentBelow: 0, percentAbove: 0 },
+        dragonStats: { percentBelow: 0, percentAbove: 0 },
+        baronStats: { percentBelow: 0, percentAbove: 0 },
+        towerStats: { percentBelow: 0, percentAbove: 0 },
+        inhibitorStats: { percentBelow: 0, percentAbove: 0 }
+    };
 
-    function calcularDragonStats(dados) {
-        const totalJogos = dados.length;
-        if (totalJogos === 0) return { totalJogos: 0, dragonsBelow: 0, dragonsAbove: 0, percentBelow: 0, percentAbove: 0 };
-        const dragonsBelow = dados.filter(row => parseInt(row.totalDragons) < dragonLine || parseInt(row.totalDragons) === 0).length;
-        const dragonsAbove = totalJogos - dragonsBelow;
-        const percentBelow = (dragonsBelow / totalJogos * 100).toFixed(2);
-        const percentAbove = (dragonsAbove / totalJogos * 100).toFixed(2);
-        return { totalJogos, dragonsBelow, dragonsAbove, percentBelow, percentAbove };
-    }
-
-    function calcularBaronStats(dados) {
-        const totalJogos = dados.length;
-        if (totalJogos === 0) return { totalJogos: 0, baronsBelow: 0, baronsAbove: 0, percentBelow: 0, percentAbove: 0 };
-        const baronsBelow = dados.filter(row => parseInt(row.totalBarons) < baronLine || parseInt(row.totalBarons) === 0).length;
-        const baronsAbove = totalJogos - baronsBelow;
-        const percentBelow = (baronsBelow / totalJogos * 100).toFixed(2);
-        const percentAbove = (baronsAbove / totalJogos * 100).toFixed(2);
-        return { totalJogos, baronsBelow, baronsAbove, percentBelow, percentAbove };
-    }
-
-    function calcularTowerStats(dados) {
-        const totalJogos = dados.length;
-        if (totalJogos === 0) return { totalJogos: 0, towersBelow: 0, towersAbove: 0, percentBelow: 0, percentAbove: 0 };
-        const towersBelow = dados.filter(row => parseInt(row.totalTowers) < towerLine || parseInt(row.totalTowers) === 0).length;
-        const towersAbove = totalJogos - towersBelow;
-        const percentBelow = (towersBelow / totalJogos * 100).toFixed(2);
-        const percentAbove = (towersAbove / totalJogos * 100).toFixed(2);
-        return { totalJogos, towersBelow, towersAbove, percentBelow, percentAbove };
-    }
-
-    function calcularInhibitorStats(dados) {
-        const totalJogos = dados.length;
-        if (totalJogos === 0) return { totalJogos: 0, inhibitorsBelow: 0, inhibitorsAbove: 0, percentBelow: 0, percentAbove: 0 };
-        const inhibitorsBelow = dados.filter(row => parseInt(row.totalInhibitors) < inhibitorLine || parseInt(row.totalInhibitors) === 0).length;
-        const inhibitorsAbove = totalJogos - inhibitorsBelow;
-        const percentBelow = (inhibitorsBelow / totalJogos * 100).toFixed(2);
-        const percentAbove = (inhibitorsAbove / totalJogos * 100).toFixed(2);
-        return { totalJogos, inhibitorsBelow, inhibitorsAbove, percentBelow, percentAbove };
-    }
-
-    function calcularMedias(dados) {
-        const jogos = dados.length;
-        const vitorias = dados.reduce((sum, row) => sum + (parseInt(row.result) || 0), 0);
-        const torres = dados.reduce((sum, row) => sum + (parseInt(row.firsttower) || 0), 0);
-        const dragoes = dados.reduce((sum, row) => sum + (parseInt(row.firstdragon) || 0), 0);
-        const firstBlood = dados.reduce((sum, row) => sum + (parseInt(row.firstblood) || 0), 0);
-        return {
-            'Jogos': jogos,
-            'Vitórias': vitorias,
-            'Vitórias (%)': (vitorias / jogos * 100 || 0).toFixed(2),
-            'Primeira Torre (%)': (torres / jogos * 100 || 0).toFixed(2),
-            'Primeiro Dragão (%)': (dragoes / jogos * 100 || 0).toFixed(2),
-            'Primeiro Sangue (%)': (firstBlood / jogos * 100 || 0).toFixed(2)
-        };
-    }
-
-    const statsTime1 = calcularKillStats(dadosTime1);
-    const statsTime2 = time2 ? calcularKillStats(dadosTime2) : { totalJogos: 0, killsBelow: 0, killsAbove: 0, percentBelow: 0, percentAbove: 0 };
-    const timeStatsTime1 = calcularTimeStats(dadosTime1);
-    const timeStatsTime2 = time2 ? calcularTimeStats(dadosTime2) : { totalJogos: 0, timeBelow: 0, timeAbove: 0, percentBelow: 0, percentAbove: 0 };
-    const dragonStatsTime1 = calcularDragonStats(dadosTime1);
-    const dragonStatsTime2 = time2 ? calcularDragonStats(dadosTime2) : { totalJogos: 0, dragonsBelow: 0, dragonsAbove: 0, percentBelow: 0, percentAbove: 0 };
-    const baronStatsTime1 = calcularBaronStats(dadosTime1);
-    const baronStatsTime2 = time2 ? calcularBaronStats(dadosTime2) : { totalJogos: 0, baronsBelow: 0, baronsAbove: 0, percentBelow: 0, percentAbove: 0 };
-    const towerStatsTime1 = calcularTowerStats(dadosTime1);
-    const towerStatsTime2 = time2 ? calcularTowerStats(dadosTime2) : { totalJogos: 0, towersBelow: 0, towersAbove: 0, percentBelow: 0, percentAbove: 0 };
-    const inhibitorStatsTime1 = calcularInhibitorStats(dadosTime1);
-    const inhibitorStatsTime2 = time2 ? calcularInhibitorStats(dadosTime2) : { totalJogos: 0, inhibitorsBelow: 0, inhibitorsAbove: 0, percentBelow: 0, percentAbove: 0 };
     const mediasTime1 = calcularMedias(dadosTime1);
-    const mediasTime2 = time2 ? calcularMedias(dadosTime2) : { 'Jogos': 0, 'Vitórias': 0, 'Vitórias (%)': 0, 'Primeira Torre (%)': 0, 'Primeiro Dragão (%)': 0, 'Primeiro Sangue (%)': 0 };
+    const mediasTime2 = time2 ? calcularMedias(dadosTime2) : {
+        'Jogos': 0,
+        'Vitórias': 0,
+        'Vitórias (%)': 0,
+        'Primeira Torre (%)': 0,
+        'Primeiro Dragão (%)': 0,
+        'Primeiro Sangue (%)': 0
+    };
 
     const timeLineMin = parseInt(document.getElementById('time-line').value);
 
-    // Determinar o conteúdo da tabela com base em 1 ou 2 times
-    let tableContent = '';
-    if (!time2 || time1 === time2) {
-        // Exibe apenas os dados de time1
-        tableContent = `
-            <table>
-                <tr><th>Estatística</th><th>${time1}</th></tr>
-                <tr><td>Jogos Disputados</td><td>${mediasTime1.Jogos}</td></tr>
-                <tr><td>Vitórias</td><td>${mediasTime1.Vitórias}</td></tr>
-                <tr><td>Vitórias (%)</td><td>${mediasTime1['Vitórias (%)']}</td></tr>
-                <tr><td>Primeira Torre (%)</td><td>${mediasTime1['Primeira Torre (%)']}</td></tr>
-                <tr><td>Primeiro Dragão (%)</td><td>${mediasTime1['Primeiro Dragão (%)']}</td></tr>
-                <tr><td>Primeiro Sangue (%)</td><td>${mediasTime1['Primeiro Sangue (%)']}</td></tr>
-                <tr><td>Under ${killLine} Kill</td><td>${statsTime1.percentBelow}%</td></tr>
-                <tr><td>Over ${killLine} Kill</td><td>${statsTime1.percentAbove}%</td></tr>
-                <tr><td>Under ${timeLineMin} min</td><td>${timeStatsTime1.percentBelow}%</td></tr>
-                <tr><td>Over ${timeLineMin} min</td><td>${timeStatsTime1.percentAbove}%</td></tr>
-                <tr><td>Under ${dragonLine} Dragon</td><td>${dragonStatsTime1.percentBelow}%</td></tr>
-                <tr><td>Over ${dragonLine} Dragon</td><td>${dragonStatsTime1.percentAbove}%</td></tr>
-                <tr><td>Under ${baronLine} Baron</td><td>${baronStatsTime1.percentBelow}%</td></tr>
-                <tr><td>Over ${baronLine} Baron</td><td>${baronStatsTime1.percentAbove}%</td></tr>
-                <tr><td>Under ${towerLine} Tower</td><td>${towerStatsTime1.percentBelow}%</td></tr>
-                <tr><td>Over ${towerLine} Tower</td><td>${towerStatsTime1.percentAbove}%</td></tr>
-                <tr><td>Under ${inhibitorLine} Inhibitor</td><td>${inhibitorStatsTime1.percentBelow}%</td></tr>
-                <tr><td>Over ${inhibitorLine} Inhibitor</td><td>${inhibitorStatsTime1.percentAbove}%</td></tr>
-            </table>
-        `;
-    } else {
-        // Exibe a comparação entre time1 e time2
-        tableContent = `
-            <table>
-                <tr><th>Estatística</th><th>${time1}</th><th>${time2}</th></tr>
-                <tr><td>Jogos Disputados</td><td>${mediasTime1.Jogos}</td><td>${mediasTime2.Jogos}</td></tr>
-                <tr><td>Vitórias</td><td>${mediasTime1.Vitórias}</td><td>${mediasTime2.Vitórias}</td></tr>
-                <tr><td>Vitórias (%)</td><td>${mediasTime1['Vitórias (%)']}</td><td>${mediasTime2['Vitórias (%)']}</td></tr>
-                <tr><td>Primeira Torre (%)</td><td>${mediasTime1['Primeira Torre (%)']}</td><td>${mediasTime2['Primeira Torre (%)']}</td></tr>
-                <tr><td>Primeiro Dragão (%)</td><td>${mediasTime1['Primeiro Dragão (%)']}</td><td>${mediasTime2['Primeiro Dragão (%)']}</td></tr>
-                <tr><td>Primeiro Sangue (%)</td><td>${mediasTime1['Primeiro Sangue (%)']}</td><td>${mediasTime2['Primeiro Sangue (%)']}</td></tr>
-                <tr><td>Under ${killLine} Kill</td><td>${statsTime1.percentBelow}%</td><td>${statsTime2.percentBelow}%</td></tr>
-                <tr><td>Over ${killLine} Kill</td><td>${statsTime1.percentAbove}%</td><td>${statsTime2.percentAbove}%</td></tr>
-                <tr><td>Under ${timeLineMin} min</td><td>${timeStatsTime1.percentBelow}%</td><td>${timeStatsTime2.percentBelow}%</td></tr>
-                <tr><td>Over ${timeLineMin} min</td><td>${timeStatsTime1.percentAbove}%</td><td>${timeStatsTime2.percentAbove}%</td></tr>
-                <tr><td>Under ${dragonLine} Dragon</td><td>${dragonStatsTime1.percentBelow}%</td><td>${dragonStatsTime2.percentBelow}%</td></tr>
-                <tr><td>Over ${dragonLine} Dragon</td><td>${dragonStatsTime1.percentAbove}%</td><td>${dragonStatsTime2.percentAbove}%</td></tr>
-                <tr><td>Under ${baronLine} Baron</td><td>${baronStatsTime1.percentBelow}%</td><td>${baronStatsTime2.percentBelow}%</td></tr>
-                <tr><td>Over ${baronLine} Baron</td><td>${baronStatsTime1.percentAbove}%</td><td>${baronStatsTime2.percentAbove}%</td></tr>
-                <tr><td>Under ${towerLine} Tower</td><td>${towerStatsTime1.percentBelow}%</td><td>${towerStatsTime2.percentBelow}%</td></tr>
-                <tr><td>Over ${towerLine} Tower</td><td>${towerStatsTime1.percentAbove}%</td><td>${towerStatsTime2.percentAbove}%</td></tr>
-                <tr><td>Under ${inhibitorLine} Inhibitor</td><td>${inhibitorStatsTime1.percentBelow}%</td><td>${inhibitorStatsTime2.percentBelow}%</td></tr>
-                <tr><td>Over ${inhibitorLine} Inhibitor</td><td>${inhibitorStatsTime1.percentAbove}%</td><td>${inhibitorStatsTime2.percentAbove}%</td></tr>
-            </table>
-        `;
-    }
+    const tableContent = gerarTabela(statsTime1, statsTime2, mediasTime1, mediasTime2, time1, time2, killLine, timeLineMin, dragonLine, baronLine, towerLine, inhibitorLine);
 
     console.log('Conteúdo da tabela (sem título):', tableContent);
 
-    // Criar o título dinamicamente
     const resultado = document.getElementById('resultado');
     resultado.innerHTML = ''; // Limpar conteúdo anterior
-    const h2 = document.createElement('h2');
-    h2.textContent = !time2 || time1 === time2 ? `${time1}` : 'Comparação: ';
+    const h2 = gerarTitulo(time1, time2, side, liga, resultFilter, recentGames, '&');
     
-    if (time1) {
-        const link1 = document.createElement('a');
-        link1.href = `static/team_games.html?teamname=${encodeURIComponent(time1)}`;
-        link1.target = '_blank';
-        link1.textContent = time1;
-        h2.appendChild(link1);
+    resultado.appendChild(h2);
+    resultado.insertAdjacentHTML('beforeend', tableContent);
+    
+    console.log('Título renderizado:', h2.outerHTML);
+}
+
+function confrontoDireto() {
+    const liga = document.getElementById('liga').value;
+    const side = document.getElementById('side').value;
+    const resultFilter = document.getElementById('result-filter').value;
+    const recentGames = document.getElementById('recent-games').value;
+    const killLine = parseFloat(document.getElementById('kill-line').value);
+    const timeLineValue = parseInt(document.getElementById('time-line').value);
+    const dragonLine = parseFloat(document.getElementById('dragon-line').value);
+    const baronLine = parseFloat(document.getElementById('baron-line').value);
+    const towerLine = parseFloat(document.getElementById('tower-line').value);
+    const inhibitorLine = parseFloat(document.getElementById('inhibitor-line').value);
+    const timeLine = isNaN(timeLineValue) ? 31 : timeLineValue;
+    const time1 = document.getElementById('time1').value;
+    const time2 = document.getElementById('time2').value;
+
+    if (!time1 || !time2 || time1 === time2) {
+        alert('Selecione dois times diferentes para o Confronto Direto!');
+        return;
     }
-    
-    if (time2 && time1 !== time2) {
-        h2.appendChild(document.createTextNode(' vs '));
-        const link2 = document.createElement('a');
-        link2.href = `static/team_games.html?teamname=${encodeURIComponent(time2)}`;
-        link2.target = '_blank';
-        link2.textContent = time2;
-        h2.appendChild(link2);
+
+    // Aplicar filtros para obter dfResult
+    let dfLiga = liga ? df.filter(row => row.league === liga) : df;
+    let dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
+    let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
+
+    let dadosTime1 = dfResult.filter(row => row.teamname === time1 && row.adversa_team === time2);
+    let dadosTime2 = dfResult.filter(row => row.teamname === time2 && row.adversa_team === time1);
+
+    if (recentGames) {
+        dadosTime1 = dadosTime1.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
+        dadosTime2 = dadosTime2.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
     }
-    
-    if (side) h2.appendChild(document.createTextNode(` (${side})`));
-    if (liga) h2.appendChild(document.createTextNode(` (${liga})`));
-    if (resultFilter !== '') h2.appendChild(document.createTextNode(` (${resultFilter === '1' ? 'Vitórias' : 'Derrotas'})`));
-    h2.appendChild(document.createTextNode(' (2025)'));
-    if (recentGames) h2.appendChild(document.createTextNode(` (Últimos ${recentGames} jogos)`));
+
+    if (dadosTime1.length === 0 && dadosTime2.length === 0) {
+        alert('Nenhum confronto direto encontrado entre os times selecionados com os filtros aplicados!');
+        return;
+    }
+
+    const statsTime1 = {
+        percentBelow: calcularKillStats(dadosTime1).percentBelow,
+        percentAbove: calcularKillStats(dadosTime1).percentAbove,
+        timeStats: calcularTimeStats(dadosTime1),
+        dragonStats: calcularDragonStats(dadosTime1),
+        baronStats: calcularBaronStats(dadosTime1),
+        towerStats: calcularTowerStats(dadosTime1),
+        inhibitorStats: calcularInhibitorStats(dadosTime1)
+    };
+
+    const statsTime2 = {
+        percentBelow: calcularKillStats(dadosTime2).percentBelow,
+        percentAbove: calcularKillStats(dadosTime2).percentAbove,
+        timeStats: calcularTimeStats(dadosTime2),
+        dragonStats: calcularDragonStats(dadosTime2),
+        baronStats: calcularBaronStats(dadosTime2),
+        towerStats: calcularTowerStats(dadosTime2),
+        inhibitorStats: calcularInhibitorStats(dadosTime2)
+    };
+
+    const mediasTime1 = calcularMedias(dadosTime1);
+    const mediasTime2 = calcularMedias(dadosTime2);
+
+    const timeLineMin = parseInt(document.getElementById('time-line').value);
+
+    const tableContent = gerarTabela(statsTime1, statsTime2, mediasTime1, mediasTime2, time1, time2, killLine, timeLineMin, dragonLine, baronLine, towerLine, inhibitorLine);
+
+    console.log('Conteúdo da tabela (sem título):', tableContent);
+
+    const resultado = document.getElementById('resultado');
+    resultado.innerHTML = ''; // Limpar conteúdo anterior
+    const h2 = gerarTitulo(time1, time2, side, liga, resultFilter, recentGames, 'vs');
     
     resultado.appendChild(h2);
     resultado.insertAdjacentHTML('beforeend', tableContent);
