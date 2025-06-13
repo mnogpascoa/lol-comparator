@@ -39,7 +39,7 @@ function displayTeamData() {
         return;
     }
 
-    document.getElementById('team-info').innerHTML = `<h2>Partidas de ${teamName} (2025)</h2>`;
+    document.getElementById('team-info').innerHTML = `<h2>Partidas de ${teamName}</h2>`;
 
     let tableContent = `
         <div class="table-container">
