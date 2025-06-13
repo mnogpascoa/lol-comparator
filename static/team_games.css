@@ -47,34 +47,83 @@ table {
     border-collapse: collapse !important;
     background-color: white !important;
     border: 1px solid #ddd !important;
-    table-layout: auto !important;
+    table-layout: fixed !important; /* Força layout fixo para controlar colunas */
 }
 
 /* Fixa o cabeçalho da tabela */
 thead {
     position: sticky !important;
-    top: 0 !important; /* Teste inicial, ajustaremos para 1 cm acima */
+    top: 20px !important; /* 1 cm acima da posição original (60px - 40px) */
     background-color: #333 !important;
     z-index: 5 !important; /* Acima do corpo, abaixo de #team-info */
 }
 
-/* Estilização das células do cabeçalho */
+/* Estilização das células do cabeçalho com larguras definidas */
 thead th {
     color: white !important;
     border: 1px solid #ddd !important;
     padding: 8px !important;
     text-align: left !important;
-    min-width: 80px !important; /* Largura mínima razoável */
+    min-width: 0 !important; /* Evita expansão desnecessária */
 }
 
-/* Estilização das células do corpo */
+thead th:nth-child(1) { /* Coluna Data */
+    width: 10% !important; /* Limita a largura da coluna Data */
+}
+thead th:nth-child(2) { /* Coluna Liga */
+    width: 5% !important;
+}
+thead th:nth-child(3) { /* Coluna Lado */
+    width: 5% !important;
+}
+thead th:nth-child(4) { /* Coluna Vitória */
+    width: 5% !important;
+}
+thead th:nth-child(5) { /* Coluna Adversário */
+    width: 15% !important;
+}
+thead th:nth-child(6) { /* Coluna Duração */
+    width: 8% !important;
+}
+thead th:nth-child(7) { /* Coluna Kills */
+    width: 5% !important;
+}
+thead th:nth-child(8) { /* Coluna Deaths */
+    width: 5% !important;
+}
+thead th:nth-child(9) { /* Coluna Assists */
+    width: 5% !important;
+}
+thead th:nth-child(10) { /* Coluna Primeira Torre */
+    width: 8% !important;
+}
+thead th:nth-child(11) { /* Coluna Primeiro Dragão */
+    width: 8% !important;
+}
+thead th:nth-child(12) { /* Coluna Primeiro Sangue */
+    width: 8% !important;
+}
+thead th:nth-child(13) { /* Coluna Total Dragões */
+    width: 5% !important;
+}
+thead th:nth-child(14) { /* Coluna Total Barons */
+    width: 5% !important;
+}
+thead th:nth-child(15) { /* Coluna Total Torres */
+    width: 8% !important;
+}
+thead th:nth-child(16) { /* Coluna Total Inibidores */
+    width: 5% !important;
+}
+
+/* Estilização das células do corpo com herança de largura */
 td {
     border: 1px solid #ddd !important;
     padding: 8px !important;
     text-align: left !important;
     word-wrap: break-word !important;
     white-space: normal !important;
-    min-width: 80px !important;
+    min-width: 0 !important;
 }
 
 /* Linhas alternadas */
@@ -86,7 +135,8 @@ tr:nth-child(even) td {
 tbody {
     display: block !important; /* Separa o corpo para rolagem independente */
     width: 100% !important; /* Garante largura total */
-    margin-top: 80px !important; /* Desloca o corpo para abaixo do cabeçalho + 1 cm */
+    margin-top: 60px !important; /* Desloca o corpo para abaixo do cabeçalho */
+    overflow-y: auto !important; /* Rolagem vertical no corpo, se necessário */
 }
 
 /* Rolagem horizontal se necessário */
@@ -99,5 +149,8 @@ tbody {
     th, td {
         padding: 4px !important;
         font-size: 12px !important;
+    }
+    thead th {
+        width: auto !important; /* Ajuste automático em telas pequenas */
     }
 }
