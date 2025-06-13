@@ -316,15 +316,15 @@ function comparar() {
     teamImages.innerHTML = ''; // Limpar imagens anteriores
     if (primaryTime) {
         const img1 = document.createElement('div');
-        img1.className = 'team-image';
-        const img1Src = `https://lol.fandom.com/wiki/${encodeURIComponent(primaryTime.replace(/ /g, '_'))}/#/media/File:${encodeURIComponent(primaryTime.replace(/ /g, '_'))}logo_square.png`;
+        img1.className = 'team-image';  
+        const img1Src = `https://lol.fandom.com/wiki/${encodeURIComponent(primaryTime.replace(/ /g, '_'))}#/media/File:${encodeURIComponent(primaryTime.replace(/ /g, '_'))}logo_square.png`;
         img1.innerHTML = `<img src="${img1Src}" alt="${primaryTime} logo" onerror="this.style.display='none';">`;
         teamImages.appendChild(img1);
     }
     if (secondaryTime) {
         const img2 = document.createElement('div');
         img2.className = 'team-image';
-        const img2Src = `https://lol.fandom.com/wiki/${encodeURIComponent(secondaryTime.replace(/ /g, '_'))}/#/media/File:${encodeURIComponent(secondaryTime.replace(/ /g, '_'))}logo_square.png`;
+        const img2Src = `https://lol.fandom.com/wiki/${encodeURIComponent(secondaryTime.replace(/ /g, '_'))}#/media/File:${encodeURIComponent(secondaryTime.replace(/ /g, '_'))}logo_square.png`;
         img2.innerHTML = `<img src="${img2Src}" alt="${secondaryTime} logo" onerror="this.style.display='none';">`;
         teamImages.appendChild(img2);
     }
