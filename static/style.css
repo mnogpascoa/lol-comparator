@@ -82,7 +82,8 @@ table {
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
-    text-align: left; /* Alterado de center para left para melhor legibilidade */
+    text-align: center;
+    visibility: visible;
 }
 
 th {
@@ -96,13 +97,6 @@ tr {
 
 tr:nth-child(even) {
     background-color: #f2f2f2;
-}
-
-.info-note {
-    font-size: 0.9em;
-    color: #666;
-    margin-bottom: 10px;
-    text-align: center;
 }
 
 #resultado {
