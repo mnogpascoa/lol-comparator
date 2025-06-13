@@ -9,23 +9,23 @@ body {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #1e1e1e; /* Cinza muito escuro como fundo principal */
-    color: #d9d9d9; /* Cinza claro para texto geral */
+    background-color: #1e1e1e;
+    color: #d9d9d9;
 }
 
 .header-label {
-    background-color: #000000; /* Preto para o label */
-    padding: 10px 20px; /* Espaçamento interno */
-    border-radius: 4px; /* Bordas arredondadas como o botão */
-    margin-bottom: 20px; /* Espaçamento abaixo do label */
-    width: 100%; /* Largura total da tabela */
-    text-align: center; /* Centraliza o texto */
+    background-color: #000000;
+    padding: 10px 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
 }
 
 h1 {
-    color: white; /* Texto branco no label */
-    margin: 0; /* Remove margem padrão do h1 */
-    font-size: 24px; /* Ajuste opcional para consistência */
+    color: white;
+    margin: 0;
+    font-size: 24px;
 }
 
 .filter-container {
@@ -51,17 +51,17 @@ h1 {
 label {
     font-weight: bold;
     margin-right: 10px;
-    color: #c0c0c0; /* Cinza mais claro para melhor legibilidade */
+    color: #c0c0c0;
 }
 
 select, input {
     padding: 8px;
     font-size: 16px;
     width: 200px;
-    border: 1px solid #444; /* Borda cinza escura */
+    border: 1px solid #444;
     border-radius: 4px;
-    background-color: #2d2d2d; /* Fundo cinza escuro para inputs */
-    color: #d9d9d9; /* Texto cinza claro */
+    background-color: #2d2d2d;
+    color: #d9d9d9;
 }
 
 input[list] {
@@ -71,45 +71,45 @@ input[list] {
 .button-container {
     display: flex;
     align-items: center;
-    gap: 10px; /* Espaçamento opcional, pode ser removido se não houver mais imagens */
+    gap: 10px;
     margin-top: 10px;
 }
 
 button {
-    background-color: #000000; /* Verde original para destaque */
+    background-color: #000000;
     color: white;
     border: none;
     padding: 10px 20px;
     font-size: 16px;
-    border-radius: 4px; /* Bordas arredondadas */
+    border-radius: 4px;
     cursor: pointer;
-    margin-top: 0; /* Remove margem superior para alinhamento */
+    margin-top: 0;
     width: auto;
-    display: inline-block; /* Garante que o padding funcione */
-    height: 40px; /* Altura fixa para referência */
+    display: inline-block;
+    height: 40px;
 }
 
 button:hover {
-    background-color: #5a5a5a; /* Verde mais escuro no hover */
+    background-color: #5a5a5a;
 }
 
 table {
     border-collapse: collapse;
     width: 100%;
     margin-top: 20px;
-    background-color: #252525; /* Fundo cinza escuro para tabela */
-    border: 1px solid #444; /* Borda cinza escura */
+    background-color: #252525;
+    border: 1px solid #444;
 }
 
 th, td {
-    border: 1px solid #444; /* Borda cinza escura */
+    border: 1px solid #444;
     padding: 8px;
     text-align: center;
-    color: #e0e0e0; /* Texto cinza claro */
+    color: #e0e0e0;
 }
 
 th {
-    background-color: #000000; /* Preto para o cabeçalho */
+    background-color: #000000;
     color: white;
 }
 
@@ -118,12 +118,12 @@ tr {
 }
 
 tr:nth-child(even) {
-    background-color: #2e2e2e; /* Variação sutil de cinza escuro */
+    background-color: #2e2e2e;
 }
 
 .info-note {
     font-size: 0.9em;
-    color: #a0a0a0; /* Cinza médio para nota */
+    color: #a0a0a0;
     margin-bottom: 10px;
     text-align: center;
 }
@@ -133,18 +133,17 @@ tr:nth-child(even) {
     overflow: auto;
 }
 
-/* Estilização dos links dos times */
 a {
-    color: #f0f0f0; /* Branco fosco (cinza claro) */
-    text-decoration: underline; /* Sublinhado por padrão */
+    color: #f0f0f0;
+    text-decoration: underline;
 }
 
 a:hover {
-    color: #ffffff; /* Branco puro no hover para destaque */
-    text-decoration: underline; /* Mantém sublinhado no hover */
+    color: #ffffff;
+    text-decoration: underline;
 }
 
 a:visited {
-    color: #f0f0f0; /* Mantém branco fosco após clicar */
-    text-decoration: underline; /* Mantém sublinhado após clique */
+    color: #f0f0f0;
+    text-decoration: underline;
 }
