@@ -41,7 +41,7 @@ h1 {
 label {
     font-weight: bold;
     margin-right: 10px;
-    color: #b0b0b0; /* Cinza médio para labels */
+    color: #c0c0c0; /* Cinza mais claro para melhor legibilidade */
 }
 
 select, input {
@@ -59,7 +59,7 @@ input[list] {
 }
 
 button {
-    background-color: #4CAF50; /* Verde original, mas pode ser ajustado */
+    background-color: #4CAF50; /* Verde original */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -90,7 +90,7 @@ th, td {
 }
 
 th {
-    background-color: #333; /* Cinza escuro para cabeçalho */
+    background-color: #000000; /* Preto para o cabeçalho */
     color: white;
 }
 
