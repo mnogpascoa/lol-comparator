@@ -6,110 +6,91 @@
 }
 
 body {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100vw !important; /* Força largura total */
-    min-width: 100% !important;
-    height: 100vh !important; /* Altura total da janela */
-    font-family: Arial, sans-serif !important;
-    background-color: #f4f4f4 !important;
-    display: flex !important;
-    flex-direction: column !important; /* Controla a altura */
+    margin: 0;
+    padding: 0;
+    width: 100vw; /* Largura total da janela */
+    min-width: 100%; /* Evita contração */
+    height: 100vh; /* Altura total da janela */
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column; /* Controla a altura */
 }
 
 /* Centraliza o cabeçalho no topo */
 #team-info {
-    width: 100% !important;
-    text-align: center !important;
-    padding: 20px 0 !important;
-    background-color: #333 !important;
-    color: white !important;
-    margin-bottom: 0 !important;
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 10 !important; /* Prioridade alta */
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    background-color: #333;
+    color: white;
+    margin-bottom: 10px;
 }
 
 /* Contêiner da tabela ocupa a largura total */
 #games-table {
-    width: 100vw !important;
-    min-width: 100% !important;
-    flex: 1 !important; /* Ocupa o espaço restante da altura */
-    overflow: auto !important; /* Rolagem horizontal e vertical */
-    margin: 0 !important;
-    padding: 0 !important;
-    position: relative !important; /* Contexto para sticky */
+    width: 100vw;
+    min-width: 100%;
+    flex: 1; /* Ocupa o espaço restante da altura */
+    overflow: auto; /* Rolagem horizontal e vertical */
+    margin: 0;
+    padding: 0;
 }
 
 /* Estilização da tabela */
 table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    background-color: white !important;
-    border: 1px solid #ddd !important;
-    table-layout: auto !important; /* Volta para layout automático */
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border: 1px solid #ddd;
+    table-layout: auto; /* Layout automático */
 }
 
-/* Fixa o cabeçalho da tabela */
-thead {
-    position: sticky !important;
-    top: 20px !important; /* 1 cm acima da posição original (60px - 40px) */
-    background-color: #333 !important;
-    z-index: 5 !important; /* Acima do corpo, abaixo de #team-info */
+/* Estilização das células do cabeçalho */
+th {
+    background-color: #333;
+    color: white;
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    min-width: 50px;
+    max-width: 200px;
 }
 
-/* Estilização das células do cabeçalho com larguras flexíveis */
-thead th {
-    color: white !important;
-    border: 1px solid #ddd !important;
-    padding: 8px !important;
-    text-align: left !important;
-    min-width: 50px !important; /* Largura mínima razoável */
-    max-width: 200px !important; /* Limita expansão excessiva */
+th:nth-child(1) { /* Coluna Data */
+    min-width: 80px;
 }
-
-thead th:nth-child(1) { /* Coluna Data */
-    min-width: 80px !important;
-}
-thead th:nth-child(5) { /* Coluna Adversário */
-    min-width: 120px !important;
+th:nth-child(5) { /* Coluna Adversário */
+    min-width: 120px;
 }
 
 /* Estilização das células do corpo */
 td {
-    border: 1px solid #ddd !important;
-    padding: 8px !important;
-    text-align: left !important;
-    word-wrap: break-word !important;
-    white-space: normal !important;
-    min-width: 50px !important;
-    max-width: 200px !important;
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    word-wrap: break-word;
+    white-space: normal;
+    min-width: 50px;
+    max-width: 200px;
 }
 
 /* Linhas alternadas */
-tr:nth-child(even) td {
-    background-color: #f2f2f2 !important;
-}
-
-/* Ajuste do corpo da tabela */
-tbody {
-    /* Remove display: block para manter estrutura tabular */
-    width: 100% !important;
-    margin-top: 60px !important; /* Desloca o corpo para abaixo do cabeçalho */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
 
 /* Rolagem horizontal se necessário */
 #games-table {
-    overflow-x: auto !important;
-    overflow-y: auto !important; /* Garante rolagem vertical */
+    overflow-x: auto;
 }
 
 /* Responsividade */
 @media (max-width: 600px) {
     th, td {
-        padding: 4px !important;
-        font-size: 12px !important;
-        min-width: 30px !important;
-        max-width: 150px !important;
+        padding: 4px;
+        font-size: 12px;
+        min-width: 30px;
+        max-width: 150px;
     }
 }
