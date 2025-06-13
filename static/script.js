@@ -99,14 +99,9 @@ function comparar() {
     let dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
     let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
 
-    // Filtro por data como último passo
+    // Filtro por data como último passo (somente últimos X jogos)
     let dfData = dfResult;
-    if (dataFilter === '2025') {
-        dfData = dfResult.filter(row => {
-            const date = new Date(row.date);
-            return date.getFullYear() === 2025;
-        });
-    } else if (dataFilter && dataFilter !== '') {
+    if (dataFilter && dataFilter !== '') {
         const limit = parseInt(dataFilter);
         dfData = dfResult.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, limit);
     }
@@ -301,8 +296,7 @@ function comparar() {
     if (side) h2.appendChild(document.createTextNode(` (${side})`));
     if (liga) h2.appendChild(document.createTextNode(` (${liga})`));
     if (resultFilter !== '') h2.appendChild(document.createTextNode(` (${resultFilter === '1' ? 'Vitórias' : 'Derrotas'})`));
-    if (dataFilter === '2025') h2.appendChild(document.createTextNode(' (2025)'));
-    else if (dataFilter && dataFilter !== '' && dataFilter !== '2025') h2.appendChild(document.createTextNode(` (Últimos ${dataFilter} jogos)`));
+    if (dataFilter && dataFilter !== '') h2.appendChild(document.createTextNode(` (Últimos ${dataFilter} jogos)`));
     
     resultado.appendChild(h2);
     resultado.insertAdjacentHTML('beforeend', tableContent);
@@ -337,14 +331,9 @@ function confrontoDireto() {
     let dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
     let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
 
-    // Filtro por data como último passo
+    // Filtro por data como último passo (somente últimos X jogos)
     let dfData = dfResult;
-    if (dataFilter === '2025') {
-        dfData = dfResult.filter(row => {
-            const date = new Date(row.date);
-            return date.getFullYear() === 2025;
-        });
-    } else if (dataFilter && dataFilter !== '') {
+    if (dataFilter && dataFilter !== '') {
         const limit = parseInt(dataFilter);
         dfData = dfResult.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, limit);
     }
@@ -497,8 +486,7 @@ function confrontoDireto() {
     if (side) h2.appendChild(document.createTextNode(` (${side})`));
     if (liga) h2.appendChild(document.createTextNode(` (${liga})`));
     if (resultFilter !== '') h2.appendChild(document.createTextNode(` (${resultFilter === '1' ? 'Vitórias' : 'Derrotas'})`));
-    if (dataFilter === '2025') h2.appendChild(document.createTextNode(' (2025)'));
-    else if (dataFilter && dataFilter !== '' && dataFilter !== '2025') h2.appendChild(document.createTextNode(` (Últimos ${dataFilter} jogos)`));
+    if (dataFilter && dataFilter !== '') h2.appendChild(document.createTextNode(` (Últimos ${dataFilter} jogos)`));
     
     resultado.appendChild(h2);
     resultado.insertAdjacentHTML('beforeend', tableContent);
