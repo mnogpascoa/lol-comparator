@@ -110,15 +110,19 @@ function comparar() {
     let dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
     let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
 
-    let dadosTime1 = time1 ? dfResult.filter(row => row.teamname === time1) : [];
-    let dadosTime2 = time2 ? dfResult.filter(row => row.teamname === time2) : [];
+    // Determinar o time principal (usa time2 se time1 estiver vazio, caso contrário usa time1)
+    const primaryTime = time1 || time2;
+    const secondaryTime = (time1 && time2 && time1 !== time2) ? time2 : null;
+
+    let dadosTime1 = primaryTime ? dfResult.filter(row => row.teamname === primaryTime) : [];
+    let dadosTime2 = secondaryTime ? dfResult.filter(row => row.teamname === secondaryTime) : [];
 
     if (recentGames) {
         dadosTime1 = dadosTime1.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
-        if (time2) dadosTime2 = dadosTime2.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
+        if (secondaryTime) dadosTime2 = dadosTime2.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
     }
 
-    if (dadosTime1.length === 0 && (!time2 || dadosTime2.length === 0)) {
+    if (dadosTime1.length === 0 && (!secondaryTime || dadosTime2.length === 0)) {
         alert('Dados insuficientes para os times selecionados!');
         return;
     }
@@ -200,29 +204,29 @@ function comparar() {
     }
 
     const statsTime1 = calcularKillStats(dadosTime1);
-    const statsTime2 = time2 ? calcularKillStats(dadosTime2) : { totalJogos: 0, killsBelow: 0, killsAbove: 0, percentBelow: 0, percentAbove: 0 };
+    const statsTime2 = secondaryTime ? calcularKillStats(dadosTime2) : { totalJogos: 0, killsBelow: 0, killsAbove: 0, percentBelow: 0, percentAbove: 0 };
     const timeStatsTime1 = calcularTimeStats(dadosTime1);
-    const timeStatsTime2 = time2 ? calcularTimeStats(dadosTime2) : { totalJogos: 0, timeBelow: 0, timeAbove: 0, percentBelow: 0, percentAbove: 0 };
+    const timeStatsTime2 = secondaryTime ? calcularTimeStats(dadosTime2) : { totalJogos: 0, timeBelow: 0, timeAbove: 0, percentBelow: 0, percentAbove: 0 };
     const dragonStatsTime1 = calcularDragonStats(dadosTime1);
-    const dragonStatsTime2 = time2 ? calcularDragonStats(dadosTime2) : { totalJogos: 0, dragonsBelow: 0, dragonsAbove: 0, percentBelow: 0, percentAbove: 0 };
+    const dragonStatsTime2 = secondaryTime ? calcularDragonStats(dadosTime2) : { totalJogos: 0, dragonsBelow: 0, dragonsAbove: 0, percentBelow: 0, percentAbove: 0 };
     const baronStatsTime1 = calcularBaronStats(dadosTime1);
-    const baronStatsTime2 = time2 ? calcularBaronStats(dadosTime2) : { totalJogos: 0, baronsBelow: 0, baronsAbove: 0, percentBelow: 0, percentAbove: 0 };
+    const baronStatsTime2 = secondaryTime ? calcularBaronStats(dadosTime2) : { totalJogos: 0, baronsBelow: 0, baronsAbove: 0, percentBelow: 0, percentAbove: 0 };
     const towerStatsTime1 = calcularTowerStats(dadosTime1);
-    const towerStatsTime2 = time2 ? calcularTowerStats(dadosTime2) : { totalJogos: 0, towersBelow: 0, towersAbove: 0, percentBelow: 0, percentAbove: 0 };
+    const towerStatsTime2 = secondaryTime ? calcularTowerStats(dadosTime2) : { totalJogos: 0, towersBelow: 0, towersAbove: 0, percentBelow: 0, percentAbove: 0 };
     const inhibitorStatsTime1 = calcularInhibitorStats(dadosTime1);
-    const inhibitorStatsTime2 = time2 ? calcularInhibitorStats(dadosTime2) : { totalJogos: 0, inhibitorsBelow: 0, inhibitorsAbove: 0, percentBelow: 0, percentAbove: 0 };
+    const inhibitorStatsTime2 = secondaryTime ? calcularInhibitorStats(dadosTime2) : { totalJogos: 0, inhibitorsBelow: 0, inhibitorsAbove: 0, percentBelow: 0, percentAbove: 0 };
     const mediasTime1 = calcularMedias(dadosTime1);
-    const mediasTime2 = time2 ? calcularMedias(dadosTime2) : { 'Jogos': 0, 'Vitórias': 0, 'Vitórias (%)': 0, 'Primeira Torre (%)': 0, 'Primeiro Dragão (%)': 0, 'Primeiro Sangue (%)': 0 };
+    const mediasTime2 = secondaryTime ? calcularMedias(dadosTime2) : { 'Jogos': 0, 'Vitórias': 0, 'Vitórias (%)': 0, 'Primeira Torre (%)': 0, 'Primeiro Dragão (%)': 0, 'Primeiro Sangue (%)': 0 };
 
     const timeLineMin = parseInt(document.getElementById('time-line').value);
 
     // Determinar o conteúdo da tabela com base em 1 ou 2 times
     let tableContent = '';
-    if (!time2 || time1 === time2) {
-        // Exibe apenas os dados de time1
+    if (!secondaryTime) {
+        // Exibe apenas os dados de primaryTime
         tableContent = `
             <table>
-                <tr><th>Estatística</th><th>${time1}</th></tr>
+                <tr><th>Estatística</th><th>${primaryTime}</th></tr>
                 <tr><td>Jogos Disputados</td><td>${mediasTime1.Jogos}</td></tr>
                 <tr><td>Vitórias</td><td>${mediasTime1.Vitórias}</td></tr>
                 <tr><td>Vitórias (%)</td><td>${mediasTime1['Vitórias (%)']}</td></tr>
@@ -244,10 +248,10 @@ function comparar() {
             </table>
         `;
     } else {
-        // Exibe a comparação entre time1 e time2
+        // Exibe a comparação entre primaryTime e secondaryTime
         tableContent = `
             <table>
-                <tr><th>Estatística</th><th>${time1}</th><th>${time2}</th></tr>
+                <tr><th>Estatística</th><th>${primaryTime}</th><th>${secondaryTime}</th></tr>
                 <tr><td>Jogos Disputados</td><td>${mediasTime1.Jogos}</td><td>${mediasTime2.Jogos}</td></tr>
                 <tr><td>Vitórias</td><td>${mediasTime1.Vitórias}</td><td>${mediasTime2.Vitórias}</td></tr>
                 <tr><td>Vitórias (%)</td><td>${mediasTime1['Vitórias (%)']}</td><td>${mediasTime2['Vitórias (%)']}</td></tr>
@@ -276,25 +280,25 @@ function comparar() {
     const resultado = document.getElementById('resultado');
     resultado.innerHTML = ''; // Limpar conteúdo anterior
     const h2 = document.createElement('h2');
-    if (!time2 || time1 === time2) {
-        // Apenas o nome do time1 com link
+    if (!secondaryTime) {
+        // Apenas o nome do primaryTime com link
         const link1 = document.createElement('a');
-        link1.href = `static/team_games.html?teamname=${encodeURIComponent(time1)}`;
+        link1.href = `static/team_games.html?teamname=${encodeURIComponent(primaryTime)}`;
         link1.target = '_blank';
-        link1.textContent = time1;
+        link1.textContent = primaryTime;
         h2.appendChild(link1);
     } else {
-        // Comparação com time1 vs time2
+        // Comparação com primaryTime vs secondaryTime
         const link1 = document.createElement('a');
-        link1.href = `static/team_games.html?teamname=${encodeURIComponent(time1)}`;
+        link1.href = `static/team_games.html?teamname=${encodeURIComponent(primaryTime)}`;
         link1.target = '_blank';
-        link1.textContent = time1;
+        link1.textContent = primaryTime;
         h2.appendChild(link1);
         h2.appendChild(document.createTextNode(' vs '));
         const link2 = document.createElement('a');
-        link2.href = `static/team_games.html?teamname=${encodeURIComponent(time2)}`;
+        link2.href = `static/team_games.html?teamname=${encodeURIComponent(secondaryTime)}`;
         link2.target = '_blank';
-        link2.textContent = time2;
+        link2.textContent = secondaryTime;
         h2.appendChild(link2);
     }
     
