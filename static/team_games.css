@@ -32,7 +32,7 @@ body {
     width: 100vw;
     min-width: 100%;
     flex: 1; /* Ocupa o espaço restante da altura */
-    overflow: auto; /* Rolagem horizontal e vertical */
+    overflow: auto; /* Rolagem horizontal, se necessário */
     margin: 0;
     padding: 0;
 }
@@ -43,12 +43,26 @@ table {
     border-collapse: collapse;
     background-color: white;
     border: 1px solid #ddd;
-    table-layout: auto; /* Layout automático */
+}
+
+/* Contêiner para thead e tbody */
+.table-container {
+    display: block;
+    width: 100%;
+    max-height: calc(100vh - 100px); /* Altura máxima, ajustada para #team-info e margem */
+    overflow-y: auto; /* Rolagem vertical no contêiner */
+}
+
+/* Fixa o cabeçalho da tabela */
+thead {
+    background-color: #333;
+    position: sticky;
+    top: 0; /* Fixo no topo do contêiner */
+    z-index: 1;
 }
 
 /* Estilização das células do cabeçalho */
 th {
-    background-color: #333;
     color: white;
     border: 1px solid #ddd;
     padding: 8px;
