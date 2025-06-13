@@ -13,9 +13,19 @@ body {
     color: #d9d9d9; /* Cinza claro para texto geral */
 }
 
+.header-label {
+    background-color: #000000; /* Preto para o label */
+    padding: 10px 20px; /* Espaçamento interno */
+    border-radius: 4px; /* Bordas arredondadas como o botão */
+    margin-bottom: 20px; /* Espaçamento abaixo do label */
+    width: 100%; /* Largura total da tabela */
+    text-align: center; /* Centraliza o texto */
+}
+
 h1 {
-    text-align: center;
-    color: #ffffff; /* Branco para o título */
+    color: white; /* Texto branco no label */
+    margin: 0; /* Remove margem padrão do h1 */
+    font-size: 24px; /* Ajuste opcional para consistência */
 }
 
 .filter-container {
@@ -59,19 +69,20 @@ input[list] {
 }
 
 button {
-    background-color: #000000; /* Verde original */
+    background-color: #4CAF50; /* Verde original para destaque */
     color: white;
     border: none;
     padding: 10px 20px;
     font-size: 16px;
-    border-radius: 4px;
+    border-radius: 4px; /* Bordas arredondadas */
     cursor: pointer;
     margin-top: 10px;
     width: auto;
+    display: inline-block; /* Garante que o padding funcione */
 }
 
 button:hover {
-    background-color: #333333; /* Verde mais escuro no hover */
+    background-color: #45a049; /* Verde mais escuro no hover */
 }
 
 table {
@@ -91,7 +102,7 @@ th, td {
 
 th {
     background-color: #000000; /* Preto para o cabeçalho */
-    color: rgb(228, 228, 228);
+    color: white;
 }
 
 tr {
