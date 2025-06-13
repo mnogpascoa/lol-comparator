@@ -93,10 +93,9 @@ function carregarTimes() {
 function calcularKillStats(dados, killLine) {
     const totalJogos = dados.length;
     if (totalJogos === 0) return { totalJogos: 0, killsBelow: 0, killsAbove: 0, percentBelow: 0, percentAbove: 0 };
-    const killsBelow = dados.filter(row => parseInt(row.totalKills) < killLine || parseInt(row.totalKills) === 0).length;
+    const killsBelow = dados.filter(row => parseFloat(row.totalKills) < killLine || parseFloat(row.totalKills) === 0).length;
     const killsAbove = totalJogos - killsBelow;
     const percentBelow = (killsBelow / totalJogos * 100).toFixed(2);
-    Stuarts-MacBook-Pro.local:96
     const percentAbove = (killsAbove / totalJogos * 100).toFixed(2);
     return { totalJogos, killsBelow, killsAbove, percentBelow, percentAbove };
 }
@@ -114,7 +113,7 @@ function calcularTimeStats(dados, timeLine) {
 function calcularDragonStats(dados, dragonLine) {
     const totalJogos = dados.length;
     if (totalJogos === 0) return { totalJogos: 0, dragonsBelow: 0, dragonsAbove: 0, percentBelow: 0, percentAbove: 0 };
-    const dragonsBelow = dados.filter(row => parseInt(row.totalDragons) < dragonLine || parseInt(row.totalDragons) === 0).length;
+    const dragonsBelow = dados.filter(row => parseFloat(row.totalDragons) < dragonLine || parseFloat(row.totalDragons) === 0).length;
     const dragonsAbove = totalJogos - dragonsBelow;
     const percentBelow = (dragonsBelow / totalJogos * 100).toFixed(2);
     const percentAbove = (dragonsAbove / totalJogos * 100).toFixed(2);
@@ -124,7 +123,7 @@ function calcularDragonStats(dados, dragonLine) {
 function calcularBaronStats(dados, baronLine) {
     const totalJogos = dados.length;
     if (totalJogos === 0) return { totalJogos: 0, baronsBelow: 0, baronsAbove: 0, percentBelow: 0, percentAbove: 0 };
-    const baronsBelow = dados.filter(row => parseInt(row.totalBarons) < baronLine || parseInt(row.totalBarons) === 0).length;
+    const baronsBelow = dados.filter(row => parseFloat(row.totalBarons) < baronLine || parseFloat(row.totalBarons) === 0).length;
     const baronsAbove = totalJogos - baronsBelow;
     const percentBelow = (baronsBelow / totalJogos * 100).toFixed(2);
     const percentAbove = (baronsAbove / totalJogos * 100).toFixed(2);
@@ -134,7 +133,7 @@ function calcularBaronStats(dados, baronLine) {
 function calcularTowerStats(dados, towerLine) {
     const totalJogos = dados.length;
     if (totalJogos === 0) return { totalJogos: 0, towersBelow: 0, towersAbove: 0, percentBelow: 0, percentAbove: 0 };
-    const towersBelow = dados.filter(row => parseInt(row.totalTowers) < towerLine || parseInt(row.totalTowers) === 0).length;
+    const towersBelow = dados.filter(row => parseFloat(row.totalTowers) < towerLine || parseFloat(row.totalTowers) === 0).length;
     const towersAbove = totalJogos - towersBelow;
     const percentBelow = (towersBelow / totalJogos * 100).toFixed(2);
     const percentAbove = (towersAbove / totalJogos * 100).toFixed(2);
@@ -144,7 +143,7 @@ function calcularTowerStats(dados, towerLine) {
 function calcularInhibitorStats(dados, inhibitorLine) {
     const totalJogos = dados.length;
     if (totalJogos === 0) return { totalJogos: 0, inhibitorsBelow: 0, inhibitorsAbove: 0, percentBelow: 0, percentAbove: 0 };
-    const inhibitorsBelow = dados.filter(row => parseInt(row.totalInhibitors) < inhibitorLine || parseInt(row.totalInhibitors) === 0).length;
+    const inhibitorsBelow = dados.filter(row => parseFloat(row.totalInhibitors) < inhibitorLine || parseFloat(row.totalInhibitors) === 0).length;
     const inhibitorsAbove = totalJogos - inhibitorsBelow;
     const percentBelow = (inhibitorsBelow / totalJogos * 100).toFixed(2);
     const percentAbove = (inhibitorsAbove / totalJogos * 100).toFixed(2);
@@ -253,8 +252,8 @@ function comparar() {
     const liga = document.getElementById('liga').value;
     const side = document.getElementById('side').value;
     const resultFilter = document.getElementById('result-filter').value;
-    const recentGames = document.getElementById('recent-garde
-        const killLine = parseFloat(document.getElementById('kill-line').value);
+    const recentGames = document.getElementById('recent-games').value;
+    const killLine = parseFloat(document.getElementById('kill-line').value);
     const timeLineValue = parseInt(document.getElementById('time-line').value);
     const dragonLine = parseFloat(document.getElementById('dragon-line').value);
     const baronLine = parseFloat(document.getElementById('baron-line').value);
