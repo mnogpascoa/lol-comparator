@@ -1,8 +1,5 @@
 // Variável global para armazenar os dados do CSV
 let df = null;
-let dfLiga = null;
-let dfSide = null;
-let dfResult = null;
 let allTeams = [];
 
 Papa.parse('static/BaseDadosDesseAno.csv', {
@@ -51,42 +48,22 @@ function carregarTimes() {
     const liga = document.getElementById('liga').value;
     const side = document.getElementById('side').value;
     const resultFilter = document.getElementById('result-filter').value;
-    const dataFilter = document.getElementById('data').value;
-    const killLine = document.getElementById('kill-line').value;
-    const timeLine = document.getElementById('time-line').value;
-    const dragonLine = document.getElementById('dragon-line').value;
-    const baronLine = document.getElementById('baron-line').value;
-    const towerLine = document.getElementById('tower-line').value;
-    const inhibitorLine = document.getElementById('inhibitor-line').value;
     const time1Input = document.getElementById('time1');
     const time2Input = document.getElementById('time2');
-    
     const time1Selecionado = time1Input.value;
     const time2Selecionado = time2Input.value;
 
     // Filtro por liga
-    dfLiga = liga ? df.filter(row => row.league === liga) : df;
+    let dfLiga = liga ? df.filter(row => row.league === liga) : df;
 
     // Filtro por lado
-    dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
+    let dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
 
     // Filtro por resultado (Vitórias/Derrotas)
-    dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
+    let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
 
-    // Filtro por data
-    let dfData = dfResult;
-    if (dataFilter === '2025') {
-        dfData = dfResult.filter(row => {
-            const date = new Date(row.date);
-            return date.getFullYear() === 2025;
-        });
-    } else if (dataFilter && dataFilter !== '') {
-        const limit = parseInt(dataFilter);
-        dfData = dfResult.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, limit);
-    }
-
-    // Extrair times disponíveis após todos os filtros
-    const times = [...new Set(dfData.map(row => row.teamname).filter(time => time))].sort();
+    // Extrair times disponíveis após filtros de liga, lado e resultado (sem filtragem de data)
+    const times = [...new Set(dfResult.map(row => row.teamname).filter(time => time))].sort();
     const datalist = document.getElementById('times-list');
     datalist.innerHTML = '';
     times.forEach(time => {
@@ -122,7 +99,7 @@ function comparar() {
     let dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
     let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
 
-    // Filtro por data
+    // Filtro por data como último passo
     let dfData = dfResult;
     if (dataFilter === '2025') {
         dfData = dfResult.filter(row => {
@@ -360,7 +337,7 @@ function confrontoDireto() {
     let dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
     let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
 
-    // Filtro por data
+    // Filtro por data como último passo
     let dfData = dfResult;
     if (dataFilter === '2025') {
         dfData = dfResult.filter(row => {
