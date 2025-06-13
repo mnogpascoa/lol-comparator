@@ -54,7 +54,6 @@ function displayTeamData() {
                         <th>Duração (min)</th>
                         <th>Kills</th>
                         <th>Deaths</th>
-                        <th>Assists</th>
                         <th>Primeira Torre</th>
                         <th>Primeiro Dragão</th>
                         <th>Primeiro Sangue</th>
@@ -80,7 +79,6 @@ function displayTeamData() {
                 <td>${row.gamelength || '-'}</td>
                 <td>${row.kills || '-'}</td>
                 <td>${row.deaths || '-'}</td>
-                <td>${row.assists || '-'}</td>
                 <td>${row.firsttower || '-'}</td>
                 <td>${row.firstdragon || '-'}</td>
                 <td>${row.firstblood || '-'}</td>
