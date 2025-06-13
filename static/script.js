@@ -307,13 +307,13 @@ function comparar() {
         link1.textContent = primaryTime;
         h2.appendChild(link1);
     } else {
-        // Comparação com primaryTime vs secondaryTime
+        // Comparação com primaryTime vs secondaryTime usando "&" para Stats
         const link1 = document.createElement('a');
         link1.href = `static/team_games.html?teamname=${encodeURIComponent(primaryTime)}`;
         link1.target = '_blank';
         link1.textContent = primaryTime;
         h2.appendChild(link1);
-        h2.appendChild(document.createTextNode(' vs '));
+        h2.appendChild(document.createTextNode(' & '));
         const link2 = document.createElement('a');
         link2.href = `static/team_games.html?teamname=${encodeURIComponent(secondaryTime)}`;
         link2.target = '_blank';
@@ -324,9 +324,8 @@ function comparar() {
     if (side) h2.appendChild(document.createTextNode(` (${side})`));
     if (liga) h2.appendChild(document.createTextNode(` (${liga})`));
     if (resultFilter !== '') h2.appendChild(document.createTextNode(` (${resultFilter === '1' ? 'Vitórias' : 'Derrotas'})`));
-    h2.appendChild(document.createTextNode(' (2025)'));
-    if (dataFilter && dataFilter !== '' && dataFilter !== '2025') h2.appendChild(document.createTextNode(` (Últimos ${dataFilter} jogos)`));
-    else if (dataFilter === '2025') h2.appendChild(document.createTextNode(' (Ano 2025)'));
+    if (dataFilter === '2025') h2.appendChild(document.createTextNode(' (2025)'));
+    else if (dataFilter && dataFilter !== '' && dataFilter !== '2025') h2.appendChild(document.createTextNode(` (Últimos ${dataFilter} jogos)`));
     
     resultado.appendChild(h2);
     resultado.insertAdjacentHTML('beforeend', tableContent);
@@ -521,9 +520,8 @@ function confrontoDireto() {
     if (side) h2.appendChild(document.createTextNode(` (${side})`));
     if (liga) h2.appendChild(document.createTextNode(` (${liga})`));
     if (resultFilter !== '') h2.appendChild(document.createTextNode(` (${resultFilter === '1' ? 'Vitórias' : 'Derrotas'})`));
-    h2.appendChild(document.createTextNode(' (2025)'));
-    if (dataFilter && dataFilter !== '' && dataFilter !== '2025') h2.appendChild(document.createTextNode(` (Últimos ${dataFilter} jogos)`));
-    else if (dataFilter === '2025') h2.appendChild(document.createTextNode(' (Ano 2025)'));
+    if (dataFilter === '2025') h2.appendChild(document.createTextNode(' (2025)'));
+    else if (dataFilter && dataFilter !== '' && dataFilter !== '2025') h2.appendChild(document.createTextNode(` (Últimos ${dataFilter} jogos)`));
     
     resultado.appendChild(h2);
     resultado.insertAdjacentHTML('beforeend', tableContent);
