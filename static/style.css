@@ -68,6 +68,13 @@ input[list] {
     width: 200px;
 }
 
+.button-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espaçamento entre botão e imagens */
+    margin-top: 10px;
+}
+
 button {
     background-color: #000000; /* Verde original para destaque */
     color: white;
@@ -76,13 +83,26 @@ button {
     font-size: 16px;
     border-radius: 4px; /* Bordas arredondadas */
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 0; /* Remove margem superior para alinhamento */
     width: auto;
     display: inline-block; /* Garante que o padding funcione */
 }
 
 button:hover {
-    background-color: #3f3f3f; /* Verde mais escuro no hover */
+    background-color: #4d4d4d; /* Verde mais escuro no hover */
+}
+
+.team-images .team-image {
+    background-color: #000000; /* Preto para o label da imagem */
+    padding: 5px; /* Espaçamento interno */
+    border-radius: 4px; /* Bordas arredondadas como o botão */
+    display: inline-block; /* Alinha verticalmente */
+}
+
+.team-images img {
+    max-height: 40px; /* Altura máxima igual à do botão (ajustada para padding) */
+    vertical-align: middle; /* Alinha a imagem verticalmente com o botão */
+    border-radius: 2px; /* Bordas ligeiramente arredondadas na imagem */
 }
 
 table {
@@ -128,7 +148,7 @@ tr:nth-child(even) {
 /* Estilização dos links dos times */
 a {
     color: #f0f0f0; /* Branco fosco (cinza claro) */
-    text-decoration: underline; /* Restaura sublinhado por padrão */
+    text-decoration: underline; /* Sublinhado por padrão */
 }
 
 a:hover {
