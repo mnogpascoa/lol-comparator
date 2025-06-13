@@ -9,12 +9,13 @@ body {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f4f4f4;
+    background-color: #1e1e1e; /* Cinza muito escuro como fundo principal */
+    color: #d9d9d9; /* Cinza claro para texto geral */
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: #ffffff; /* Branco para o título */
 }
 
 .filter-container {
@@ -40,15 +41,17 @@ h1 {
 label {
     font-weight: bold;
     margin-right: 10px;
+    color: #b0b0b0; /* Cinza médio para labels */
 }
 
 select, input {
     padding: 8px;
     font-size: 16px;
     width: 200px;
-    border: 1px solid #ddd;
+    border: 1px solid #444; /* Borda cinza escura */
     border-radius: 4px;
-    background-color: #ffffff;
+    background-color: #2d2d2d; /* Fundo cinza escuro para inputs */
+    color: #d9d9d9; /* Texto cinza claro */
 }
 
 input[list] {
@@ -56,7 +59,7 @@ input[list] {
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* Verde original, mas pode ser ajustado */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -68,25 +71,26 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #45a049; /* Verde mais escuro no hover */
 }
 
 table {
     border-collapse: collapse;
     width: 100%;
     margin-top: 20px;
-    background-color: white;
-    border: 1px solid #ddd;
+    background-color: #252525; /* Fundo cinza escuro para tabela */
+    border: 1px solid #444; /* Borda cinza escura */
 }
 
 th, td {
-    border: 1px solid #ddd;
+    border: 1px solid #444; /* Borda cinza escura */
     padding: 8px;
-    text-align: center; /* Restaurado para centralizar os dados */
+    text-align: center;
+    color: #e0e0e0; /* Texto cinza claro */
 }
 
 th {
-    background-color: #333;
+    background-color: #333; /* Cinza escuro para cabeçalho */
     color: white;
 }
 
@@ -95,12 +99,12 @@ tr {
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #2e2e2e; /* Variação sutil de cinza escuro */
 }
 
 .info-note {
     font-size: 0.9em;
-    color: #666;
+    color: #a0a0a0; /* Cinza médio para nota */
     margin-bottom: 10px;
     text-align: center;
 }
