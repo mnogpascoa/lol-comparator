@@ -276,17 +276,20 @@ function comparar() {
     const resultado = document.getElementById('resultado');
     resultado.innerHTML = ''; // Limpar conteúdo anterior
     const h2 = document.createElement('h2');
-    h2.textContent = !time2 || time1 === time2 ? `${time1}` : 'Comparação: ';
-    
-    if (time1) {
+    if (!time2 || time1 === time2) {
+        // Apenas o nome do time1 com link
         const link1 = document.createElement('a');
         link1.href = `static/team_games.html?teamname=${encodeURIComponent(time1)}`;
         link1.target = '_blank';
         link1.textContent = time1;
         h2.appendChild(link1);
-    }
-    
-    if (time2 && time1 !== time2) {
+    } else {
+        // Comparação com time1 vs time2
+        const link1 = document.createElement('a');
+        link1.href = `static/team_games.html?teamname=${encodeURIComponent(time1)}`;
+        link1.target = '_blank';
+        link1.textContent = time1;
+        h2.appendChild(link1);
         h2.appendChild(document.createTextNode(' vs '));
         const link2 = document.createElement('a');
         link2.href = `static/team_games.html?teamname=${encodeURIComponent(time2)}`;
