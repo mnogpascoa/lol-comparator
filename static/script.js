@@ -51,7 +51,7 @@ function carregarTimes() {
     const liga = document.getElementById('liga').value;
     const side = document.getElementById('side').value;
     const resultFilter = document.getElementById('result-filter').value;
-    const recentGames = document.getElementById('recent-games').value;
+    const dataFilter = document.getElementById('data').value;
     const killLine = document.getElementById('kill-line').value;
     const timeLine = document.getElementById('time-line').value;
     const dragonLine = document.getElementById('dragon-line').value;
@@ -73,8 +73,20 @@ function carregarTimes() {
     // Filtro por resultado (Vitórias/Derrotas)
     dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
 
+    // Filtro por data
+    let dfData = dfResult;
+    if (dataFilter === '2025') {
+        dfData = dfResult.filter(row => {
+            const date = new Date(row.date);
+            return date.getFullYear() === 2025;
+        });
+    } else if (dataFilter && dataFilter !== '') {
+        const limit = parseInt(dataFilter);
+        dfData = dfResult.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, limit);
+    }
+
     // Extrair times disponíveis após todos os filtros
-    const times = [...new Set(dfResult.map(row => row.teamname).filter(time => time))].sort();
+    const times = [...new Set(dfData.map(row => row.teamname).filter(time => time))].sort();
     const datalist = document.getElementById('times-list');
     datalist.innerHTML = '';
     times.forEach(time => {
@@ -94,7 +106,7 @@ function comparar() {
     const liga = document.getElementById('liga').value;
     const side = document.getElementById('side').value;
     const resultFilter = document.getElementById('result-filter').value;
-    const recentGames = document.getElementById('recent-games').value;
+    const dataFilter = document.getElementById('data').value;
     const killLine = parseFloat(document.getElementById('kill-line').value);
     const timeLineValue = parseInt(document.getElementById('time-line').value);
     const dragonLine = parseFloat(document.getElementById('dragon-line').value);
@@ -110,17 +122,24 @@ function comparar() {
     let dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
     let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
 
+    // Filtro por data
+    let dfData = dfResult;
+    if (dataFilter === '2025') {
+        dfData = dfResult.filter(row => {
+            const date = new Date(row.date);
+            return date.getFullYear() === 2025;
+        });
+    } else if (dataFilter && dataFilter !== '') {
+        const limit = parseInt(dataFilter);
+        dfData = dfResult.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, limit);
+    }
+
     // Determinar o time principal (usa time2 se time1 estiver vazio, caso contrário usa time1)
     const primaryTime = time1 || time2;
     const secondaryTime = (time1 && time2 && time1 !== time2) ? time2 : null;
 
-    let dadosTime1 = primaryTime ? dfResult.filter(row => row.teamname === primaryTime) : [];
-    let dadosTime2 = secondaryTime ? dfResult.filter(row => row.teamname === secondaryTime) : [];
-
-    if (recentGames) {
-        dadosTime1 = dadosTime1.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
-        if (secondaryTime) dadosTime2 = dadosTime2.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
-    }
+    let dadosTime1 = primaryTime ? dfData.filter(row => row.teamname === primaryTime) : [];
+    let dadosTime2 = secondaryTime ? dfData.filter(row => row.teamname === secondaryTime) : [];
 
     if (dadosTime1.length === 0 && (!secondaryTime || dadosTime2.length === 0)) {
         alert('Dados insuficientes para os times selecionados!');
@@ -306,10 +325,11 @@ function comparar() {
     if (liga) h2.appendChild(document.createTextNode(` (${liga})`));
     if (resultFilter !== '') h2.appendChild(document.createTextNode(` (${resultFilter === '1' ? 'Vitórias' : 'Derrotas'})`));
     h2.appendChild(document.createTextNode(' (2025)'));
-    if (recentGames) h2.appendChild(document.createTextNode(` (Últimos ${recentGames} jogos)`));
+    if (dataFilter && dataFilter !== '' && dataFilter !== '2025') h2.appendChild(document.createTextNode(` (Últimos ${dataFilter} jogos)`));
+    else if (dataFilter === '2025') h2.appendChild(document.createTextNode(' (Ano 2025)'));
     
     resultado.appendChild(h2);
     resultado.insertAdjacentHTML('beforeend', tableContent);
-    
+
     console.log('Título renderizado:', h2.outerHTML);
 }
