@@ -225,7 +225,7 @@ function gerarTitulo(time1, time2, side, liga, resultFilter, recentGames, separa
     
     if (time1) {
         const link1 = document.createElement('a');
-        link1.href = `static/team_games.html?teamname=${encodeURIComponent(time1)}`;
+        link1.href = `team_games.html?teamname=${encodeURIComponent(time1)}`;
         link1.target = '_blank';
         link1.textContent = time1;
         h2.appendChild(link1);
@@ -234,7 +234,7 @@ function gerarTitulo(time1, time2, side, liga, resultFilter, recentGames, separa
     if (time2 && time1 !== time2) {
         h2.appendChild(document.createTextNode(` ${separator} `));
         const link2 = document.createElement('a');
-        link2.href = `static/team_games.html?teamname=${encodeURIComponent(time2)}`;
+        link2.href = `team_games.html?teamname=${encodeURIComponent(time2)}`;
         link2.target = '_blank';
         link2.textContent = time2;
         h2.appendChild(link2);
