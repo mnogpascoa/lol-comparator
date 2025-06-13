@@ -90,18 +90,15 @@ button {
 }
 
 button:hover {
-    background-color: #636363; /* Verde mais escuro no hover */
+    background-color: #707070; /* Verde mais escuro no hover */
 }
 
 .team-images .team-image {
-    background-color: #000000; /* Preto para o label da imagem */
-    padding: 5px; /* Espaçamento interno */
-    border-radius: 4px; /* Bordas arredondadas como o botão */
-    display: inline-block; /* Alinha verticalmente */
+    display: inline-block; /* Mantém alinhamento, mas sem label preto */
 }
 
 .team-images img {
-    max-height: 80px; /* Aumentado para preencher o espaço vazio */
+    max-height: 80px; /* Tamanho ajustado para visibilidade */
     vertical-align: middle; /* Alinha a imagem verticalmente com o botão */
     border-radius: 2px; /* Bordas ligeiramente arredondadas na imagem */
 }
