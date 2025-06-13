@@ -71,7 +71,7 @@ input[list] {
 .button-container {
     display: flex;
     align-items: center;
-    gap: 10px; /* Espaçamento entre botão e imagens */
+    gap: 10px; /* Espaçamento opcional, pode ser removido se não houver mais imagens */
     margin-top: 10px;
 }
 
@@ -90,17 +90,7 @@ button {
 }
 
 button:hover {
-    background-color: #707070; /* Verde mais escuro no hover */
-}
-
-.team-images .team-image {
-    display: inline-block; /* Mantém alinhamento, mas sem label preto */
-}
-
-.team-images img {
-    max-height: 80px; /* Tamanho ajustado para visibilidade */
-    vertical-align: middle; /* Alinha a imagem verticalmente com o botão */
-    border-radius: 2px; /* Bordas ligeiramente arredondadas na imagem */
+    background-color: #5a5a5a; /* Verde mais escuro no hover */
 }
 
 table {
