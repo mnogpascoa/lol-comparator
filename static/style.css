@@ -86,10 +86,11 @@ button {
     margin-top: 0; /* Remove margem superior para alinhamento */
     width: auto;
     display: inline-block; /* Garante que o padding funcione */
+    height: 40px; /* Altura fixa para referência */
 }
 
 button:hover {
-    background-color: #4d4d4d; /* Verde mais escuro no hover */
+    background-color: #636363; /* Verde mais escuro no hover */
 }
 
 .team-images .team-image {
@@ -100,7 +101,7 @@ button:hover {
 }
 
 .team-images img {
-    max-height: 40px; /* Altura máxima igual à do botão (ajustada para padding) */
+    max-height: 80px; /* Aumentado para preencher o espaço vazio */
     vertical-align: middle; /* Alinha a imagem verticalmente com o botão */
     border-radius: 2px; /* Bordas ligeiramente arredondadas na imagem */
 }
