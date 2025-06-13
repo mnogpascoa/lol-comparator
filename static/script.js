@@ -198,10 +198,10 @@ function gerarTabela(statsTime1, statsTime2, mediasTime1, mediasTime2, time1, ti
                 <tr><th>Estatística</th><th>${time1}</th><th>${time2}</th></tr>
                 <tr><td>Jogos Disputados</td><td>${mediasTime1.Jogos}</td><td>${mediasTime2.Jogos}</td></tr>
                 <tr><td>Vitórias</td><td>${mediasTime1.Vitórias}</td><td>${mediasTime2.Vitórias}</td></tr>
-                <tr><td>Vitórias (%)</td><td>${mediasTime1['Vitórias (%)']}</td><td>${mediasTime2['Vitórias (%)']}</td></tr>
-                <tr><td>Primeira Torre</td><td>${mediasTime1['Primeira Torre']}</td><td>${mediasTime2['Primeira Torre']}</td></tr>
-                <tr><td>Primeiro Dragão</td><td>${mediasTime1['Primeiro Dragão']}</td><td>${mediasTime2['Primeiro Dragão']}</td></tr>
-                <tr><td>Primeiro Sangue</td><td>${mediasTime1['Primeiro Sangue']}</td><td>${mediasTime2['Primeiro Sangue']}</td></tr>
+                <tr><td>Vitórias (%)</td><td>${mediasTime1['Vitórias (%)']}</td><td>${mediasTime2['Vitórias (%)']}%</td></tr>
+                <tr><td>Primeira Torre</td><td>${mediasTime1['Primeira Torre']}</td><td>${mediasTime2['Primeira Torre']}%</td></tr>
+                <tr><td>Primeiro Dragão</td><td>${mediasTime1['Primeiro Dragão']}</td><td>${mediasTime2['Primeiro Dragão']}%</td></tr>
+                <tr><td>Primeiro Sangue</td><td>${mediasTime1['Primeiro Sangue']}</td><td>${mediasTime2['Primeiro Sangue']}%</td></tr>
                 <tr><td>Under ${killLine} Kill</td><td>${statsTime1.killStats.percentBelow}%</td><td>${statsTime2.killStats.percentBelow}%</td></tr>
                 <tr><td>Over ${killLine} Kill</td><td>${statsTime1.killStats.percentAbove}%</td><td>${statsTime2.killStats.percentAbove}%</td></tr>
                 <tr><td>Under ${timeLineMin} min</td><td>${statsTime1.timeStats.percentBelow}%</td><td>${statsTime2.timeStats.percentBelow}%</td></tr>
