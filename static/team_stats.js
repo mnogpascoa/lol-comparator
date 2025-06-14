@@ -298,11 +298,17 @@ function comparar() {
     const inhibitorLine = parseFloat(document.getElementById('inhibitor-line').value);
     const yearFilter = document.getElementById('year-filter').value;
     const timeLine = isNaN(timeLineValue) ? 31 : timeLineValue;
-    const time1 = document.getElementById('time1').value;
+    let time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
 
+    // Se time1 estiver vazio e time2 tiver valor, usar time2 como time1
+    if (!time1 && time2) {
+        time1 = time2;
+        document.getElementById('time1').value = time1; // Atualiza o campo visualmente
+    }
+
     if (!time1) {
-        alert('Selecione pelo menos o Time 1!');
+        alert('Selecione pelo menos um time!');
         return;
     }
 
@@ -323,11 +329,11 @@ function comparar() {
     let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
 
     let dadosTime1 = time1 ? dfResult.filter(row => row.teamname === time1) : [];
-    let dadosTime2 = time2 ? dfResult.filter(row => row.teamname === time2) : [];
+    let dadosTime2 = time2 && time1 !== time2 ? dfResult.filter(row => row.teamname === time2) : [];
 
     if (recentGames) {
         dadosTime1 = dadosTime1.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
-        if (time2) dadosTime2 = dadosTime2.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
+        if (time2 && time1 !== time2) dadosTime2 = dadosTime2.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
     }
 
     // Verificar se há dados para os times selecionados
@@ -345,7 +351,7 @@ function comparar() {
         inhibitorStats: calcularInhibitorStats(dadosTime1, inhibitorLine)
     };
 
-    const statsTime2 = time2 ? {
+    const statsTime2 = time2 && time1 !== time2 ? {
         killStats: calcularKillStats(dadosTime2, killLine),
         timeStats: calcularTimeStats(dadosTime2, timeLine),
         dragonStats: calcularDragonStats(dadosTime2, dragonLine),
@@ -362,7 +368,7 @@ function comparar() {
     };
 
     const mediasTime1 = calcularMedias(dadosTime1);
-    const mediasTime2 = time2 ? calcularMedias(dadosTime2) : {
+    const mediasTime2 = time2 && time1 !== time2 ? calcularMedias(dadosTime2) : {
         'Jogos': 0,
         'Vitórias': 0,
         'Vitórias (%)': 0,
@@ -400,8 +406,14 @@ function confrontoDireto() {
     const inhibitorLine = parseFloat(document.getElementById('inhibitor-line').value);
     const yearFilter = document.getElementById('year-filter').value;
     const timeLine = isNaN(timeLineValue) ? 31 : timeLineValue;
-    const time1 = document.getElementById('time1').value;
+    let time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
+
+    // Se time1 estiver vazio e time2 tiver valor, usar time2 como time1
+    if (!time1 && time2) {
+        time1 = time2;
+        document.getElementById('time1').value = time1; // Atualiza o campo visualmente
+    }
 
     if (!time1 || !time2 || time1 === time2) {
         alert('Selecione dois times diferentes para o Confronto Direto!');
