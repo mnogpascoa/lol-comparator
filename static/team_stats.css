@@ -154,13 +154,13 @@ a:visited {
 .banner-image {
     display: block;
     width: 100%;
-    max-width: 600px; /* Ajustado para deixar espaço à direita */
+    max-width: 600px; /* Ajustado para deixar espaço à direita e esquerda */
     height: auto;
     margin: 0 auto 20px auto;
     border-radius: 4px; /* Opcional */
 }
 
-/* Configurações para a nova imagem QR fora do body */
+/* Configurações para a imagem QR à direita */
 .qr-container {
     position: absolute;
     top: 20px; /* Alinha ao topo, próximo à LogoBanner */
@@ -169,6 +169,19 @@ a:visited {
 }
 
 .qr-image {
+    max-width: 150px; /* Ajuste o tamanho conforme necessário */
+    height: auto;
+}
+
+/* Configurações para a nova imagem QR à esquerda */
+.qr-left-container {
+    position: absolute;
+    top: 20px; /* Alinha ao topo, igual à QRKucoinTRON */
+    left: 20px; /* Posiciona no extremo lado esquerdo */
+    z-index: 1000; /* Garante que fique acima do conteúdo */
+}
+
+.qr-left-image {
     max-width: 150px; /* Ajuste o tamanho conforme necessário */
     height: auto;
 }
