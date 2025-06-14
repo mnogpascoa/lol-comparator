@@ -147,3 +147,23 @@ a:visited {
     color: #f0f0f0;
     text-decoration: underline;
 }
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1e1e1e;
+    color: #d9d9d9;
+    position: relative; /* Adicionado para posicionamento absoluto da imagem */
+}
+
+/* ... (outros estilos permanecem os mesmos) */
+
+/* Configurações para a nova imagem QR */
+.qr-image {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    max-width: 150px; /* Ajuste o tamanho conforme necessário */
+    height: auto;
+}
