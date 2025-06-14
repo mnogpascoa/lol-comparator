@@ -143,8 +143,15 @@
     <div class="button-container">
         <button onclick="comparar()">Stats Individual</button>
         <button onclick="confrontoDireto()">Confronto Direto</button>
-        <div class="info-note">
-            * Apoie o desenvolvimento de um site mais robusto.<br>pix: 4324--3242-34324-324-3-4234-3-24-32-4-34  
+        <div class="filter-group">
+            <label for="year-filter">Ano:</label>
+            <select id="year-filter" onchange="carregarTimes()">
+                <option value="">Todos os Anos</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+            </select>
         </div>
     </div>
     <div id="resultado"></div>
