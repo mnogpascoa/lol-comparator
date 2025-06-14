@@ -14,6 +14,14 @@ Papa.parse('BaseDadosDesseAno.csv', {
             alert('Nenhum dado válido encontrado!');
             return;
         }
+        // Depuração: Verificar os valores de 'date'
+        console.log('Dados brutos do CSV:', df);
+        df.forEach(row => {
+            if (row.date) {
+                const date = new Date(row.date);
+                console.log(`Data: ${row.date}, Ano extraído: ${date.getFullYear()}`);
+            }
+        });
         carregarLigas();
         carregarSides();
         carregarTimes();
@@ -24,7 +32,16 @@ Papa.parse('BaseDadosDesseAno.csv', {
 });
 
 function carregarLigas() {
-    const ligas = [...new Set(df.map(row => row.league).filter(liga => liga))].sort();
+    const yearFilter = document.getElementById('year-filter').value;
+    // Filtro por ano como primeiro passo
+    let dfFiltered = yearFilter === '' ? df : df.filter(row => {
+        if (!row.date) return false; // Ignorar linhas sem data
+        const date = new Date(row.date);
+        const year = date.getFullYear();
+        return !isNaN(year) && year === parseInt(yearFilter);
+    });
+
+    const ligas = [...new Set(dfFiltered.map(row => row.league).filter(liga => liga))].sort();
     const selectLiga = document.getElementById('liga');
     selectLiga.innerHTML = '<option value="">Todos os campeonatos</option>';
     ligas.forEach(liga => {
@@ -36,7 +53,16 @@ function carregarLigas() {
 }
 
 function carregarSides() {
-    const sides = [...new Set(df.map(row => row.side).filter(side => side))].sort();
+    const yearFilter = document.getElementById('year-filter').value;
+    // Filtro por ano como primeiro passo
+    let dfFiltered = yearFilter === '' ? df : df.filter(row => {
+        if (!row.date) return false; // Ignorar linhas sem data
+        const date = new Date(row.date);
+        const year = date.getFullYear();
+        return !isNaN(year) && year === parseInt(yearFilter);
+    });
+
+    const sides = [...new Set(dfFiltered.map(row => row.side).filter(side => side))].sort();
     const selectSide = document.getElementById('side');
     selectSide.innerHTML = '<option value="">Todos os lados</option>';
     sides.forEach(side => {
@@ -65,12 +91,16 @@ function carregarTimes() {
     const time1Selecionado = time1Input.value;
     const time2Selecionado = time2Input.value;
 
-    // Filtro por ano
-    let dfFiltered = yearFilter ? df.filter(row => {
+    // Filtro por ano como primeiro passo
+    let dfFiltered = yearFilter === '' ? df : df.filter(row => {
+        if (!row.date) return false; // Ignorar linhas sem data
         const date = new Date(row.date);
         const year = date.getFullYear();
-        return yearFilter === '' || year === parseInt(yearFilter);
-    }) : df;
+        return !isNaN(year) && year === parseInt(yearFilter);
+    });
+
+    // Depuração: Verificar os dados filtrados por ano
+    console.log(`Filtro de ano aplicado: ${yearFilter}, Total de linhas após filtro: ${dfFiltered.length}`);
 
     // Filtro por liga
     let dfLiga = liga ? dfFiltered.filter(row => row.league === liga) : dfFiltered;
@@ -277,14 +307,18 @@ function comparar() {
         return;
     }
 
-    // Aplicar filtro por ano
-    let dfFiltered = yearFilter ? df.filter(row => {
+    // Filtro por ano como primeiro passo
+    let dfFiltered = yearFilter === '' ? df : df.filter(row => {
+        if (!row.date) return false; // Ignorar linhas sem data
         const date = new Date(row.date);
         const year = date.getFullYear();
-        return yearFilter === '' || year === parseInt(yearFilter);
-    }) : df;
+        return !isNaN(year) && year === parseInt(yearFilter);
+    });
 
-    // Aplicar filtros para obter dfResult
+    // Depuração: Verificar os dados filtrados por ano
+    console.log(`Filtro de ano aplicado: ${yearFilter}, Total de linhas após filtro: ${dfFiltered.length}`);
+
+    // Aplicar filtros subsequentes
     let dfLiga = liga ? dfFiltered.filter(row => row.league === liga) : dfFiltered;
     let dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
     let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
@@ -374,14 +408,18 @@ function confrontoDireto() {
         return;
     }
 
-    // Aplicar filtro por ano
-    let dfFiltered = yearFilter ? df.filter(row => {
+    // Filtro por ano como primeiro passo
+    let dfFiltered = yearFilter === '' ? df : df.filter(row => {
+        if (!row.date) return false; // Ignorar linhas sem data
         const date = new Date(row.date);
         const year = date.getFullYear();
-        return yearFilter === '' || year === parseInt(yearFilter);
-    }) : df;
+        return !isNaN(year) && year === parseInt(yearFilter);
+    });
 
-    // Aplicar filtros para obter dfResult
+    // Depuração: Verificar os dados filtrados por ano
+    console.log(`Filtro de ano aplicado: ${yearFilter}, Total de linhas após filtro: ${dfFiltered.length}`);
+
+    // Aplicar filtros subsequentes
     let dfLiga = liga ? dfFiltered.filter(row => row.league === liga) : dfFiltered;
     let dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
     let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
