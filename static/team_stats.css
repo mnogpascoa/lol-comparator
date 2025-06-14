@@ -1,3 +1,5 @@
+/* ... (estilos existentes permanecem os mesmos) */
+
 * {
     margin: 0;
     padding: 0;
@@ -148,16 +150,21 @@ a:visited {
     text-decoration: underline;
 }
 
-
-/* Configurações para a nova imagem QR fora do body */
-.qr-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000; /* Garante que fique acima de outros elementos */
+/* Estilos para a imagem clicável */
+.banner-image {
+    display: block;
+    width: 100%;
+    max-width: 600px; /* Ajustado para deixar espaço à direita */
+    height: auto;
+    margin: 0 auto 20px auto;
+    border-radius: 4px; /* Opcional */
 }
 
+/* Estilos para a nova imagem QR ao lado da LogoBanner */
 .qr-image {
+    display: inline-block;
     max-width: 150px; /* Ajuste o tamanho conforme necessário */
     height: auto;
+    vertical-align: top; /* Alinha ao topo da LogoBanner */
+    margin-left: 10px; /* Espaçamento à esquerda da LogoBanner */
 }
