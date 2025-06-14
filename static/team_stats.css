@@ -160,11 +160,15 @@ a:visited {
     border-radius: 4px; /* Opcional */
 }
 
-/* Estilos para a nova imagem QR ao lado da LogoBanner */
+/* Configurações para a nova imagem QR fora do body */
+.qr-container {
+    position: absolute;
+    top: 20px; /* Alinha ao topo, próximo à LogoBanner */
+    right: 20px; /* Posiciona à direita */
+    z-index: 1000; /* Garante que fique acima do conteúdo */
+}
+
 .qr-image {
-    display: inline-block;
     max-width: 150px; /* Ajuste o tamanho conforme necessário */
     height: auto;
-    vertical-align: top; /* Alinha ao topo da LogoBanner */
-    margin-left: 10px; /* Espaçamento à esquerda da LogoBanner */
 }
