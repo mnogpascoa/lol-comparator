@@ -154,4 +154,14 @@
     <div class="qr-container">
         <img src="QRKucoinTRON.png" alt="QR Code KuCoin TRON" class="qr-image">
     </div>
+
+    <!-- Script para auto-destruir a imagem após 1 minuto -->
+    <script>
+        setTimeout(function() {
+            var qrContainer = document.querySelector('.qr-container');
+            if (qrContainer) {
+                qrContainer.style.display = 'none';
+            }
+        }, 30000); // 60.000 milissegundos = 1 minuto
+    </script>
 </html>
