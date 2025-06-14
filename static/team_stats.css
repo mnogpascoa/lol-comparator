@@ -150,38 +150,35 @@ a:visited {
     text-decoration: underline;
 }
 
+/* Estilos para o contêiner do cabeçalho */
+.header-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Alinha o banner à esquerda e as QRs às extremidades */
+    width: 100%;
+    margin-bottom: 20px;
+}
+
 /* Estilos para a imagem clicável */
 .banner-image {
     display: block;
     width: 100%;
-    max-width: 600px; /* Ajustado para deixar espaço à direita e esquerda */
+    max-width: 800px; /* Restaurado para o tamanho original */
     height: auto;
-    margin: 0 auto 20px auto;
     border-radius: 4px; /* Opcional */
 }
 
-/* Configurações para a imagem QR à direita */
-.qr-container {
-    position: absolute;
-    top: 20px; /* Alinha ao topo, próximo à LogoBanner */
-    right: 20px; /* Posiciona à direita */
-    z-index: 1000; /* Garante que fique acima do conteúdo */
-}
-
-.qr-image {
-    max-width: 150px; /* Ajuste o tamanho conforme necessário */
-    height: auto;
-}
-
-/* Configurações para a nova imagem QR à esquerda */
-.qr-left-container {
-    position: absolute;
-    top: 20px; /* Alinha ao topo, igual à QRKucoinTRON */
-    left: 20px; /* Posiciona no extremo lado esquerdo */
-    z-index: 1000; /* Garante que fique acima do conteúdo */
-}
-
+/* Configurações para a imagem QR à esquerda */
 .qr-left-image {
     max-width: 150px; /* Ajuste o tamanho conforme necessário */
     height: auto;
+    margin-left: 10px; /* Espaçamento à esquerda, se necessário */
+}
+
+/* Configurações para a imagem QR à direita */
+.qr-image {
+    max-width: 150px; /* Ajuste o tamanho conforme necessário */
+    height: auto;
+    margin-right: 10px; /* Espaçamento à direita, se necessário */
 }
