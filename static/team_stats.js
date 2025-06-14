@@ -58,20 +58,28 @@ function carregarTimes() {
     const baronLine = document.getElementById('baron-line').value;
     const towerLine = document.getElementById('tower-line').value;
     const inhibitorLine = document.getElementById('inhibitor-line').value;
+    const yearFilter = document.getElementById('year-filter').value;
     const time1Input = document.getElementById('time1');
     const time2Input = document.getElementById('time2');
     
     const time1Selecionado = time1Input.value;
     const time2Selecionado = time2Input.value;
 
+    // Filtro por ano
+    let dfFiltered = yearFilter ? df.filter(row => {
+        const date = new Date(row.date);
+        const year = date.getFullYear();
+        return yearFilter === '' || year === parseInt(yearFilter);
+    }) : df;
+
     // Filtro por liga
-    dfLiga = liga ? df.filter(row => row.league === liga) : df;
+    let dfLiga = liga ? dfFiltered.filter(row => row.league === liga) : dfFiltered;
 
     // Filtro por lado
-    dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
+    let dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
 
     // Filtro por resultado (Vitórias/Derrotas)
-    dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
+    let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
 
     // Extrair times disponíveis após todos os filtros
     const times = [...new Set(dfResult.map(row => row.teamname).filter(time => time))].sort();
@@ -259,6 +267,7 @@ function comparar() {
     const baronLine = parseFloat(document.getElementById('baron-line').value);
     const towerLine = parseFloat(document.getElementById('tower-line').value);
     const inhibitorLine = parseFloat(document.getElementById('inhibitor-line').value);
+    const yearFilter = document.getElementById('year-filter').value;
     const timeLine = isNaN(timeLineValue) ? 31 : timeLineValue;
     const time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
@@ -268,8 +277,15 @@ function comparar() {
         return;
     }
 
+    // Aplicar filtro por ano
+    let dfFiltered = yearFilter ? df.filter(row => {
+        const date = new Date(row.date);
+        const year = date.getFullYear();
+        return yearFilter === '' || year === parseInt(yearFilter);
+    }) : df;
+
     // Aplicar filtros para obter dfResult
-    let dfLiga = liga ? df.filter(row => row.league === liga) : df;
+    let dfLiga = liga ? dfFiltered.filter(row => row.league === liga) : dfFiltered;
     let dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
     let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
 
@@ -348,6 +364,7 @@ function confrontoDireto() {
     const baronLine = parseFloat(document.getElementById('baron-line').value);
     const towerLine = parseFloat(document.getElementById('tower-line').value);
     const inhibitorLine = parseFloat(document.getElementById('inhibitor-line').value);
+    const yearFilter = document.getElementById('year-filter').value;
     const timeLine = isNaN(timeLineValue) ? 31 : timeLineValue;
     const time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
@@ -357,8 +374,15 @@ function confrontoDireto() {
         return;
     }
 
+    // Aplicar filtro por ano
+    let dfFiltered = yearFilter ? df.filter(row => {
+        const date = new Date(row.date);
+        const year = date.getFullYear();
+        return yearFilter === '' || year === parseInt(yearFilter);
+    }) : df;
+
     // Aplicar filtros para obter dfResult
-    let dfLiga = liga ? df.filter(row => row.league === liga) : df;
+    let dfLiga = liga ? dfFiltered.filter(row => row.league === liga) : dfFiltered;
     let dfSide = side ? dfLiga.filter(row => row.side === side) : dfLiga;
     let dfResult = resultFilter !== '' ? dfSide.filter(row => parseInt(row.result) === parseInt(resultFilter)) : dfSide;
 
