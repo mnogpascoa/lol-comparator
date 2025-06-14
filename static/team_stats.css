@@ -13,8 +13,6 @@ body {
     color: #d9d9d9;
 }
 
-/* Removido ou comentado, pois não está mais em uso */
-/*
 .header-label {
     background-color: #000000;
     padding: 10px 20px;
@@ -23,7 +21,6 @@ body {
     width: 100%;
     text-align: center;
 }
-*/
 
 h1 {
     color: white;
@@ -76,8 +73,6 @@ input[list] {
     align-items: center;
     gap: 10px;
     margin-top: 10px;
-    flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha se necessário */
-    justify-content: space-between; /* Distribui os botões e a mensagem */
 }
 
 button {
@@ -92,7 +87,6 @@ button {
     width: auto;
     display: inline-block;
     height: 40px;
-    flex-shrink: 0; /* Impede que os botões encolham */
 }
 
 button:hover {
@@ -152,28 +146,4 @@ a:hover {
 a:visited {
     color: #f0f0f0;
     text-decoration: underline;
-}
-
-/* Estilos para a imagem clicável */
-.banner-image {
-    display: block;
-    width: 100%;
-    max-width: 800px; /* Ou o valor que você ajustou */
-    height: auto;
-    margin: 0 auto 20px auto;
-    border-radius: 4px; /* Opcional */
-}
-
-a[href="../index.html"] {
-    text-decoration: none; /* Remove sublinhado do link */
-}
-
-/* Estilos ajustados para a mensagem de suporte */
-.support-note {
-    font-size: 0.9em; /* Mesma fonte size de .info-note */
-    color: #a0a0a0; /* Mesma cor de .info-note */
-    padding: 5px;
-    word-break: break-all; /* Permite quebras em qualquer ponto, se necessário */
-    max-width: 60%; /* Limita a largura da mensagem para evitar ultrapassar */
-    line-height: 1.2; /* Melhora a legibilidade entre linhas */
 }
