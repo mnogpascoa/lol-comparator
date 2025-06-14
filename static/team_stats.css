@@ -163,8 +163,8 @@ a:visited {
 /* Configurações para a imagem QR à direita */
 .qr-container {
     position: absolute;
-    top: 20px; /* Alinha ao topo, próximo à LogoBanner */
-    right: 20px; /* Posiciona à direita */
+    top: 70vh; /* Ajusta a altura para cerca de 80% da altura da viewport, perto da parte inferior */
+    right: 20px; /* Mantém à direita */
     z-index: 1000; /* Garante que fique acima do conteúdo */
 }
 
@@ -176,8 +176,8 @@ a:visited {
 /* Configurações para a nova imagem QR à esquerda */
 .qr-left-container {
     position: absolute;
-    top: 20px; /* Alinha ao topo, igual à QRKucoinTRON */
-    left: 20px; /* Posiciona no extremo lado esquerdo */
+    top: 70vh; /* Ajusta a altura para cerca de 80% da altura da viewport, perto da parte inferior */
+    left: 20px; /* Mantém no extremo lado esquerdo */
     z-index: 1000; /* Garante que fique acima do conteúdo */
 }
 
