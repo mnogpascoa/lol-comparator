@@ -3,14 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Partidas do Time</title>
-    
-    <link rel="stylesheet" href="team_games.css">
+    <title>Team Stats</title>
+    <link rel="stylesheet" href="team_stats.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
-    <div id="team-info"></div>
-    <div id="games-table"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    <script src="team_games.js"></script>
+    <!-- Imagem clicável com link para a página principal -->
+    <a href="../index.html">
+        <img src="LogoBanner.png" alt="Logo Banner" class="banner-image">
+    </a>
+
+    <div class="filter-container">
+        <div class="info-note">* Selecione um ou dois times para ver as estatísticas.</div>
+        <div class="time-row">
+            <div class="filter-group">
+                <label for="time1">Time 1:</label>
+                <input id="time1" list="times-list" placeholder="Digite o nome do time">
+            </div>
+            <div class="filter-group">
+                <label for="kill-line">Linha Kills:</label>
+                <select id="kill-line" onchange="carregarTimes()">
+                    <option value="19.5">19.5</option>
+                    <option value="20.5">20.5</option>
+                    <option value="21.5">21.5</option>
+                    <option value="22.5">22.5</option>
+                    <option value="23.5">23.5</option>
+                    <option value="24.5">24.5</option>
+                    <option value="25.5">25.5</option>
+                    <option value="26.5" selected>26.5</option>
+                    <option value="27.5">27.5</option>
+                    <option value="28.5">28.5</option>
+                    <option value="29.5">29.5</option>
+                    <option value="30.5">30.5</option>
+                    <option value="31.5">31.5</option>
+                    <option value="32.5">32.5</option>
+                    <option value="33.5">33.5</option>
+                    <option value="34.5">34.5</option>
+                    <option value="35.5">35.5</option>
+                    <option value="36.5">36.5</option>
+                </select>
+            </div>
+        </div>
+        <div class="time-row">
+            <div class="filter-group">
+                <label for="time2">Time 2:</label>
+                <input id="time2" list="times-list" placeholder="Digite o nome do time (opcional)">
+            </div>
+            <div class="filter-group">
+                <label for="time-line">Linha Tempo:</label>
+                <select id="time-line" onchange="carregarTimes()">                   
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31" selected>31</option>
+                    <option value="32">32</option>
+                    <option value="33">33</option>
+                    <option value="34">34</option>
+                    <option value="35">35</option>
+                    <option value="36">36</option>
+                </select>
+            </div>
+        </div>
+        <div class="time-row">
+            <div class="filter-group">
+                <label for="liga">Campeonato:</label>
+                <select id="liga" onchange="carregarTimes()">
+                    <option value="">Todos os campeonatos</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="dragon-line">Linha Dragons:</label>
+                <select id="dragon-line" onchange="carregarTimes()">
+                    <option value="3.5">3.5</option>
+                    <option value="4.5" selected>4.5</option>
+                    <option value="5.5">5.5</option>
+                </select>
+            </div>
+        </div>
+        <div class="time-row">
+            <div class="filter-group">
+                <label for="side">Lado:</label>
+                <select id="side" onchange="carregarTimes()">
+                    <option value="">Todos os lados</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="baron-line">Linha Barons:</label>
+                <select id="baron-line" onchange="carregarTimes()">
+                    <option value="1.5" selected>1.5</option>
+                    <option value="2.5">2.5</option>
+                </select>
+            </div>
+        </div>
+        <div class="time-row">
+            <div class="filter-group">
+                <label for="recent-games">Jogos Recentes:</label>
+                <select id="recent-games" onchange="carregarTimes()">
+                    <option value="">Todos os Jogos</option>
+                    <option value="10">Últimos 10 jogos</option>
+                    <option value="20">Últimos 20 jogos</option>
+                    <option value="30">Últimos 30 jogos</option>
+                    <option value="40">Últimos 40 jogos</option>
+                    <option value="50">Últimos 50 jogos</option>
+                    <option value="100">Últimos 100 jogos</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="tower-line">Linha Towers:</label>
+                <select id="tower-line" onchange="carregarTimes()">
+                    <option value="10.5">10.5</option>
+                    <option value="11.5">11.5</option>
+                    <option value="12.5" selected>12.5</option>
+                    <option value="13.5">13.5</option>
+                    <option value="14.5">14.5</option>
+                </select>
+            </div>
+        </div>
+        <div class="time-row">
+            <div class="filter-group">
+                <label for="result-filter">Vitórias/Derrotas:</label>
+                <select id="result-filter" onchange="carregarTimes()">
+                    <option value="">Todos os Resultados</option>
+                    <option value="1">Vitórias</option>
+                    <option value="0">Derrotas</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="inhibitor-line">Linha Inibidor:</label>
+                <select id="inhibitor-line" onchange="carregarTimes()">
+                    <option value="1.5" selected>1.5</option>
+                    <option value="2.5">2.5</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <datalist id="times-list"></datalist>
+    <div class="button-container">
+        <button onclick="comparar()">Stats Individual</button>
+        <button onclick="confrontoDireto()">Confronto Direto</button>
+        <div class="info-note">
+            * Apoie o desenvolvimento de um site mais robusto.<br>
+            PIX: 4324--3242-34324-324-3-4234-3-24-32-4-34
+        </div>
+    </div>
+    <div id="resultado"></div>
+    <script src="team_stats.js"></script>
 </body>
 </html>
