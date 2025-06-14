@@ -8,10 +8,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
-    <!-- Imagem clicável com link para a página principal -->
-    <a href="../index.html">
-        <img src="LogoBanner.png" alt="Logo Banner" class="banner-image">
-    </a>
+    <!-- Contêiner para alinhar o banner e as imagens QR -->
+    <div class="header-container">
+        <a href="../index.html">
+            <img src="LogoBanner.png" alt="Logo Banner" class="banner-image">
+        </a>
+        <img src="QRPix.png" alt="QR Code Pix" class="qr-left-image">
+        <img src="QRKucoinTRON.png" alt="QR Code KuCoin TRON" class="qr-image">
+    </div>
 
     <div class="filter-container">
         <div class="info-note">* Selecione um ou dois times para ver as estatísticas.</div>
@@ -149,14 +153,5 @@
     </div>
     <div id="resultado"></div>
     <script src="team_stats.js"></script>
-
-    <!-- Imagem fora do body, ao lado direito da LogoBanner.png -->
-    <div class="qr-container">
-        <img src="QRKucoinTRON.png" alt="QR Code KuCoin TRON" class="qr-image">
-    </div>
-
-    <!-- Nova imagem fora do body, no extremo lado esquerdo -->
-    <div class="qr-left-container">
-        <img src="QRPix.png" alt="QR Code Pix" class="qr-left-image">
-    </div>
+</body>
 </html>
