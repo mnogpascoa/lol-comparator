@@ -182,14 +182,14 @@ function gerarTabela(statsTime1, statsTime2, mediasTime1, mediasTime2, time1, ti
                 <tr><td>Over ${killLine} Kill</td><td>${statsTime1.killStats.percentAbove}%</td></tr>
                 <tr><td>Under ${timeLineMin} min</td><td>${statsTime1.timeStats.percentBelow}%</td></tr>
                 <tr><td>Over ${timeLineMin} min</td><td>${statsTime1.timeStats.percentAbove}%</td></tr>
-                <tr><td>Under ${dragonLine} Dragon</td><td>${statsTime1.dragonStats.percentBelow}%</td></tr>
-                <tr><td>Over ${dragonLine} Dragon</td><td>${statsTime1.dragonStats.percentAbove}%</td></tr>
-                <tr><td>Under ${baronLine} Baron</td><td>${statsTime1.baronStats.percentBelow}%</td></tr>
-                <tr><td>Over ${baronLine} Baron</td><td>${statsTime1.baronStats.percentAbove}%</td></tr>
-                <tr><td>Under ${towerLine} Tower</td><td>${statsTime1.towerStats.percentBelow}%</td></tr>
-                <tr><td>Over ${towerLine} Tower</td><td>${statsTime1.towerStats.percentAbove}%</td></tr>
-                <tr><td>Under ${inhibitorLine} Inhibitor</td><td>${statsTime1.inhibitorStats.percentBelow}%</td></tr>
-                <tr><td>Over ${inhibitorLine} Inhibitor</td><td>${statsTime1.inhibitorStats.percentAbove}%</td></tr>
+                <tr><td>Under ${dragonLine} Dragons</td><td>${statsTime1.dragonStats.percentBelow}%</td></tr>
+                <tr><td>Over ${dragonLine} Dragons</td><td>${statsTime1.dragonStats.percentAbove}%</td></tr>
+                <tr><td>Under ${baronLine} Barons</td><td>${statsTime1.baronStats.percentBelow}%</td></tr>
+                <tr><td>Over ${baronLine} Barons</td><td>${statsTime1.baronStats.percentAbove}%</td></tr>
+                <tr><td>Under ${towerLine} Torres</td><td>${statsTime1.towerStats.percentBelow}%</td></tr>
+                <tr><td>Over ${towerLine} Torres</td><td>${statsTime1.towerStats.percentAbove}%</td></tr>
+                <tr><td>Under ${inhibitorLine} Inibidor</td><td>${statsTime1.inhibitorStats.percentBelow}%</td></tr>
+                <tr><td>Over ${inhibitorLine} Inibidor</td><td>${statsTime1.inhibitorStats.percentAbove}%</td></tr>
             </table>
         `;
     } else {
@@ -206,14 +206,14 @@ function gerarTabela(statsTime1, statsTime2, mediasTime1, mediasTime2, time1, ti
                 <tr><td>Over ${killLine} Kill</td><td>${statsTime1.killStats.percentAbove}%</td><td>${statsTime2.killStats.percentAbove}%</td></tr>
                 <tr><td>Under ${timeLineMin} min</td><td>${statsTime1.timeStats.percentBelow}%</td><td>${statsTime2.timeStats.percentBelow}%</td></tr>
                 <tr><td>Over ${timeLineMin} min</td><td>${statsTime1.timeStats.percentAbove}%</td><td>${statsTime2.timeStats.percentAbove}%</td></tr>
-                <tr><td>Under ${dragonLine} Dragon</td><td>${statsTime1.dragonStats.percentBelow}%</td><td>${statsTime2.dragonStats.percentBelow}%</td></tr>
-                <tr><td>Over ${dragonLine} Dragon</td><td>${statsTime1.dragonStats.percentAbove}%</td><td>${statsTime2.dragonStats.percentAbove}%</td></tr>
-                <tr><td>Under ${baronLine} Baron</td><td>${statsTime1.baronStats.percentBelow}%</td><td>${statsTime2.baronStats.percentBelow}%</td></tr>
-                <tr><td>Over ${baronLine} Baron</td><td>${statsTime1.baronStats.percentAbove}%</td><td>${statsTime2.baronStats.percentAbove}%</td></tr>
-                <tr><td>Under ${towerLine} Tower</td><td>${statsTime1.towerStats.percentBelow}%</td><td>${statsTime2.towerStats.percentBelow}%</td></tr>
-                <tr><td>Over ${towerLine} Tower</td><td>${statsTime1.towerStats.percentAbove}%</td><td>${statsTime2.towerStats.percentAbove}%</td></tr>
-                <tr><td>Under ${inhibitorLine} Inhibitor</td><td>${statsTime1.inhibitorStats.percentBelow}%</td><td>${statsTime2.inhibitorStats.percentBelow}%</td></tr>
-                <tr><td>Over ${inhibitorLine} Inhibitor</td><td>${statsTime1.inhibitorStats.percentAbove}%</td><td>${statsTime2.inhibitorStats.percentAbove}%</td></tr>
+                <tr><td>Under ${dragonLine} Dragons</td><td>${statsTime1.dragonStats.percentBelow}%</td><td>${statsTime2.dragonStats.percentBelow}%</td></tr>
+                <tr><td>Over ${dragonLine} Dragons</td><td>${statsTime1.dragonStats.percentAbove}%</td><td>${statsTime2.dragonStats.percentAbove}%</td></tr>
+                <tr><td>Under ${baronLine} Barons</td><td>${statsTime1.baronStats.percentBelow}%</td><td>${statsTime2.baronStats.percentBelow}%</td></tr>
+                <tr><td>Over ${baronLine} Barons</td><td>${statsTime1.baronStats.percentAbove}%</td><td>${statsTime2.baronStats.percentAbove}%</td></tr>
+                <tr><td>Under ${towerLine} Torres</td><td>${statsTime1.towerStats.percentBelow}%</td><td>${statsTime2.towerStats.percentBelow}%</td></tr>
+                <tr><td>Over ${towerLine} Torres</td><td>${statsTime1.towerStats.percentAbove}%</td><td>${statsTime2.towerStats.percentAbove}%</td></tr>
+                <tr><td>Under ${inhibitorLine} Inibidor</td><td>${statsTime1.inhibitorStats.percentBelow}%</td><td>${statsTime2.inhibitorStats.percentBelow}%</td></tr>
+                <tr><td>Over ${inhibitorLine} Inibidor</td><td>${statsTime1.inhibitorStats.percentAbove}%</td><td>${statsTime2.inhibitorStats.percentAbove}%</td></tr>
             </table>
         `;
     }
