@@ -121,11 +121,9 @@ function carregarTimes() {
         datalist.appendChild(option);
     });
 
-    // Manter seleções válidas nos inputs de time
-    if (time1Selecionado && times.includes(time1Selecionado)) time1Input.value = time1Selecionado;
-    else time1Input.value = '';
-    if (time2Selecionado && times.includes(time2Selecionado)) time2Input.value = time2Selecionado;
-    else time2Input.value = '';
+    // Manter seleções válidas nos inputs de time, mesmo se não houver dados para o ano
+    time1Input.value = time1Selecionado; // Preserva o valor anterior
+    if (time2Selecionado) time2Input.value = time2Selecionado; // Preserva o valor anterior
 }
 
 function calcularKillStats(dados, killLine) {
@@ -258,7 +256,7 @@ function gerarTabela(statsTime1, statsTime2, mediasTime1, mediasTime2, time1, ti
     return tableContent;
 }
 
-function gerarTitulo(time1, time2, side, liga, resultFilter, recentGames, separator) {
+function gerarTitulo(time1, time2, side, liga, resultFilter, recentGames, yearFilter, separator) {
     const h2 = document.createElement('h2');
     
     if (time1) {
@@ -282,6 +280,7 @@ function gerarTitulo(time1, time2, side, liga, resultFilter, recentGames, separa
     if (liga) h2.appendChild(document.createTextNode(` (${liga})`));
     if (resultFilter !== '') h2.appendChild(document.createTextNode(` (${resultFilter === '1' ? 'Vitórias' : 'Derrotas'})`));
     if (recentGames) h2.appendChild(document.createTextNode(` (Últimos ${recentGames} jogos)`));
+    if (yearFilter !== '') h2.appendChild(document.createTextNode(` (${yearFilter})`)); // Adiciona o ano ao título
     
     return h2;
 }
@@ -331,8 +330,9 @@ function comparar() {
         if (time2) dadosTime2 = dadosTime2.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
     }
 
+    // Verificar se há dados para os times selecionados
     if (dadosTime1.length === 0 && (!time2 || dadosTime2.length === 0)) {
-        alert('Dados insuficientes para os times selecionados!');
+        alert('Dados insuficientes para os times selecionados no ano escolhido!');
         return;
     }
 
@@ -379,7 +379,7 @@ function comparar() {
 
     const resultado = document.getElementById('resultado');
     resultado.innerHTML = ''; // Limpar conteúdo anterior
-    const h2 = gerarTitulo(time1, time2, side, liga, resultFilter, recentGames, '&');
+    const h2 = gerarTitulo(time1, time2, side, liga, resultFilter, recentGames, yearFilter, '&');
     
     resultado.appendChild(h2);
     resultado.insertAdjacentHTML('beforeend', tableContent);
@@ -432,8 +432,9 @@ function confrontoDireto() {
         dadosTime2 = dadosTime2.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, parseInt(recentGames));
     }
 
+    // Verificar se há dados para os times selecionados
     if (dadosTime1.length === 0 && dadosTime2.length === 0) {
-        alert('Nenhum confronto direto encontrado entre os times selecionados com os filtros aplicados!');
+        alert('Nenhum confronto direto encontrado entre os times selecionados no ano escolhido!');
         return;
     }
 
@@ -466,7 +467,7 @@ function confrontoDireto() {
 
     const resultado = document.getElementById('resultado');
     resultado.innerHTML = ''; // Limpar conteúdo anterior
-    const h2 = gerarTitulo(time1, time2, side, liga, resultFilter, recentGames, 'vs');
+    const h2 = gerarTitulo(time1, time2, side, liga, resultFilter, recentGames, yearFilter, 'vs');
     
     resultado.appendChild(h2);
     resultado.insertAdjacentHTML('beforeend', tableContent);
