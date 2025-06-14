@@ -301,10 +301,9 @@ function comparar() {
     let time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
 
-    // Se time1 estiver vazio e time2 tiver valor, usar time2 como time1
+    // Se time1 estiver vazio e time2 tiver valor, usar time2 como time1 internamente
     if (!time1 && time2) {
-        time1 = time2;
-        document.getElementById('time1').value = time1; // Atualiza o campo visualmente
+        time1 = time2; // Usa time2 como time1 nos cálculos, sem alterar o campo visual
     }
 
     if (!time1) {
@@ -409,10 +408,9 @@ function confrontoDireto() {
     let time1 = document.getElementById('time1').value;
     const time2 = document.getElementById('time2').value;
 
-    // Se time1 estiver vazio e time2 tiver valor, usar time2 como time1
+    // Se time1 estiver vazio e time2 tiver valor, usar time2 como time1 internamente
     if (!time1 && time2) {
-        time1 = time2;
-        document.getElementById('time1').value = time1; // Atualiza o campo visualmente
+        time1 = time2; // Usa time2 como time1 nos cálculos, sem alterar o campo visual
     }
 
     if (!time1 || !time2 || time1 === time2) {
