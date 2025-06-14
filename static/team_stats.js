@@ -178,8 +178,8 @@ function gerarTabela(statsTime1, statsTime2, mediasTime1, mediasTime2, time1, ti
                 <tr><td>Primeira Torre</td><td>${mediasTime1['Primeira Torre']}%</td></tr>
                 <tr><td>Primeiro Dragão</td><td>${mediasTime1['Primeiro Dragão']}%</td></tr>
                 <tr><td>Primeiro Sangue</td><td>${mediasTime1['Primeiro Sangue']}%</td></tr>
-                <tr><td>Under ${killLine} Kill</td><td>${statsTime1.killStats.percentBelow}%</td></tr>
-                <tr><td>Over ${killLine} Kill</td><td>${statsTime1.killStats.percentAbove}%</td></tr>
+                <tr><td>Under ${killLine} Kills</td><td>${statsTime1.killStats.percentBelow}%</td></tr>
+                <tr><td>Over ${killLine} Kills</td><td>${statsTime1.killStats.percentAbove}%</td></tr>
                 <tr><td>Under ${timeLineMin} min</td><td>${statsTime1.timeStats.percentBelow}%</td></tr>
                 <tr><td>Over ${timeLineMin} min</td><td>${statsTime1.timeStats.percentAbove}%</td></tr>
                 <tr><td>Under ${dragonLine} Dragons</td><td>${statsTime1.dragonStats.percentBelow}%</td></tr>
@@ -202,8 +202,8 @@ function gerarTabela(statsTime1, statsTime2, mediasTime1, mediasTime2, time1, ti
                 <tr><td>Primeira Torre</td><td>${mediasTime1['Primeira Torre']}%</td><td>${mediasTime2['Primeira Torre']}%</td></tr>
                 <tr><td>Primeiro Dragão</td><td>${mediasTime1['Primeiro Dragão']}%</td><td>${mediasTime2['Primeiro Dragão']}%</td></tr>
                 <tr><td>Primeiro Sangue</td><td>${mediasTime1['Primeiro Sangue']}%</td><td>${mediasTime2['Primeiro Sangue']}%</td></tr>
-                <tr><td>Under ${killLine} Kill</td><td>${statsTime1.killStats.percentBelow}%</td><td>${statsTime2.killStats.percentBelow}%</td></tr>
-                <tr><td>Over ${killLine} Kill</td><td>${statsTime1.killStats.percentAbove}%</td><td>${statsTime2.killStats.percentAbove}%</td></tr>
+                <tr><td>Under ${killLine} Kills</td><td>${statsTime1.killStats.percentBelow}%</td><td>${statsTime2.killStats.percentBelow}%</td></tr>
+                <tr><td>Over ${killLine} Kills</td><td>${statsTime1.killStats.percentAbove}%</td><td>${statsTime2.killStats.percentAbove}%</td></tr>
                 <tr><td>Under ${timeLineMin} min</td><td>${statsTime1.timeStats.percentBelow}%</td><td>${statsTime2.timeStats.percentBelow}%</td></tr>
                 <tr><td>Over ${timeLineMin} min</td><td>${statsTime1.timeStats.percentAbove}%</td><td>${statsTime2.timeStats.percentAbove}%</td></tr>
                 <tr><td>Under ${dragonLine} Dragons</td><td>${statsTime1.dragonStats.percentBelow}%</td><td>${statsTime2.dragonStats.percentBelow}%</td></tr>
